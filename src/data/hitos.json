@@ -656,22 +656,38 @@
         {
           "nombre": "Limpieza de alcantarillas",
           "desc": "Ejecutadas 77 de 350 (7 en la semana)",
-          "fotos": []
+          "fotos": [
+            "/images/actividades/959de610-14a1-4d3f-906d-94d477498c46.jpg",
+            "/images/actividades/9b71cc8d-90cb-47c3-9a5e-b6e5eaa53cf4.jpg",
+            "/images/actividades/82286081-106c-443b-a17d-346b7674283d.jpg"
+          ]
         },
         {
           "nombre": "Bacheos",
           "desc": "Se intervinieron 290 m correspondientes a 9 bacheos",
-          "fotos": []
+          "fotos": [
+            "/images/actividades/d1ce3ad6-6293-470f-a47b-9da3e8cb812e.jpg",
+            "/images/actividades/817468c2-9000-4155-b412-087b69df23b6.jpg"
+          ]
         },
         {
           "nombre": "Instalación de tubería",
           "desc": "20 tuberías instaladas",
-          "fotos": []
+          "fotos": [
+            "/images/actividades/3d576b72-4268-4185-bf6d-47aa0adbd68e.jpg",
+            "/images/actividades/c86d3625-c956-48df-839c-ab518f63d99e.jpg",
+            "/images/actividades/c489894f-0f72-4d1b-a7e6-598a7c3515f2.jpg",
+            "/images/actividades/f321aa89-1f26-4362-9dbf-3732ad113307.jpg"
+          ]
         },
         {
           "nombre": "Topografía",
           "desc": "3.0 km de levantamiento",
-          "fotos": []
+          "fotos": [
+            "/images/actividades/ae205da3-6b1b-4332-99c4-dcbc2b99b29a.jpg",
+            "/images/actividades/23f27cd5-2e72-402b-99ce-8c995f818e67.jpg",
+            "/images/actividades/345b19aa-5f3c-4bd7-beb1-f1d4012a4a2c.jpg"
+          ]
         }
       ],
       "pendientes": [],
@@ -1028,7 +1044,11 @@
         {
           "nombre": "Exploración de campo",
           "desc": "Se continúa ejecutando esta actividad esta semana se reporta avance",
-          "fotos": []
+          "fotos": [
+            "/images/actividades/3bab0293-0f95-4551-b1a1-c354ba5dd596.jpg",
+            "/images/actividades/2de8d00e-0dee-4663-9d92-ef97bc98a521.jpg",
+            "/images/actividades/ed852363-c585-41c4-91cd-4b1cae9ddd6a.jpg"
+          ]
         },
         {
           "nombre": "Limpieza de obras transversales",
