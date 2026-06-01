@@ -2457,7 +2457,7 @@ function buildPptSubregionSeguimientoSlide(logoUrl, subregion, circuits, geoFeat
 
     const circSlideId = 'seg_' + norm(circ).replace(/[\W_]+/g, '')
     const onClick = tieneHitos
-      ? `window.__pptGoToCircuito&&window.__pptGoToCircuito('${circSlideId}')`
+      ? `window['openAct_${tabId}']&&window['openAct_${tabId}']('${normCirc}','${esc(circ).replace(/'/g,"\\'")}')`
       : ''
     const cursor = tieneHitos ? 'pointer' : 'default'
     const hoverBg = tieneHitos ? "this.style.background='rgba(234,88,12,0.05)'" : ''
