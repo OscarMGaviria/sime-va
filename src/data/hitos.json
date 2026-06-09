@@ -220,6 +220,31 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mq6rqp1g",
+      "fecha": "2026-06-09",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Tramo de prueba",
+          "desc": "Continúan las actividades preliminares en el tramo de prueba, principalmente con la construcción de filtros.",
+          "fotos": [
+            "/images/actividades/93887003-4460-4bcc-8c24-e296c3cb1bc5.jpg",
+            "/images/actividades/f45c6297-69d2-4627-88dd-349b4f9270db.jpg"
+          ]
+        },
+        {
+          "nombre": "Suministro de cemento",
+          "desc": "Se realizó ingreso de cemento a obra y el Contratista adecuó una nueva zona de almacenamiento en la vereda El Tigre.",
+          "fotos": [
+            "/images/actividades/88f06220-83fc-40c7-a356-cdaed7839437.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "Andes - San José - Pueblo Rico": [
@@ -646,6 +671,25 @@
           "nombre": "Sin avances de obra",
           "desc": "",
           "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mq6rcb1y",
+      "fecha": "2026-06-09",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Exploración de campo",
+          "desc": "Se han ejecutado 16 de 102",
+          "fotos": [
+            "/images/actividades/fcfed273-4305-4388-bdd8-dfb330b86c6a.jpg",
+            "/images/actividades/3d89039d-9b97-4251-8970-d3a16868b545.jpg",
+            "/images/actividades/986d4d88-b1bd-4759-8e55-60f4d06b9ded.jpg"
+          ]
         }
       ],
       "pendientes": [],
@@ -1090,7 +1134,9 @@
         {
           "nombre": "Topografía",
           "desc": "No se registró avance semanal. Se mantiene acumulado de 13,6 km, equivalente al 65,9 % del corredor.",
-          "fotos": []
+          "fotos": [
+            "/images/actividades/bed52663-d49a-46e5-b20c-5a4f59ea80b8.jpg"
+          ]
         },
         {
           "nombre": "Apiques",
@@ -1100,7 +1146,9 @@
         {
           "nombre": "Limpieza de obras de drenaje",
           "desc": "Se ejecutaron 152 m de mantenimiento de ODT durante la semana. Acumulado: 655 m de 906 m, equivalente al 72,3 %.",
-          "fotos": []
+          "fotos": [
+            "/images/actividades/cc831ba9-3aca-47be-92a8-c977c5b862a7.jpg"
+          ]
         },
         {
           "nombre": "Intervención de obras de drenaje",
@@ -1240,7 +1288,10 @@
         {
           "nombre": "Apiques",
           "desc": "Se reanudó la toma de muestras. Acumulado Etapa 1: 75 de 91 apiques, equivalente al 82,48 %.",
-          "fotos": []
+          "fotos": [
+            "/images/actividades/d85ad7fe-8e8b-43cf-93a9-5c543d1573ab.jpg",
+            "/images/actividades/01a9707e-d2b5-4ad9-9469-befafca92fc4.jpg"
+          ]
         },
         {
           "nombre": "Topografía",
@@ -1903,5 +1954,6 @@
       "pendientes": [],
       "obs": ""
     }
-  ]
+  ],
+  "Abejorral - La Frontera": []
 }

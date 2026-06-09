@@ -2426,6 +2426,92 @@ function buildPptSubregionSeguimientoSlide(logoUrl, subregion, circuits, geoFeat
     modal.scrollTop=0;
   }"/>`
 
+  let minDate = null;
+  let maxDate = null;
+  
+  // 1. Extraer fechas desde el GeoJSON de localización (si existen)
+  for (const f of geoFeatures) {
+    if (normSub(f.properties?.SUBREGION) === normSub(subregion)) {
+      const fechaIni = f.properties?.FECHA_INI || f.properties?.FECHA_INICIO;
+      const plazo = parseFloat(f.properties?.PLAZO_MESE) || parseFloat(f.properties?.PLAZO_MESES) || 0;
+      
+      if (fechaIni && plazo > 0) {
+        const parts = fechaIni.split('/');
+        if (parts.length === 3) {
+          const start = new Date(parts[2], parts[1] - 1, parts[0]);
+          const end = new Date(start.getTime());
+          end.setMonth(end.getMonth() + plazo);
+          if (!minDate || start < minDate) minDate = start;
+          if (!maxDate || end > maxDate) maxDate = end;
+        }
+      }
+    }
+  }
+
+  // 2. Extraer fechas desde los cronogramas por circuito (fallback complementario)
+  for (const c of circuits) {
+    if (c.cronData && c.cronData.fecha_inicio && c.cronData.plazo_meses) {
+      const parts = c.cronData.fecha_inicio.split('/');
+      if (parts.length === 3) {
+        const start = new Date(parts[2], parts[1] - 1, parts[0]);
+        const end = new Date(start.getTime());
+        end.setMonth(end.getMonth() + c.cronData.plazo_meses);
+        if (!minDate || start < minDate) minDate = start;
+        if (!maxDate || end > maxDate) maxDate = end;
+      }
+    }
+  }
+
+  let ganttHtml = '';
+  if (minDate && maxDate && maxDate > minDate) {
+    const today = new Date();
+    const totalMs = maxDate - minDate;
+    const elapsedMs = Math.max(0, today - minDate);
+    let pct = (elapsedMs / totalMs) * 100;
+    const displayPct = Math.max(0, Math.min(100, pct));
+    const formatDtExact = (d) => d.toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' });
+    
+    // Calcular meses redondeando
+    const duracionMeses = Math.round(totalMs / (1000 * 60 * 60 * 24 * 30.416));
+    const animId = norm(subregion).replace(/\W+/g, '');
+    
+    ganttHtml = `
+    <style>
+      @keyframes ganttGrow_${animId} { 0% { width: 0%; } 100% { width: ${displayPct}%; } }
+      @keyframes ganttFade_${animId} { 0% { opacity: 0; transform: translateX(-50%) translateY(6px); } 100% { opacity: 1; transform: translateX(-50%) translateY(0); } }
+    </style>
+    <div style="background:#fafafa;padding:18px 20px 32px;border-top:1px solid #e5e7eb;margin-top:12px;flex-shrink:0">
+      <div style="font-size:11.5px;font-weight:900;color:#0b5640;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;text-align:center;">
+        Progreso Global de la Subregión <span style="color:#ea580c">(${duracionMeses} meses)</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;font-weight:800;color:#6b7280;margin-bottom:12px;text-transform:uppercase;">
+        <span>Inicio: ${formatDtExact(minDate)}</span>
+        <span>Fin Est.: ${formatDtExact(maxDate)}</span>
+      </div>
+      <div style="position:relative;height:12px;background:#e5e7eb;border-radius:6px;margin-top:6px;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:0%;background:linear-gradient(90deg, #ea580c, #f97316);border-radius:6px;animation: ganttGrow_${animId} 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;"></div>
+        <div style="position:absolute;left:${displayPct}%;top:-6px;bottom:-6px;width:2px;background:#111827;border-radius:1px;transform:translateX(-50%);animation: ganttFade_${animId} 0.8s 1.2s both;">
+          <!-- Etiqueta debajo -->
+          <div style="position:absolute;top:20px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;font-size:10px;font-weight:800;padding:4px 8px;border-radius:4px;white-space:nowrap;box-shadow:0 3px 8px rgba(0,0,0,0.2)">
+            Hoy (${displayPct.toFixed(0)}%)
+          </div>
+          <!-- Triángulo apuntando arriba -->
+          <div style="position:absolute;top:15px;left:50%;transform:translateX(-50%);border-width:0 5px 5px;border-style:solid;border-color:transparent transparent #111827 transparent;"></div>
+        </div>
+      </div>
+    </div>`;
+  } else {
+    ganttHtml = `
+    <div style="background:#fafafa;padding:24px 20px;border-top:1px solid #e5e7eb;margin-top:12px;flex-shrink:0;text-align:center;">
+      <div style="font-size:11.5px;font-weight:900;color:#9ca3af;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">
+        Progreso Global de la Subregión
+      </div>
+      <div style="font-size:11px;font-weight:600;color:#d1d5db;">
+        Fechas de inicio y plazos no definidos en los cronogramas actuales.
+      </div>
+    </div>`;
+  }
+
   // ── Actualizar tramosRows con onclick ─────────────────────────────────────
   const tramosRowsFinal = Object.entries(tramosMap).map(([circ, d]) => {
     const tieneHitos  = circuitosConHitos.has(norm(circ))
@@ -2482,12 +2568,15 @@ function buildPptSubregionSeguimientoSlide(logoUrl, subregion, circuits, geoFeat
     ${openerScript}
     ${hiddenPanels}
     <div style="position:absolute;inset:0">
-      <div style="position:absolute;left:470px;top:175px;right:36px;bottom:112px;background:#fff;border-radius:12px;display:flex;flex-direction:column;overflow:hidden">
+      <div style="position:absolute;left:470px;top:175px;right:36px;bottom:36px;background:#fff;border-radius:12px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.05)">
         <div style="padding:7px 12px 5px;border-bottom:2px solid #ea580c;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:space-between">
           <div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0b5640">Circuitos de la Subregión</div>
           <div style="font-size:10px;font-weight:700;color:#ea580c;background:#fff7ed;padding:2px 8px;border-radius:99px;border:1px solid #fed7aa">${totalTramos} circuito${totalTramos !== 1 ? 's' : ''}</div>
         </div>
-        <div style="flex:1;overflow-y:auto;scrollbar-width:thin">${tramosRowsFinal}</div>
+        <div style="flex:1;overflow-y:auto;scrollbar-width:thin">
+          ${tramosRowsFinal}
+          ${ganttHtml}
+        </div>
       </div>
     </div>
     <div style="position:absolute;inset:0;pointer-events:none;padding:22px 36px 18px;display:flex;justify-content:flex-start;align-items:flex-start">
