@@ -730,11 +730,13 @@ function buildSVGMap(features, filterSubregion, palette, width = 290, height = 3
       'M' + line.map(([lng, lat]) => `${px(lng)},${py(lat)}`).join(' L')
     ).join(' ')
     
-    if (highlighted && filterCircuito && d) {
-      buffers += `<path d="${d}" fill="none" stroke="#ea580c" stroke-width="25" stroke-linecap="round" stroke-linejoin="round" opacity="0.45" class="circuit-buffer"/>`
+    const normCirc = normStr(circ).replace(/[^a-z0-9]/g, '_')
+    
+    if (d) {
+      const isBufVisible = highlighted && filterCircuito
+      buffers += `<path d="${d}" fill="none" stroke="#ea580c" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" opacity="${isBufVisible ? '0.45' : '0'}" class="circuit-buffer" data-bufcirc="${normCirc}" style="pointer-events:none;transition:opacity 0.2s"/>`
     }
     
-    const normCirc = normStr(circ).replace(/[^a-z0-9]/g, '_')
     return d ? `<path d="${d}" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" opacity="${op}" data-sub="${subnorm}" data-circ="${normCirc}" data-ostroke="${color}" data-osw="${sw}" data-oop="${op}"/>` : ''
   }).join('')
 
@@ -1795,6 +1797,12 @@ function buildPptCoverSlide(logoUrl, fecha, filters, stats) {
         ).join('')}
       </div>
     </div>
+    <div style="position:absolute;bottom:40px;left:40px;font-size:14px;color:#ffffff;line-height:1.4;text-shadow:0 2px 10px rgba(0,0,0,0.8),0 0 20px rgba(0,0,0,0.6)">
+      <div style="font-weight:800;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:2px">Luis Horacio Gallón Arango</div>
+      <div style="font-weight:600;font-size:12px;opacity:0.95;margin-bottom:12px">Secretario de Infraestructura Física</div>
+      <div style="font-weight:800;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:2px">Juan Diego Aguirre Londoño</div>
+      <div style="font-weight:600;font-size:12px;opacity:0.95">Director de Desarrollo Físico</div>
+    </div>
   </div>`
 }
 
@@ -2307,8 +2315,7 @@ function buildPptSubregionSeguimientoSlide(logoUrl, subregion, circuits, geoFeat
 
   // ── Pulse + modal animation styles ───────────────────────────────────────
   const pulseStyle = `<style>
-    @keyframes vial-pulse{0%,100%{opacity:.55}50%{opacity:.05}}
-    #${tabId} .circuit-buffer{animation:vial-pulse 1.4s ease-in-out infinite}
+    @keyframes vial-pulse{0%,100%{opacity:.6}50%{opacity:.1}}
     @keyframes actIn{from{opacity:0;transform:translateY(36px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
     #${tabId}_actModal .act-item{animation:actIn 1.4s cubic-bezier(.16,1,.3,1) both}
   </style>`
@@ -2574,22 +2581,23 @@ function buildPptSubregionSeguimientoSlide(logoUrl, subregion, circuits, geoFeat
 
     const onOver = `(function(){
       var svg=document.getElementById('${mapSvgId}');if(!svg)return;
-      svg.querySelectorAll('[data-circ]').forEach(function(p){
-        if(p.dataset.circ==='${normCirc}'){
-          p.setAttribute('stroke','#ea580c');p.setAttribute('stroke-width','7');
-          p.style.opacity='1';p.style.animation='vial-pulse 1.2s ease-in-out infinite';
-          p.style.filter='drop-shadow(0 0 3px rgba(234,88,12,0.7))';
-        } else { p.style.opacity='0.12';p.style.animation='';p.style.filter=''; }
+      svg.querySelectorAll('[data-bufcirc="${normCirc}"]').forEach(function(p){
+        p.style.opacity='0.6';
+        p.style.animation='vial-pulse 1.2s ease-in-out infinite';
+      });
+      svg.querySelectorAll('[data-circ="${normCirc}"]').forEach(function(p){
+        p.setAttribute('stroke','#ea580c');
       });
     })()`
 
     const onOut = `(function(){
       var svg=document.getElementById('${mapSvgId}');if(!svg)return;
-      svg.querySelectorAll('[data-circ]').forEach(function(p){
+      svg.querySelectorAll('[data-bufcirc="${normCirc}"]').forEach(function(p){
+        p.style.opacity='0';
+        p.style.animation='';
+      });
+      svg.querySelectorAll('[data-circ="${normCirc}"]').forEach(function(p){
         p.setAttribute('stroke',p.dataset.ostroke||'#ea580c');
-        p.setAttribute('stroke-width',p.dataset.osw||'3.5');
-        p.style.opacity=p.dataset.oop||'1';
-        p.style.animation='';p.style.filter='';
       });
     })()`
 
