@@ -2587,11 +2587,13 @@ export function buildPresentacionSlides(stats, filters, logoUrl, fecha, geoFeatu
     }
     for (const [subregion, circuits] of Object.entries(subregionMap)) {
       slides.push({ html: buildPptSubregionSeguimientoSlide(logoUrl, subregion, circuits, geoFeatures, mpioFeatures) })
+      /*
       for (const { circuito, registros, cronData, avF, avFin } of circuits) {
         if (registros?.length) {
           slides.push({ html: buildPptSeguimientoSlide(logoUrl, circuito, registros, cronData, avF, avFin, geoFeatures, mpioFeatures) })
         }
       }
+      */
     }
   }
 

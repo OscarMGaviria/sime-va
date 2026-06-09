@@ -1,0 +1,43 @@
+redirectsOrigin = "config"
+plugins = []
+headers = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "C:\\Users\\luis\\Desktop\\vue\\DF\\dist"
+publishOrigin = "config"
+commandOrigin = "config"
+command = "npm run build:netlify"
+
+[build.environment]
+VITE_BASE_URL = "/"
+VITE_INTERNAL = "true"
+VITE_API_LOCALIZACIONES = "/data/localizacion.geojson"
+VITE_API_MUNICIPIOS = "/data/municipios.geojson"
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
