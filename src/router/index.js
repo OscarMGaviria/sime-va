@@ -16,7 +16,7 @@ if (import.meta.env.VITE_INTERNAL === 'true') {
   routes.push({ path: '/compromisos',  component: () => import('../views/CompromisosView.vue') })
 }
 
-const isGhPages = import.meta.env.VITE_BASE_URL?.includes('/simeva')
+const isGhPages = import.meta.env.VITE_BASE_URL?.includes('/sime-va')
 export default createRouter({
   history: isGhPages ? createWebHashHistory(import.meta.env.BASE_URL) : createWebHistory(import.meta.env.BASE_URL),
   routes,

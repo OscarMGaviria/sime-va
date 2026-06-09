@@ -1296,12 +1296,17 @@
         {
           "nombre": "Topografía",
           "desc": "Se mantiene acumulado de 12,86 km en instalación y nivelación de deltas, equivalente al 54,8 %.",
-          "fotos": []
+          "fotos": [
+            "/images/actividades/43005124-e429-436f-85f4-5d8b08a48c84.jpg"
+          ]
         },
         {
           "nombre": "Limpieza de alcantarillas",
           "desc": "Se inició limpieza de alcantarilla con 6 ml ejecutados y acompañamiento técnico-ambiental en verificación de ODT.",
-          "fotos": []
+          "fotos": [
+            "/images/actividades/6e4e656a-0b42-494a-a3f6-9bd56736f1b3.jpg",
+            "/images/actividades/813cb40a-6412-4ac5-af4e-09d26d3a2d5f.jpg"
+          ]
         }
       ],
       "pendientes": [],

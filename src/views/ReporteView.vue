@@ -200,8 +200,9 @@ async function fetchGeoJSON(primaryUrl, fallbackUrl) {
 onMounted(async () => {
   // ── Paso 1: fetch GeoJSON y CSS en paralelo ──────────────────────────────
   loadMsg.value = 'Preparando informe…'
-  const localGeo  = import.meta.env.BASE_URL + 'data/localizacion.geojson'
-  const localMpio = import.meta.env.BASE_URL + 'data/municipios.geojson'
+  const ts = new Date().getTime()
+  const localGeo  = import.meta.env.BASE_URL + `data/localizacion.geojson?v=${ts}`
+  const localMpio = import.meta.env.BASE_URL + `data/municipios.geojson?v=${ts}`
   const [geoResult, mpioResult] = await Promise.allSettled([
     fetchGeoJSON(import.meta.env.VITE_API_LOCALIZACIONES, localGeo),
     fetchGeoJSON(import.meta.env.VITE_API_MUNICIPIOS, localMpio),
