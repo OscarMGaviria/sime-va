@@ -243,8 +243,14 @@
           ]
         }
       ],
-      "pendientes": [],
-      "obs": ""
+      "pendientes": [
+        {
+          "nombre": "Inicio de tramo de prueba",
+          "desc": "Mañana 10/06/2026",
+          "fotos": []
+        }
+      ],
+      "obs": "El tramo de prueba empieza mañana 10/06/2026"
     }
   ],
   "Andes - San José - Pueblo Rico": [
@@ -1032,6 +1038,21 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mq6ttroj",
+      "fecha": "2026-06-09",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Sin avance de obra en la semana",
+          "desc": "",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "Caramanta - Cristales - San Roque": [
@@ -1473,11 +1494,6 @@
           ]
         },
         {
-          "nombre": "Apiques",
-          "desc": "El Contratista continúa realizando apiques en la vía para verificación de condiciones del terreno.",
-          "fotos": []
-        },
-        {
           "nombre": "Limpieza de drenaje",
           "desc": "Se realizó limpieza de 1 transversal que se encontraba taponada.",
           "fotos": [
@@ -1761,7 +1777,18 @@
           ]
         }
       ],
-      "pendientes": [],
+      "pendientes": [
+        {
+          "nombre": "Atención de baches",
+          "desc": "Se autorizó la intervención de 1.0 km de estabilización con cal",
+          "fotos": []
+        },
+        {
+          "nombre": "Inicio tramo de prueba",
+          "desc": "Se liberó los primeros 1.9 km para estabilización con cemento",
+          "fotos": []
+        }
+      ],
       "obs": ""
     }
   ],
@@ -1955,8 +1982,8 @@
       "ejecutadas": [],
       "en_ejecucion": [
         {
-          "nombre": "Apiques",
-          "desc": "Durante el periodo no se continuó con exploración mediante apiques. Permanece pendiente el tramo aproximado entre K11+260 y K13+620.",
+          "nombre": "Sin avance de obra en la semana",
+          "desc": "",
           "fotos": []
         }
       ],

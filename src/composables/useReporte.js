@@ -1813,7 +1813,30 @@ function buildPptResumenSlide(logoUrl, stats, geoFeatures = [], mpioFeatures = [
     subMap[finalSub] += parseFloat(f.properties?.Long_km) || 0
   }
 
+  const lotesInfo = [
+    { name: 'Oriente',         lote: 'Lote 1' },
+    { name: 'Occidente',       lote: 'Lote 2' },
+    { name: 'Urabá',           lote: 'Lote 3' },
+    { name: 'Magdalena Medio', lote: 'Lote 4' },
+    { name: 'Suroeste',        lote: 'Lote 5' },
+    { name: 'Nordeste',        lote: 'Lote 6' },
+    { name: 'Bajo Cauca',      lote: 'Lote 7' },
+    { name: 'Norte',           lote: 'Lote 8' }
+  ]
+
+  const getLoteRank = (name) => {
+    const idx = lotesInfo.findIndex(l => normStr(l.name) === normStr(name))
+    return idx === -1 ? 999 : idx
+  }
+
+  const getLoteName = (name) => {
+    const l = lotesInfo.find(l => normStr(l.name) === normStr(name))
+    return l ? l.lote : ''
+  }
+
   const subs  = Object.entries(subMap).map(([name, km]) => ({ name, km }))
+  subs.sort((a, b) => getLoteRank(a.name) - getLoteRank(b.name))
+  
   const total = subs.reduce((s, x) => s + x.km, 0)
 
   const uid  = 'dn' + Math.random().toString(36).slice(2, 7)
@@ -1852,8 +1875,11 @@ function buildPptResumenSlide(logoUrl, stats, geoFeatures = [], mpioFeatures = [
     const pct = total > 0 ? Math.round((s.km / total) * 100) : 0
     const subnorm = normStr(s.name)
     const bg = i % 2 === 0 ? '#f6fdf9' : '#fff'
+    const loteLabel = getLoteName(s.name)
+    const displayLabel = loteLabel ? `<strong style="color:#111827">${loteLabel}</strong> — ${esc(s.name)}` : esc(s.name)
+    
     return `<tr style="background:${bg};cursor:pointer;transition:background .15s" data-trow="${uid}" data-subnorm="${subnorm}" data-name="${esc(s.name)}" data-km="${km}" onmouseover="${over}" onmouseout="${out}" onclick="window.__pptGoToSubregion&&window.__pptGoToSubregion('${subnorm}')">
-      <td style="padding:5px 8px;border-bottom:1px solid #e5e7eb;font-size:12px"><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${color};margin-right:5px;vertical-align:middle"></span>${esc(s.name)}</td>
+      <td style="padding:5px 8px;border-bottom:1px solid #e5e7eb;font-size:12px"><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${color};margin-right:5px;vertical-align:middle"></span>${displayLabel}</td>
       <td style="padding:5px 8px;text-align:right;border-bottom:1px solid #e5e7eb;font-size:12px;font-weight:700;color:#0b5640">${km}</td>
       <td style="padding:5px 8px;text-align:right;border-bottom:1px solid #e5e7eb;font-size:12px;color:#6b7280">${pct}%</td>
     </tr>`
@@ -1862,7 +1888,7 @@ function buildPptResumenSlide(logoUrl, stats, geoFeatures = [], mpioFeatures = [
   const tableHtml = `
     <table style="width:100%;border-collapse:collapse;font-family:'Poppins',sans-serif">
       <thead><tr style="background:#0b5640;color:#fff">
-        <th style="padding:7px 8px;text-align:left;font-size:12px;font-weight:700;border-radius:6px 0 0 0">Subregión</th>
+        <th style="padding:7px 8px;text-align:left;font-size:12px;font-weight:700;border-radius:6px 0 0 0">Lote / Subregión</th>
         <th style="padding:7px 8px;text-align:right;font-size:12px;font-weight:700">Km</th>
         <th style="padding:7px 8px;text-align:right;font-size:12px;font-weight:700;border-radius:0 6px 0 0">%</th>
       </tr></thead>
@@ -2362,6 +2388,7 @@ function buildPptSubregionSeguimientoSlide(logoUrl, subregion, circuits, geoFeat
 
     const ejecutadasCards = (lastReg.ejecutadas ?? []).map(a => actCard(a, '#16a34a', 'Ejecutada'))
     const enEjecucionCards = (lastReg.en_ejecucion ?? []).map(a => actCard(a, '#d97706', 'En ejecución'))
+    const pendientesCards = (lastReg.pendientes ?? []).map(a => actCard(a, '#6b7280', 'Pendiente'))
     const fecha = lastReg.fecha ?? ''
 
     let html = `<div style="padding:24px 28px 28px">
@@ -2377,7 +2404,12 @@ function buildPptSubregionSeguimientoSlide(logoUrl, subregion, circuits, geoFeat
         <span style="width:8px;height:8px;border-radius:50%;background:#d97706;display:inline-block"></span>En Ejecución
       </div>${enEjecucionCards.join('')}`
     }
-    if (!ejecutadasCards.length && !enEjecucionCards.length) {
+    if (pendientesCards.length) {
+      html += `<div style="font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#6b7280;margin-bottom:12px;margin-top:${(ejecutadasCards.length || enEjecucionCards.length) ? '20px' : '0'};display:flex;align-items:center;gap:6px">
+        <span style="width:8px;height:8px;border-radius:50%;background:#6b7280;display:inline-block"></span>Pendientes
+      </div>${pendientesCards.join('')}`
+    }
+    if (!ejecutadasCards.length && !enEjecucionCards.length && !pendientesCards.length) {
       html += `<div style="text-align:center;padding:40px 0;color:#9ca3af;font-size:13px">Sin actividades registradas en este corte</div>`
     }
     html += '</div>'

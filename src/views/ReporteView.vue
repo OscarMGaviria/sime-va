@@ -808,16 +808,18 @@ async function descargarPresentacion() {
 .ppt-mode-enter-from,
 .ppt-mode-leave-to    { opacity: 0 }
 
-/* ── Transición direccional entre diapositivas ── */
-/* Avanzar: nueva entra por la derecha, vieja sale por la izquierda */
+/* ── Transición direccional entre diapositivas (Premium Fade+Zoom) ── */
+/* Ambos (Avanzar y Retroceder) usarán el mismo efecto de desvanecimiento con un ligerísimo cambio de escala para sensación de profundidad */
 .ppt-slide-next-enter-active,
-.ppt-slide-next-leave-active  { transition: transform .42s cubic-bezier(.4,0,.2,1), opacity .3s ease }
-.ppt-slide-next-enter-from    { transform: translateX(100%); opacity: .6 }
-.ppt-slide-next-leave-to      { transform: translateX(-100%); opacity: .6 }
-
-/* Retroceder: nueva entra por la izquierda, vieja sale por la derecha */
+.ppt-slide-next-leave-active,
 .ppt-slide-prev-enter-active,
-.ppt-slide-prev-leave-active  { transition: transform .42s cubic-bezier(.4,0,.2,1), opacity .3s ease }
-.ppt-slide-prev-enter-from    { transform: translateX(-100%); opacity: .6 }
-.ppt-slide-prev-leave-to      { transform: translateX(100%); opacity: .6 }
+.ppt-slide-prev-leave-active  { transition: transform .6s cubic-bezier(.22, 1, .36, 1), opacity .5s ease }
+
+/* El slide que entra viene ligeramente más pequeño */
+.ppt-slide-next-enter-from,
+.ppt-slide-prev-enter-from    { transform: scale(0.97); opacity: 0 }
+
+/* El slide que sale se hace un poquitito más grande y se difumina */
+.ppt-slide-next-leave-to,
+.ppt-slide-prev-leave-to      { transform: scale(1.03); opacity: 0 }
 </style>
