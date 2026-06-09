@@ -2471,9 +2471,24 @@ function buildPptSubregionSeguimientoSlide(logoUrl, subregion, circuits, geoFeat
     const displayPct = Math.max(0, Math.min(100, pct));
     const formatDtExact = (d) => d.toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' });
     
-    // Calcular meses redondeando
-    const duracionMeses = Math.round(totalMs / (1000 * 60 * 60 * 24 * 30.416));
+    // Calcular meses con precisión decimal (1 decimal)
+    const duracionMesesFlt = totalMs / (1000 * 60 * 60 * 24 * 30.416);
+    const duracionMeses = parseFloat(duracionMesesFlt.toFixed(1));
+    const mesesTranscurridosFlt = elapsedMs / (1000 * 60 * 60 * 24 * 30.416);
+    const mesesTranscurridos = parseFloat(mesesTranscurridosFlt.toFixed(1));
     const animId = norm(subregion).replace(/\W+/g, '');
+    
+    // Generar columnas (grid) para cada mes
+    let monthGrid = '';
+    const maxCols = Math.ceil(duracionMesesFlt);
+    for (let i = 0; i < maxCols; i++) {
+      const leftPct = (i / duracionMesesFlt) * 100;
+      const widthPct = (1 / duracionMesesFlt) * 100;
+      if (i > 0) {
+        monthGrid += `<div style="position:absolute;left:${leftPct}%;top:0;bottom:0;border-left:1px dashed rgba(0,0,0,0.15);z-index:5"></div>`;
+      }
+      monthGrid += `<div style="position:absolute;left:${leftPct}%;width:${widthPct}%;top:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:rgba(0,0,0,0.45);z-index:6">${i+1}</div>`;
+    }
     
     ganttHtml = `
     <style>
@@ -2482,21 +2497,26 @@ function buildPptSubregionSeguimientoSlide(logoUrl, subregion, circuits, geoFeat
     </style>
     <div style="background:#fafafa;padding:18px 20px 32px;border-top:1px solid #e5e7eb;margin-top:12px;flex-shrink:0">
       <div style="font-size:11.5px;font-weight:900;color:#0b5640;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;text-align:center;">
-        Progreso Global de la Subregión <span style="color:#ea580c">(${duracionMeses} meses)</span>
+        Progreso Global de la Subregión
       </div>
       <div style="display:flex;justify-content:space-between;font-size:10px;font-weight:800;color:#6b7280;margin-bottom:12px;text-transform:uppercase;">
         <span>Inicio: ${formatDtExact(minDate)}</span>
+        <span style="color:#ea580c">Duración: ${duracionMeses} meses</span>
         <span>Fin Est.: ${formatDtExact(maxDate)}</span>
       </div>
-      <div style="position:relative;height:12px;background:#e5e7eb;border-radius:6px;margin-top:6px;">
-        <div style="position:absolute;left:0;top:0;bottom:0;width:0%;background:linear-gradient(90deg, #ea580c, #f97316);border-radius:6px;animation: ganttGrow_${animId} 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;"></div>
-        <div style="position:absolute;left:${displayPct}%;top:-6px;bottom:-6px;width:2px;background:#111827;border-radius:1px;transform:translateX(-50%);animation: ganttFade_${animId} 0.8s 1.2s both;">
-          <!-- Etiqueta debajo -->
-          <div style="position:absolute;top:20px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;font-size:10px;font-weight:800;padding:4px 8px;border-radius:4px;white-space:nowrap;box-shadow:0 3px 8px rgba(0,0,0,0.2)">
-            Hoy (${displayPct.toFixed(0)}%)
+      <div style="position:relative;height:16px;border-radius:8px;margin-top:6px;">
+        <!-- Contenedor con overflow hidden para respetar los bordes curvos de la barra y la grilla -->
+        <div style="position:absolute;inset:0;background:#e5e7eb;border-radius:8px;overflow:hidden">
+          <div style="position:absolute;left:0;top:0;bottom:0;width:0%;background:linear-gradient(90deg, #ea580c, #f97316);animation: ganttGrow_${animId} 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;"></div>
+          ${monthGrid}
+        </div>
+        <!-- Marcador HOY (por fuera del overflow) -->
+        <div style="position:absolute;left:${displayPct}%;top:-6px;bottom:-6px;width:2px;background:#111827;border-radius:1px;transform:translateX(-50%);animation: ganttFade_${animId} 0.8s 1.2s both;z-index:10;">
+          <div style="position:absolute;top:22px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;font-size:10px;font-weight:800;padding:5px 9px;border-radius:5px;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,0.3);text-align:center;line-height:1.3;">
+            Hoy (${mesesTranscurridos} meses)<br>
+            <span style="font-size:9px;color:#fb923c;">${displayPct.toFixed(1)}%</span>
           </div>
-          <!-- Triángulo apuntando arriba -->
-          <div style="position:absolute;top:15px;left:50%;transform:translateX(-50%);border-width:0 5px 5px;border-style:solid;border-color:transparent transparent #111827 transparent;"></div>
+          <div style="position:absolute;top:17px;left:50%;transform:translateX(-50%);border-width:0 5px 5px;border-style:solid;border-color:transparent transparent #111827 transparent;"></div>
         </div>
       </div>
     </div>`;

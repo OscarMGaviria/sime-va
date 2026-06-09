@@ -668,9 +668,13 @@
       "ejecutadas": [],
       "en_ejecucion": [
         {
-          "nombre": "Sin avances de obra",
-          "desc": "",
-          "fotos": []
+          "nombre": "Exploracion de campo",
+          "desc": "Se realizaron 16 apiques de 102",
+          "fotos": [
+            "/images/actividades/c62acad5-c566-4cb2-a317-58d73b3be58d.jpg",
+            "/images/actividades/131e838e-a5c5-4170-be50-c6e1f1095d51.jpg",
+            "/images/actividades/a160037e-9bcc-4b82-80b0-ce70fb98e768.jpg"
+          ]
         }
       ],
       "pendientes": [],
