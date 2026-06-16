@@ -483,7 +483,13 @@
           ]
         }
       ],
-      "pendientes": [],
+      "pendientes": [
+        {
+          "nombre": "Estabilización",
+          "desc": "Inicio de actividades 26/06/2026",
+          "fotos": []
+        }
+      ],
       "obs": ""
     }
   ],
@@ -1037,14 +1043,15 @@
           "fotos": [
             "/images/actividades/35366c07-db02-44bf-9d8b-e7c46401119c.jpg"
           ]
-        },
+        }
+      ],
+      "pendientes": [
         {
-          "nombre": "Topografía",
-          "desc": "4 km entregados y 2 km en proceso.",
+          "nombre": "Estabilización",
+          "desc": "Inicia actividades 19/06/2026",
           "fotos": []
         }
       ],
-      "pendientes": [],
       "obs": ""
     }
   ],
@@ -1464,14 +1471,15 @@
             "/images/actividades/3aedd6a1-55b5-4963-8b7b-2347356e3f3d.jpg",
             "/images/actividades/2df30d07-8d48-4c77-bce6-63186623c763.jpg"
           ]
-        },
+        }
+      ],
+      "pendientes": [
         {
-          "nombre": "Topografía",
-          "desc": "No se presentó avance semanal en levantamiento topográfico",
+          "nombre": "Estabilización",
+          "desc": "Inicio de actividades 30/06/2026",
           "fotos": []
         }
       ],
-      "pendientes": [],
       "obs": ""
     }
   ],
