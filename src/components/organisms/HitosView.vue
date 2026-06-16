@@ -149,6 +149,17 @@ function deleteCorte(id) {
 function actNombre(a) { return typeof a === 'string' ? a : a.nombre }
 function actDesc(a)   { return typeof a === 'string' ? '' : a.desc }
 
+function isEstabilizacion(a) {
+  return /estabilizaci[oó]n/i.test(actNombre(a))
+}
+
+function moveAct(list, idx, dir) {
+  if (idx + dir < 0 || idx + dir >= form.value[list].length) return
+  const temp = form.value[list][idx]
+  form.value[list][idx] = form.value[list][idx + dir]
+  form.value[list][idx + dir] = temp
+}
+
 function fmtFecha(iso) {
   const [y, m, d] = iso.split('-')
   const M = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic']
@@ -310,8 +321,14 @@ watch(lbZoom, async (val) => { if (val) { await nextTick(); lbZoomEl.value?.focu
           <div class="hv-act-list">
             <div v-for="(a, i) in form.ejecutadas" :key="i" class="hv-act-item hv-act-item--ejec">
               <div class="hv-act-texts">
-                <span class="hv-act-nombre">{{ a.nombre }}</span>
-                <span v-if="a.desc" class="hv-act-desc">{{ a.desc }}</span>
+                <template v-if="!a._editing">
+                  <span class="hv-act-nombre" :class="{'hl-estabilizacion': isEstabilizacion(a)}">{{ a.nombre }}</span>
+                  <span v-if="a.desc" class="hv-act-desc">{{ a.desc }}</span>
+                </template>
+                <template v-else>
+                  <input v-model="a.nombre" class="hv-input" style="margin-bottom:4px;padding:4px 8px" />
+                  <input v-model="a.desc" class="hv-input hv-input--desc" style="padding:4px 8px" @keydown.enter="a._editing = false" />
+                </template>
                 <div v-if="a.fotos?.length" class="hv-act-foto-row">
                   <div v-for="(url, fi) in a.fotos" :key="fi" class="hv-act-foto-wrap">
                     <img :src="url" class="hv-act-foto-thumb" :alt="`Foto ${fi+1}`" @click="openLb(a.nombre, a.fotos, fi)" />
@@ -320,6 +337,14 @@ watch(lbZoom, async (val) => { if (val) { await nextTick(); lbZoomEl.value?.focu
                 </div>
               </div>
               <div class="hv-act-side">
+                <div class="hv-act-reorder">
+                  <button @click="moveAct('ejecutadas', i, -1)" :disabled="i === 0" title="Subir">▲</button>
+                  <button @click="moveAct('ejecutadas', i, 1)" :disabled="i === form.ejecutadas.length - 1" title="Bajar">▼</button>
+                </div>
+                <button class="hv-act-edit" @click="a._editing = !a._editing" :title="a._editing ? 'Guardar' : 'Editar'">
+                  <svg v-if="!a._editing" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </button>
                 <label class="hv-act-cam" :class="{ 'hv-act-cam--busy': uploading }" title="Agregar foto">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
                   <input type="file" accept="image/*" multiple class="hv-file-hidden" @change="addFotoToAct('ejecutadas', i, $event)" :disabled="uploading" />
@@ -347,8 +372,14 @@ watch(lbZoom, async (val) => { if (val) { await nextTick(); lbZoomEl.value?.focu
           <div class="hv-act-list">
             <div v-for="(a, i) in form.en_ejecucion" :key="i" class="hv-act-item hv-act-item--prog">
               <div class="hv-act-texts">
-                <span class="hv-act-nombre">{{ a.nombre }}</span>
-                <span v-if="a.desc" class="hv-act-desc">{{ a.desc }}</span>
+                <template v-if="!a._editing">
+                  <span class="hv-act-nombre" :class="{'hl-estabilizacion': isEstabilizacion(a)}">{{ a.nombre }}</span>
+                  <span v-if="a.desc" class="hv-act-desc">{{ a.desc }}</span>
+                </template>
+                <template v-else>
+                  <input v-model="a.nombre" class="hv-input" style="margin-bottom:4px;padding:4px 8px" />
+                  <input v-model="a.desc" class="hv-input hv-input--desc" style="padding:4px 8px" @keydown.enter="a._editing = false" />
+                </template>
                 <div v-if="a.fotos?.length" class="hv-act-foto-row">
                   <div v-for="(url, fi) in a.fotos" :key="fi" class="hv-act-foto-wrap">
                     <img :src="url" class="hv-act-foto-thumb" :alt="`Foto ${fi+1}`" @click="openLb(a.nombre, a.fotos, fi)" />
@@ -357,6 +388,14 @@ watch(lbZoom, async (val) => { if (val) { await nextTick(); lbZoomEl.value?.focu
                 </div>
               </div>
               <div class="hv-act-side">
+                <div class="hv-act-reorder">
+                  <button @click="moveAct('en_ejecucion', i, -1)" :disabled="i === 0" title="Subir">▲</button>
+                  <button @click="moveAct('en_ejecucion', i, 1)" :disabled="i === form.en_ejecucion.length - 1" title="Bajar">▼</button>
+                </div>
+                <button class="hv-act-edit" @click="a._editing = !a._editing" :title="a._editing ? 'Guardar' : 'Editar'">
+                  <svg v-if="!a._editing" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </button>
                 <label class="hv-act-cam" :class="{ 'hv-act-cam--busy': uploading }" title="Agregar foto">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
                   <input type="file" accept="image/*" multiple class="hv-file-hidden" @change="addFotoToAct('en_ejecucion', i, $event)" :disabled="uploading" />
@@ -384,8 +423,14 @@ watch(lbZoom, async (val) => { if (val) { await nextTick(); lbZoomEl.value?.focu
           <div class="hv-act-list">
             <div v-for="(a, i) in form.pendientes" :key="i" class="hv-act-item hv-act-item--pend">
               <div class="hv-act-texts">
-                <span class="hv-act-nombre">{{ a.nombre }}</span>
-                <span v-if="a.desc" class="hv-act-desc">{{ a.desc }}</span>
+                <template v-if="!a._editing">
+                  <span class="hv-act-nombre" :class="{'hl-estabilizacion': isEstabilizacion(a)}">{{ a.nombre }}</span>
+                  <span v-if="a.desc" class="hv-act-desc">{{ a.desc }}</span>
+                </template>
+                <template v-else>
+                  <input v-model="a.nombre" class="hv-input" style="margin-bottom:4px;padding:4px 8px" />
+                  <input v-model="a.desc" class="hv-input hv-input--desc" style="padding:4px 8px" @keydown.enter="a._editing = false" />
+                </template>
                 <div v-if="a.fotos?.length" class="hv-act-foto-row">
                   <div v-for="(url, fi) in a.fotos" :key="fi" class="hv-act-foto-wrap">
                     <img :src="url" class="hv-act-foto-thumb" :alt="`Foto ${fi+1}`" @click="openLb(a.nombre, a.fotos, fi)" />
@@ -394,6 +439,14 @@ watch(lbZoom, async (val) => { if (val) { await nextTick(); lbZoomEl.value?.focu
                 </div>
               </div>
               <div class="hv-act-side">
+                <div class="hv-act-reorder">
+                  <button @click="moveAct('pendientes', i, -1)" :disabled="i === 0" title="Subir">▲</button>
+                  <button @click="moveAct('pendientes', i, 1)" :disabled="i === form.pendientes.length - 1" title="Bajar">▼</button>
+                </div>
+                <button class="hv-act-edit" @click="a._editing = !a._editing" :title="a._editing ? 'Guardar' : 'Editar'">
+                  <svg v-if="!a._editing" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </button>
                 <label class="hv-act-cam" :class="{ 'hv-act-cam--busy': uploading }" title="Agregar foto">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
                   <input type="file" accept="image/*" multiple class="hv-file-hidden" @change="addFotoToAct('pendientes', i, $event)" :disabled="uploading" />
@@ -464,7 +517,7 @@ watch(lbZoom, async (val) => { if (val) { await nextTick(); lbZoomEl.value?.focu
               Ejecutado
             </p>
             <ul v-if="c.ejecutadas?.length">
-              <li v-for="(a, i) in c.ejecutadas" :key="i" class="hv-li-row">
+              <li v-for="(a, i) in c.ejecutadas" :key="i" class="hv-li-row" :class="{'hl-estabilizacion': isEstabilizacion(a)}">
                 <div class="hv-li-text">
                   <span class="li-nombre">{{ actNombre(a) }}</span>
                   <span v-if="actDesc(a)" class="li-desc">{{ actDesc(a) }}</span>
@@ -484,7 +537,7 @@ watch(lbZoom, async (val) => { if (val) { await nextTick(); lbZoomEl.value?.focu
               En ejecución
             </p>
             <ul v-if="c.en_ejecucion?.length">
-              <li v-for="(a, i) in c.en_ejecucion" :key="i" class="hv-li-row">
+              <li v-for="(a, i) in c.en_ejecucion" :key="i" class="hv-li-row" :class="{'hl-estabilizacion': isEstabilizacion(a)}">
                 <div class="hv-li-text">
                   <span class="li-nombre">{{ actNombre(a) }}</span>
                   <span v-if="actDesc(a)" class="li-desc">{{ actDesc(a) }}</span>
@@ -504,7 +557,7 @@ watch(lbZoom, async (val) => { if (val) { await nextTick(); lbZoomEl.value?.focu
               Pendiente / Planeado
             </p>
             <ul v-if="c.pendientes?.length">
-              <li v-for="(a, i) in c.pendientes" :key="i" class="hv-li-row">
+              <li v-for="(a, i) in c.pendientes" :key="i" class="hv-li-row" :class="{'hl-estabilizacion': isEstabilizacion(a)}">
                 <div class="hv-li-text">
                   <span class="li-nombre">{{ actNombre(a) }}</span>
                   <span v-if="actDesc(a)" class="li-desc">{{ actDesc(a) }}</span>
@@ -1171,6 +1224,68 @@ watch(lbZoom, async (val) => { if (val) { await nextTick(); lbZoomEl.value?.focu
   color: #d1d5db;
   font-style: italic;
 }
+
+/* Destacado Estabilización */
+.hl-estabilizacion .li-nombre, .hl-estabilizacion.hv-act-nombre {
+  color: #b45309;
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-color: #fcd34d;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+.hv-col li.hl-estabilizacion::before {
+  background: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245,158,11,0.2);
+}
+
+/* Edit and Reorder Buttons in Form */
+.hv-act-reorder {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-right: 2px;
+}
+.hv-act-reorder button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 8px;
+  color: #9ca3af;
+  padding: 1px 4px;
+  line-height: 1;
+  border-radius: 3px;
+  background: #f3f4f6;
+  transition: all .15s;
+}
+.hv-act-reorder button:hover:not(:disabled) {
+  background: #e5e7eb;
+  color: #111827;
+}
+.hv-act-reorder button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.hv-act-edit {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  padding: 3px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  transition: color .15s, background .15s;
+}
+.hv-act-edit:hover {
+  color: #0a4d38;
+  background: #e6f4ee;
+}
+.hv-act-edit svg {
+  width: 14px;
+  height: 14px;
+}
+
 
 /* Observaciones */
 .hv-obs {

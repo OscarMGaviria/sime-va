@@ -186,15 +186,19 @@ function injectCss() {
 let pf = null
 
 async function fetchGeoJSON(primaryUrl, fallbackUrl) {
+  async function parseRes(r) {
+    const json = await r.json()
+    return json?.data?.type === 'FeatureCollection' ? json.data : json
+  }
   if (primaryUrl) {
     try {
       const r = await fetch(primaryUrl)
       if (!r.ok) throw new Error(`HTTP ${r.status}`)
-      return await r.json()
+      return await parseRes(r)
     } catch { /* fall through to local file */ }
   }
   const r = await fetch(fallbackUrl)
-  return await r.json()
+  return await parseRes(r)
 }
 
 onMounted(async () => {

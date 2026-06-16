@@ -131,6 +131,44 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mqgptdp2",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Laboratorio – Verificación de resultados",
+          "desc": "Se tomaron muestras conjuntas entre el laboratorio AIM de la interventoría y el laboratorio INTEINSA-PAVIMENTO del contratista, para validar diferencias en resultados de los apiques (Tres apiques)",
+          "fotos": [
+            "/images/actividades/b1070594-a153-4cd3-b8ae-56246f53de26.jpg",
+            "/images/actividades/df0d7091-d2f7-41f2-aa09-75f112be61c0.jpg",
+            "/images/actividades/71375134-ce38-48c7-83b2-42c056289ba3.jpg"
+          ]
+        },
+        {
+          "nombre": "Limpieza de alcantarillas de 24\"",
+          "desc": "Se continuó con la limpieza de tuberías colmatadas, incluyendo encoles, descoles, canal de descarga y lavado con chorro de agua a presión. (dos (2) en la semana)",
+          "fotos": [
+            "/images/actividades/21761435-ac84-43d2-a0ad-eb3c635e96d2.jpg",
+            "/images/actividades/a210662c-ef54-43f3-b129-57028a4a2d53.jpg",
+            "/images/actividades/e9628d37-6bdc-4024-9100-9b22b40b073f.jpg"
+          ]
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "Se continuó con la nivelación de chequeo para ajuste de poligonal desde el km 6. - Avance semanal: nivelación y replanteo en ejecución.",
+          "fotos": []
+        },
+        {
+          "nombre": "Retiro de alcantarillas inoperativas",
+          "desc": "Avance acumulado: 19 alcantarillas inoperativas retiradas o en proceso de retiro.",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "Cáceres - La Chilona": [
@@ -251,6 +289,28 @@
         }
       ],
       "obs": "El tramo de prueba empieza mañana 10/06/2026"
+    },
+    {
+      "id": "mqgru6ys",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Estabilizacion",
+          "desc": "Se inicio con tramo de estabilizacion",
+          "fotos": [
+            "/images/actividades/97af12c7-1493-43b4-a723-4806349531e0.jpg",
+            "/images/actividades/0a0805e1-a53e-4d6c-973b-e012aa4522f3.jpg",
+            "/images/actividades/cf93ca16-8e48-4a31-980b-320bf072e8e6.jpg",
+            "/images/actividades/b6c94955-8213-4f52-8ce5-ea9cd038e694.jpg",
+            "/images/actividades/5ea45523-b119-4b10-a668-a2068ac53f78.jpg",
+            "/images/actividades/9533aee0-4a4c-4ece-b288-e05d86639164.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "Andes - San José - Pueblo Rico": [
@@ -399,6 +459,32 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mqgq4r62",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Limpieza de obras de drenaje",
+          "desc": "Obras identificadas: 224 unidades. Obras limpiadas: 46 unidades. Obras nuevas identificadas: 13 unidades. Longitud total de limpieza ejecutada: 718,81 ml.",
+          "fotos": [
+            "/images/actividades/e7048a54-c896-4fbe-af26-c3ec06fcc04d.jpg",
+            "/images/actividades/3c3d483e-d2b3-4ce0-8bc6-e05c82ae425b.jpg",
+            "/images/actividades/af52dd20-c7fb-4687-b477-99c09b333e56.jpg"
+          ]
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "Toma de secciones transversales entre K25+015 y K24+750. - Instalación de estacas de referencia y cotas de control.",
+          "fotos": [
+            "/images/actividades/65fc0ea2-54f0-4603-ac2d-6281a1d299b8.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "Valparaíso - Támesis": [
@@ -486,6 +572,32 @@
           "nombre": "Diseño de estabilizado",
           "desc": "El Contratista entregó la primera versión del diseño de fórmula de estabilizado para los 5 km iniciales y finales del corredor. La Interventoría continúa la revisión técnica.",
           "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqgqiyt5",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Limpieza de obras de drenaje",
+          "desc": "Obras hidráulicas identificadas: 223 unidades. Obras limpiadas: 90 unidades.",
+          "fotos": [
+            "/images/actividades/0bbfa366-d206-4f07-ad5c-ba8d2a65effc.jpg",
+            "/images/actividades/93c34e00-25f3-4640-a907-dccd5e20705d.jpg",
+            "/images/actividades/802e4784-b0ee-40a8-8e1a-9332c54e038c.jpg"
+          ]
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "Demarcación de bordes de vía entre el K1+100 y el K2+000. Longitud intervenida: 900 m.",
+          "fotos": [
+            "/images/actividades/ac1cbb13-489f-45e4-8fdd-ef215640aceb.jpg"
+          ]
         }
       ],
       "pendientes": [],
@@ -610,6 +722,36 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mqgqdyx8",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Topografía",
+          "desc": "Marcación de abscisado desde el K7+000 hasta el K13+600. - Longitud intervenida: 6,6 km.",
+          "fotos": [
+            "/images/actividades/fc674435-e53f-41ce-857a-e1ed72e674c1.jpg"
+          ]
+        },
+        {
+          "nombre": "Limpieza de obras transversales",
+          "desc": "Obras identificadas: 109 unidades. Obras limpiadas: 12 unidades. Longitud ejecutada: 192 ml. Obras nuevas identificadas: 0 unidades.",
+          "fotos": [
+            "/images/actividades/80429fd8-6b50-4a34-a9c0-d13e48f83d6f.jpg",
+            "/images/actividades/16fd3acc-92bb-4df5-9ba2-2565493c1045.jpg"
+          ]
+        },
+        {
+          "nombre": "Inventario y reconocimiento de obras transversales",
+          "desc": "Obras identificadas: 109 unidades. Longitud del corredor inventariada visualmente: 15,93 km.",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "Titiribi - Armenia": [
@@ -639,6 +781,21 @@
     {
       "id": "mq6nrowx",
       "fecha": "2026-06-09",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Sin avances de obra",
+          "desc": "",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqgqkgx7",
+      "fecha": "2026-06-16",
       "frentes": [],
       "ejecutadas": [],
       "en_ejecucion": [
@@ -700,6 +857,31 @@
             "/images/actividades/3d89039d-9b97-4251-8970-d3a16868b545.jpg",
             "/images/actividades/986d4d88-b1bd-4759-8e55-60f4d06b9ded.jpg"
           ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqgo1tib",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Exploración de campo",
+          "desc": "41 apiques realizados en los primeros 10 km de 26.2 km (38%)",
+          "fotos": []
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "Actividad adelantada en los primeros 10 km",
+          "fotos": []
+        },
+        {
+          "nombre": "Inventario de drenaje",
+          "desc": "40 alcantarillas identificadas en los primeros 5 km",
+          "fotos": []
         }
       ],
       "pendientes": [],
@@ -830,6 +1012,35 @@
         {
           "nombre": "Diseño vial",
           "desc": "El Contratista entregó 2,0 km de diseño para revisión por parte de la Interventoría.",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqgpilne",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Limpieza de alcantarillas",
+          "desc": "Avance semanal: 3 unidades limpiadas. - Avance acumulado: 15 unidades ejecutadas, equivalentes a 105,35 m de longitud",
+          "fotos": [
+            "/images/actividades/8abe1d5e-404b-4abf-a260-1059a49f11b2.jpg"
+          ]
+        },
+        {
+          "nombre": "Instalación de tubería para alcantarillas",
+          "desc": "Avance semanal: 1 unidad instalada. - Avance acumulado: 4 unidades instaladas.",
+          "fotos": [
+            "/images/actividades/35366c07-db02-44bf-9d8b-e7c46401119c.jpg"
+          ]
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "4 km entregados y 2 km en proceso.",
           "fotos": []
         }
       ],
@@ -991,6 +1202,40 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mqgoskss",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Instalación de tubería para alcantarillas",
+          "desc": "Avance semanal: 4 alcantarillas intervenidas. Avance acumulado: 32 tubos instalados. Cantidad ejecutada: 208 m de 426 m contratados. Pendiente: aproximadamente 45 alcantarillas por instalar.",
+          "fotos": [
+            "/images/actividades/8fcab3ce-829d-4854-b602-24e3eb7a3d9a.jpg"
+          ],
+          "_editing": false
+        },
+        {
+          "nombre": "Construcción de cabezotes y obras transversales",
+          "desc": "409,68 kg de 34.364 kg contratados.y 5,18 m³ de 626 m³ contratados.",
+          "fotos": [
+            "/images/actividades/daa8d198-ed36-4959-a0e2-1bb8f29db814.jpg"
+          ]
+        },
+        {
+          "nombre": "Construcción de filtros",
+          "desc": "480 m de 58.650 m contratados.",
+          "fotos": [
+            "/images/actividades/36fa1448-a571-4044-b715-b645987c6227.jpg",
+            "/images/actividades/d2c5204a-b21a-41ef-915e-6a990da2328e.jpg",
+            "/images/actividades/97af496c-3250-49af-a48d-7d9b8553fda8.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "San Pedro - El Tres - Turbo": [
@@ -1047,6 +1292,21 @@
       "en_ejecucion": [
         {
           "nombre": "Sin avance de obra en la semana",
+          "desc": "",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqgofmqs",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Las actividades se encuentran suspendidas.",
           "desc": "",
           "fotos": []
         }
@@ -1183,6 +1443,36 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mqgr0muc",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Exploración de campo",
+          "desc": "Avance semanal: 30 apiques. Avance acumulado etapa 1: 83 apiques, equivalente al 100 %. Avance etapa 2: 67 apiques, equivalente al 80,7 %.",
+          "fotos": [
+            "/images/actividades/46334c93-6b9a-41c2-a5f8-f19ee8da76a1.jpg"
+          ]
+        },
+        {
+          "nombre": "Obras de drenaje",
+          "desc": "Limpieza semanal: 30 m. Avance acumulado: 685 m de 906 m, equivalente al 75,6 %. ODT intervenidas: 85 unidades de 128 identificadas.",
+          "fotos": [
+            "/images/actividades/3aedd6a1-55b5-4963-8b7b-2347356e3f3d.jpg",
+            "/images/actividades/2df30d07-8d48-4c77-bce6-63186623c763.jpg"
+          ]
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "No se presentó avance semanal en levantamiento topográfico",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "Amalfi - Portachuelos - Santa Isabel": [
@@ -1218,6 +1508,21 @@
         {
           "nombre": "Diseños y tránsito",
           "desc": "Se recibieron los certificados definitivos de TPD y ejes equivalentes para los corredores - La Interventoría solicitó al Contratista presentar reprogramación de actividades",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqgrfpak",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Sin avances de obra en la semana",
+          "desc": "",
           "fotos": []
         }
       ],
@@ -1331,6 +1636,47 @@
           "fotos": [
             "/images/actividades/6e4e656a-0b42-494a-a3f6-9bd56736f1b3.jpg",
             "/images/actividades/813cb40a-6412-4ac5-af4e-09d26d3a2d5f.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqgrdcsy",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Exploración de campo",
+          "desc": "Avance semanal: 23 apiques. Avance acumulado etapa 1: 94 apiques, equivalente al 100 %. Avance etapa 2: 70 muestras, equivalente al 74,47 %.",
+          "fotos": [
+            "/images/actividades/baa40fa2-dcea-48ae-8c3e-035d8cb83a07.jpg",
+            "/images/actividades/9a242e73-260d-4e0a-9b89-6dcfbffe80d3.jpg"
+          ]
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "Avance acumulado: 12,86 km, equivalente al 54,80 %. Levantamiento topográfico: avance definitivo del 49,02 %",
+          "fotos": [
+            "/images/actividades/1d2f07fc-d188-44d5-8ad6-661469a7559f.jpg",
+            "/images/actividades/80beb44b-a44a-4f6f-8e79-94bf42dbfa33.jpg"
+          ]
+        },
+        {
+          "nombre": "Inventario de puntos críticos",
+          "desc": "Se realizó inventario de puntos críticos del tramo",
+          "fotos": [
+            "/images/actividades/449cf7e9-19c1-481d-a994-6248f365a9d1.jpg",
+            "/images/actividades/c41ac9a1-4d53-4b01-bb64-11718ff9318b.jpg"
+          ]
+        },
+        {
+          "nombre": "Obras de drenaje",
+          "desc": "Avance semanal: 36 alcantarillas identificadas.",
+          "fotos": [
+            "/images/actividades/8e5a1cd2-38fa-4cc9-add6-80d791083d83.jpg"
           ]
         }
       ],
@@ -1511,6 +1857,15 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mqgsmanv",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "Frontino - Nutibara": [
@@ -1644,6 +1999,21 @@
           "fotos": [
             "/images/actividades/cb21fc76-f9cc-4724-b49a-01d34af8ecb8.jpg"
           ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqgsl7xt",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "No reporto actividades",
+          "desc": "",
+          "fotos": []
         }
       ],
       "pendientes": [],
@@ -1790,6 +2160,35 @@
         }
       ],
       "obs": ""
+    },
+    {
+      "id": "mqgrmjas",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Instalación de tubería Novafort de 36\"",
+          "desc": "Avance semanal: 8 tuberías instaladas. Avance acumulado: 27 tuberías instaladas.",
+          "fotos": [
+            "/images/actividades/f544d384-839a-49dd-bb06-ce50bfc3d9f8.jpg",
+            "/images/actividades/b035bfc5-bc1e-4b51-9420-25657f7bab98.jpg"
+          ]
+        },
+        {
+          "nombre": "Limpieza de obras transversales",
+          "desc": "Obras intervenidas: 118 unidades. Limpieza completa: 107 unidades. Limpieza solo descole: 11 unidades.",
+          "fotos": []
+        }
+      ],
+      "pendientes": [
+        {
+          "nombre": "Estabilización",
+          "desc": "Inicia actividad el jueves 8/06/2026 - se ejecutará 1.9 km - Inicio en el k8+200",
+          "fotos": []
+        }
+      ],
+      "obs": ""
     }
   ],
   "Santa Rosa - Carolina del Príncipe": [
@@ -1840,6 +2239,24 @@
             "/images/actividades/8225be69-c370-4be6-b9fc-7d3a73fe4456.jpg",
             "/images/actividades/4d05ec71-0c37-4f1b-8e70-3c8aefc24554.jpg",
             "/images/actividades/be22e3a7-8888-4647-a712-4de14f4aa80a.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqgrp6ip",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Limpieza de obras transversales",
+          "desc": "Avance semanal: 41 alcantarillas intervenidas. Avance acumulado: 203 alcantarillas intervenidas.",
+          "fotos": [
+            "/images/actividades/d4f46ba8-6a1d-45c2-8757-f094a9039f0b.jpg",
+            "/images/actividades/7307a462-7ca6-4c65-bc90-89d46b20bb84.jpg"
           ]
         }
       ],
@@ -1962,6 +2379,21 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mqgslthu",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "No reporto actividades",
+          "desc": "",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "El Guayabo - El Salto - Partidas a Guadalupe": [],
@@ -1991,5 +2423,31 @@
       "obs": ""
     }
   ],
-  "Abejorral - La Frontera": []
+  "Abejorral - La Frontera": [
+    {
+      "id": "mqgo58ay",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Exploración de campo",
+          "desc": "3 apiques realizados en el primer kilómetro",
+          "fotos": []
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "Actividad adelantada en aproximadamente 4,3 km.",
+          "fotos": []
+        },
+        {
+          "nombre": "Inventario de drenaje",
+          "desc": "5 obras de drenaje identificadas en 4,3 km.",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    }
+  ]
 }

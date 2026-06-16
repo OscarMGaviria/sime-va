@@ -29,6 +29,23 @@ html,body { font-family:'Prompt',sans-serif; background:#fff; color:#1a1a1a }
 @page { size:A4; margin:0 }
 @media print { .no-print { display:none!important } }
 
+@keyframes shimmer-hl {
+  0% { transform: translateX(-150%) skewX(-20deg); opacity: 0; }
+  20% { opacity: 0.8; }
+  100% { transform: translateX(250%) skewX(-20deg); opacity: 0; }
+}
+.hl-estabilizacion-shimmer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -20%;
+  width: 50%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+  animation: shimmer-hl 3.5s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+
 /* ── Página base ── */
 .page {
   width:210mm; min-height:297mm;
@@ -2087,6 +2104,7 @@ function buildPptSeguimientoSlide(logoUrl, circuito, registros, cronData, avF, a
   const actModalId = 'modal_act_' + norm(circuito).replace(/[\W_]+/g, '')
 
   function actividadCard(act, color, bgColor) {
+    const isEstab = /estabilizaci[oó]n/i.test(act.nombre ?? '')
     const safeName = esc(act.nombre ?? '—').replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/[\r\n]+/g, ' ')
     const safeDesc = act.desc ? esc(act.desc).replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/[\r\n]+/g, '<br>') : ''
     const fotosArray = (act.fotos || []).map(fixUrl)
@@ -2102,6 +2120,21 @@ function buildPptSeguimientoSlide(logoUrl, circuito, registros, cronData, avF, a
         fotosArray.slice(0, 5).map(url => `<div style="width:26px;height:26px;border-radius:4px;background-image:url('${url}');background-size:cover;background-position:center;border:1px solid rgba(0,0,0,0.1)"></div>`).join('') +
         (fotosArray.length > 5 ? `<div style="font-size:10px;font-weight:700;color:#6b7280;display:flex;align-items:center;margin-left:4px">+${fotosArray.length-5}</div>` : '') +
         `</div>`
+    }
+
+    if (isEstab) {
+      return `<div onclick="${safeOnclick}" style="background:linear-gradient(135deg, #fffbeb, #fef3c7);border:2px solid #f59e0b;border-radius:10px;padding:16px 18px;margin-bottom:14px;box-shadow:0 6px 16px rgba(245,158,11,0.15);cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;position:relative;overflow:hidden" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(245,158,11,0.25)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 6px 16px rgba(245,158,11,0.15)'">
+        <div class="hl-estabilizacion-shimmer"></div>
+        <div style="position:absolute;top:0;right:0;background:#f59e0b;color:#fff;font-size:9.5px;font-weight:900;padding:4px 12px;border-bottom-left-radius:10px;letter-spacing:0.1em;box-shadow:-2px 2px 8px rgba(245,158,11,0.3);z-index:2">ACTIVIDAD PRINCIPAL</div>
+        <div style="font-size:15px;font-weight:900;color:#92400e;letter-spacing:0.02em;line-height:1.25;display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;position:relative;z-index:2">
+          <span style="flex:1;display:flex;align-items:center;gap:6px">
+            <svg style="width:18px;height:18px;color:#ea580c;flex-shrink:0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+            ${esc(act.nombre ?? '—')}
+          </span>
+        </div>
+        ${act.desc ? `<div style="font-size:12.5px;color:#92400e;opacity:0.85;margin-top:2px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;position:relative;z-index:2">${esc(act.desc)}</div>` : ''}
+        ${miniFotos ? `<div style="position:relative;z-index:2">${miniFotos}</div>` : ''}
+      </div>`
     }
 
     return `<div onclick="${safeOnclick}" style="background:${bgColor};border:1px solid rgba(0,0,0,0.03);border-left:4px solid ${color};border-radius:8px;padding:12px 14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,0.02);cursor:pointer;transition:transform 0.15s,box-shadow 0.15s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.05)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 6px rgba(0,0,0,0.02)'">
@@ -2374,7 +2407,34 @@ function buildPptSubregionSeguimientoSlide(logoUrl, subregion, circuits, geoFeat
     if (!lastReg) return ''
 
     function actCard(act, color, badge) {
+      const isEstab = /estabilizaci[oó]n/i.test(act.nombre ?? '')
       const fotos = (act.fotos ?? []).map(fixUrl)
+      
+      if (isEstab) {
+        const thumbs = fotos.map(u => {
+          const safeU = u.replace(/'/g, '%27')
+          return `<div
+            onclick="(function(e){e.stopPropagation();var l=document.getElementById('${tabId}_lbx');var i=document.getElementById('${tabId}_lbx_img');if(l&&i){i.src='${safeU}';l.style.display='flex';}})(event)"
+            style="width:80px;height:80px;border-radius:8px;background:url('${safeU}') center/cover;border:2px solid #f59e0b50;flex-shrink:0;cursor:zoom-in;transition:transform .2s,box-shadow .2s"
+            onmouseover="this.style.transform='scale(1.07)';this.style.boxShadow='0 4px 14px rgba(245,158,11,0.3)'"
+            onmouseout="this.style.transform='';this.style.boxShadow=''"></div>`
+        }).join('')
+        
+        return `<div class="act-item" style="background:linear-gradient(135deg, #fffbeb, #fef3c7);border:2px solid #f59e0b;border-radius:12px;padding:16px 18px;margin-bottom:14px;box-shadow:0 6px 16px rgba(245,158,11,0.15);position:relative;overflow:hidden">
+          <div class="hl-estabilizacion-shimmer"></div>
+          <div style="position:absolute;top:0;right:0;background:#f59e0b;color:#fff;font-size:9.5px;font-weight:900;padding:4px 12px;border-bottom-left-radius:10px;letter-spacing:0.1em;box-shadow:-2px 2px 8px rgba(245,158,11,0.3);z-index:2">ACTIVIDAD PRINCIPAL</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px;position:relative;z-index:2">
+            <div style="font-size:15px;line-height:1.25;color:#92400e;font-weight:900;display:flex;align-items:center;gap:6px;margin-top:2px">
+              <svg style="width:18px;height:18px;color:#ea580c;flex-shrink:0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+              ${esc(act.nombre ?? '—')}
+            </div>
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#b45309;background:#fcd34d;padding:2px 8px;border-radius:99px;flex-shrink:0;border:1px solid #f59e0b">${badge}</div>
+          </div>
+          ${act.desc ? `<div style="font-size:12.5px;color:#92400e;opacity:0.85;line-height:1.4;margin-bottom:8px;position:relative;z-index:2">${esc(act.desc)}</div>` : ''}
+          ${thumbs ? `<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;position:relative;z-index:2">${thumbs}</div>` : ''}
+        </div>`
+      }
+
       const thumbs = fotos.map(u => {
         const safeU = u.replace(/'/g, '%27')
         return `<div
