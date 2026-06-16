@@ -1871,7 +1871,28 @@
       "fecha": "2026-06-16",
       "frentes": [],
       "ejecutadas": [],
-      "en_ejecucion": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Topografía",
+          "desc": "El contratista continuó con el levantamiento topográfico. Avance reportado: actividades en el K16+500.",
+          "fotos": []
+        },
+        {
+          "nombre": "Subbase granular",
+          "desc": "El jueves se reiniciaron las actividades de suministro, instalación y compactación de subbase granular. Avance semanal: inicio en el K5+500.",
+          "fotos": []
+        },
+        {
+          "nombre": "Obras de drenaje:",
+          "desc": "Se realizó excavación manual y perfilado de encoles y descoles en 5 las obras",
+          "fotos": []
+        },
+        {
+          "nombre": "Acero de refuerzo",
+          "desc": "Se inició figurado de acero para encole de la obra",
+          "fotos": []
+        }
+      ],
       "pendientes": [],
       "obs": ""
     }
@@ -2019,9 +2040,32 @@
       "ejecutadas": [],
       "en_ejecucion": [
         {
-          "nombre": "No reporto actividades",
-          "desc": "",
+          "nombre": "Reposición de obras transversales",
+          "desc": "Se avanzó en la reposición de transversales desde el K1+520. Avance acumulado: 37 transversales intervenidas.",
           "fotos": []
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "Se detuvo el abscisado de la vía en el K12+900. La comisión topográfica se ubicó en el K1+500 para trazar niveles con nivel de precisión y bordes de vía con estación total.",
+          "fotos": [
+            "/images/actividades/742af830-cde3-4efa-94be-a6bbc0bfe46e.jpg",
+            "/images/actividades/a063fc28-b7b1-47f8-be6b-15d02f2205ee.jpg"
+          ]
+        },
+        {
+          "nombre": "Seguimiento a punto crítico",
+          "desc": "En el K14+520, debido a lluvias constantes y fuertes corrientes en el río Musinga, se realizó seguimiento a grieta existente",
+          "fotos": [
+            "/images/actividades/18fd13fc-6ad2-4ff0-bbf0-a511221e41de.jpg"
+          ]
+        },
+        {
+          "nombre": "Obras de concreto",
+          "desc": "Se instaló formaleta en caja de encole en el K1+520.",
+          "fotos": [
+            "/images/actividades/7305a6ef-b5ec-4a74-8ea9-79f5d1e20151.jpg",
+            "/images/actividades/d53b257b-4154-46ff-a168-c1505e8d42e2.jpg"
+          ]
         }
       ],
       "pendientes": [],
@@ -2395,8 +2439,21 @@
       "ejecutadas": [],
       "en_ejecucion": [
         {
-          "nombre": "No reporto actividades",
-          "desc": "",
+          "nombre": "Conformación de vía",
+          "desc": "Se continuó con la recuperación del ancho de la vía y conformación de la calzada",
+          "fotos": [
+            "/images/actividades/1747cb47-5dc1-4a5c-82cc-9682a91abf6e.jpg",
+            "/images/actividades/79424f0f-74b5-4702-84fa-0cdc9e52d5b8.jpg"
+          ]
+        },
+        {
+          "nombre": "Limpieza de Obras de drenaje",
+          "desc": "Se ejecutó limpieza de obras transversales de la vía, con el fin de garantizar el adecuado flujo de aguas.",
+          "fotos": []
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "Se adelantaron actividades de topografía por parte del contratista.",
           "fotos": []
         }
       ],
