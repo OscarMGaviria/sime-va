@@ -1906,6 +1906,21 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mqgyrr2b",
+      "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [],
+      "pendientes": [
+        {
+          "nombre": "Estabilización",
+          "desc": "Inicia actividades esta semana 19/06/2026",
+          "fotos": []
+        }
+      ],
+      "obs": ""
     }
   ],
   "Frontino - Nutibara": [
