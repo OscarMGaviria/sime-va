@@ -1875,22 +1875,33 @@
         {
           "nombre": "Topografía",
           "desc": "El contratista continuó con el levantamiento topográfico. Avance reportado: actividades en el K16+500.",
-          "fotos": []
+          "fotos": [
+            "/images/actividades/be7be0a1-1023-4eab-9ead-e6eb0100155c.jpg",
+            "/images/actividades/542cfc30-5095-46fe-90ec-c210e3a8ed44.jpg"
+          ]
         },
         {
           "nombre": "Subbase granular",
           "desc": "El jueves se reiniciaron las actividades de suministro, instalación y compactación de subbase granular. Avance semanal: inicio en el K5+500.",
-          "fotos": []
+          "fotos": [
+            "/images/actividades/c007e195-d86e-45de-b0bc-ba01300d4e7f.jpg",
+            "/images/actividades/f28f2880-9ed0-424a-95a8-29c11e3d3f5a.jpg"
+          ]
         },
         {
           "nombre": "Obras de drenaje:",
           "desc": "Se realizó excavación manual y perfilado de encoles y descoles en 5 las obras",
-          "fotos": []
+          "fotos": [
+            "/images/actividades/92c8a920-1907-4826-9a94-6337d8d6318e.jpg",
+            "/images/actividades/b09e745d-51bc-4076-b010-4b761c3e5211.jpg"
+          ]
         },
         {
           "nombre": "Acero de refuerzo",
           "desc": "Se inició figurado de acero para encole de la obra",
-          "fotos": []
+          "fotos": [
+            "/images/actividades/1776e52b-15b1-4b78-87f4-f0c6af8c6847.jpg"
+          ]
         }
       ],
       "pendientes": [],

@@ -726,23 +726,59 @@ function buildSVGMap(features, filterSubregion, palette, width = 290, height = 3
 
   // Circuit / via paths
   let buffers = ''
+  let estabDots = ''
   const paths = filt.map(f => {
     const av      = parseFloat(f.properties?.AV_FISICO ?? 0)
     const subnorm = normStr(f.properties?.SUBREGION ?? '')
     const circ    = f.properties?.CIRCUITO ?? ''
+    
+    const circNorm = normStr(circ)
+    let isEstab = false
+    const hitosKey = Object.keys(hitosData).find(k => normStr(k) === circNorm)
+    if (hitosKey) {
+      const registros = hitosData[hitosKey] || []
+      for (const r of registros) {
+        const acts = [...(r.ejecutadas||[]), ...(r.en_ejecucion||[]), ...(r.pendientes||[])]
+        if (acts.some(a => /estabilizaci[oó]n/i.test(a.nombre ?? ''))) {
+          isEstab = true
+          break
+        }
+      }
+    }
+
     const highlighted = filterCircuito ? normStr(circ) === normStr(filterCircuito) : true
 
     const isLight = palette.lightBg
-    const color   = highlighted
+    let color = highlighted
       ? (filterCircuito ? '#ea580c' : (palette.lineColor ?? (av >= 0.8 ? (isLight ? '#10b981' : '#34d399') : av >= 0.4 ? palette.accent : av > 0 ? (isLight ? '#9ca3af' : 'rgba(255,255,255,0.6)') : palette.accent)))
       : '#3b82f6'
-    const sw      = highlighted ? (filterCircuito ? '5' : (palette.lineColor ? '3.5' : '2.4')) : '1.8'
+      
+    if (isEstab && highlighted && !filterCircuito) color = '#10b981'
+
+    let sw = highlighted ? (filterCircuito ? '5' : (palette.lineColor ? '3.5' : '2.4')) : '1.8'
+    if (isEstab && highlighted && !filterCircuito) sw = '3'
+
     const op      = highlighted ? '1' : '0.55'
 
     const geom = f.geometry
     if (!geom) return ''
     const lines = geom.type === 'LineString' ? [geom.coordinates]
       : geom.type === 'MultiLineString' ? geom.coordinates : []
+      
+    if (isEstab && highlighted && !filterCircuito) {
+      let mx = Infinity, mX = -Infinity, my = Infinity, mY = -Infinity
+      for (const line of lines) {
+        for (const [lng, lat] of line) {
+          if (lng < mx) mx = lng; if (lng > mX) mX = lng;
+          if (lat < my) my = lat; if (lat > mY) mY = lat;
+        }
+      }
+      if (mx !== Infinity) {
+        const cx = px((mx + mX) / 2)
+        const cy = py((my + mY) / 2)
+        estabDots += `<circle cx="${cx}" cy="${cy}" r="3.5" fill="#10b981" stroke="#fff" stroke-width="1.5"/><circle cx="${cx}" cy="${cy}" r="3.5" fill="none" stroke="#10b981" stroke-width="1.5"><animate attributeName="r" values="3.5;10" dur="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="1.5s" repeatCount="indefinite"/></circle>`
+      }
+    }
     const d = lines.map(line =>
       'M' + line.map(([lng, lat]) => `${px(lng)},${py(lat)}`).join(' L')
     ).join(' ')
@@ -757,7 +793,7 @@ function buildSVGMap(features, filterSubregion, palette, width = 290, height = 3
     return d ? `<path d="${d}" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" opacity="${op}" data-sub="${subnorm}" data-circ="${normCirc}" data-ostroke="${color}" data-osw="${sw}" data-oop="${op}"/>` : ''
   }).join('')
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">${mpioPaths}${mpioLabels}${buffers}${paths}</svg>`
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">${mpioPaths}${mpioLabels}${buffers}${paths}${estabDots}</svg>`
 }
 
 // Barras horizontales de avance por circuito (sobre fondo oscuro, para splash)

@@ -1,4 +1,5 @@
 import { ref, onUnmounted } from 'vue'
+import maplibregl from 'maplibre-gl'
 import { getLocalizaciones, getMunicipios } from '../services/api.js'
 import { pctTiempoTranscurrido } from '../utils/stats.js'
 import hitosData from '../data/hitos.json'
@@ -27,6 +28,7 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
   const selectedMpio     = ref(null)
   const cachedMunicipios = ref(null)
   const cachedVias       = ref(null)
+  let _estabMarkers      = []
   let destroyed = false
 
   onUnmounted(() => { destroyed = true })
@@ -229,18 +231,33 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
       }
     }
 
-    // ── Capa vías ─────────────────────────────────────────────────────────────
     if (geoVias) {
       try {
         const geoViasTagged = {
           ...geoVias,
-          features: geoVias.features.map(f => ({
-            ...f,
-            properties: {
-              ...f.properties,
-              _hasReport: _circuitosConSeguimiento.has(normStr(f.properties.CIRCUITO ?? '')) ? 1 : 0,
-            },
-          })),
+          features: geoVias.features.map(f => {
+            const circNorm = normStr(f.properties.CIRCUITO ?? '')
+            let hasEstab = 0
+            if (_circuitosConSeguimiento.has(circNorm)) {
+              const key = Object.keys(hitosData).find(k => normStr(k) === circNorm)
+              const registros = hitosData[key] || []
+              for (const r of registros) {
+                const acts = [...(r.ejecutadas||[]), ...(r.en_ejecucion||[]), ...(r.pendientes||[])]
+                if (acts.some(a => /estabilizaci[oó]n/i.test(a.nombre ?? ''))) {
+                  hasEstab = 1
+                  break
+                }
+              }
+            }
+            return {
+              ...f,
+              properties: {
+                ...f.properties,
+                _hasReport: _circuitosConSeguimiento.has(circNorm) ? 1 : 0,
+                _hasEstab: hasEstab,
+              },
+            }
+          }),
         }
         map.addSource('vias', { type: 'geojson', data: geoViasTagged, generateId: true })
 
@@ -269,7 +286,12 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
           layout: { 'line-cap': 'round', 'line-join': 'round' },
           filter: ['==', ['get', 'NOMBRE_VIA'], ''],
           paint: {
-            'line-color': ['case', ['==', ['get', '_hasReport'], 0], '#fca5a5', '#4ade80'],
+            'line-color': [
+              'case',
+              ['==', ['get', '_hasEstab'], 1], '#4ade80',
+              ['==', ['get', '_hasReport'], 0], '#fca5a5', 
+              '#4ade80'
+            ],
             'line-width': 16, 'line-opacity': 0.28, 'line-blur': 8,
           },
         })
@@ -282,6 +304,7 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
           paint: {
             'line-color': [
               'case',
+              ['==', ['get', '_hasEstab'], 1], '#10b981',
               ['==', ['get', '_hasReport'], 0], '#ef4444',
               ['coalesce', ['get', 'stroke'], '#ffaa00'],
             ],
@@ -289,6 +312,44 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
             'line-opacity': 1,
           },
         })
+
+        // -- Add pulsating markers for estabilización --
+        _estabMarkers.forEach(m => m.remove())
+        _estabMarkers = []
+        
+        if (!document.getElementById('estab-pulse-style')) {
+          const style = document.createElement('style')
+          style.id = 'estab-pulse-style'
+          style.innerHTML = `@keyframes estabPulse { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(3.5); opacity: 0; } }`
+          document.head.appendChild(style)
+        }
+
+        for (const f of geoViasTagged.features) {
+          if (f.properties._hasEstab) {
+            const geom = f.geometry
+            if (!geom) continue
+            const pts = geom.type === 'LineString' ? geom.coordinates : geom.type === 'MultiLineString' ? geom.coordinates.flat() : []
+            if (!pts.length) continue
+            
+            let mx = Infinity, mX = -Infinity, my = Infinity, mY = -Infinity
+            for (const [lng, lat] of pts) {
+              if (lng < mx) mx = lng; if (lng > mX) mX = lng;
+              if (lat < my) my = lat; if (lat > mY) mY = lat;
+            }
+            const clng = (mx + mX) / 2
+            const clat = (my + mY) / 2
+            
+            const el = document.createElement('div')
+            el.innerHTML = `<div style="width:14px;height:14px;background:#10b981;border:2px solid #fff;border-radius:50%;position:relative;box-shadow:0 1px 4px rgba(0,0,0,0.3);">
+               <div style="position:absolute;inset:-2px;border-radius:50%;background:#10b981;animation:estabPulse 1.5s infinite ease-out;pointer-events:none;"></div>
+            </div>`
+            
+            const m = new maplibregl.Marker({ element: el })
+              .setLngLat([clng, clat])
+              .addTo(map)
+            _estabMarkers.push(m)
+          }
+        }
         // 5. Highlight encima en hover (engrosamiento + brillo)
         map.addLayer({
           id: 'vias-hover-line',
