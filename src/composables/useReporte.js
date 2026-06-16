@@ -776,7 +776,7 @@ function buildSVGMap(features, filterSubregion, palette, width = 290, height = 3
       if (mx !== Infinity) {
         const cx = px((mx + mX) / 2)
         const cy = py((my + mY) / 2)
-        estabDots += `<circle cx="${cx}" cy="${cy}" r="3.5" fill="#10b981" stroke="#fff" stroke-width="1.5"/><circle cx="${cx}" cy="${cy}" r="3.5" fill="none" stroke="#10b981" stroke-width="1.5"><animate attributeName="r" values="3.5;10" dur="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="1.5s" repeatCount="indefinite"/></circle>`
+        estabDots += `<circle cx="${cx}" cy="${cy}" r="5.5" fill="#10b981" stroke="#fff" stroke-width="2"/><circle cx="${cx}" cy="${cy}" r="5.5" fill="none" stroke="#10b981" stroke-width="2"><animate attributeName="r" values="5.5;18" dur="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="1.5s" repeatCount="indefinite"/></circle>`
       }
     }
     const d = lines.map(line =>

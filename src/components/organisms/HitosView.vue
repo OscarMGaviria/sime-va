@@ -679,6 +679,13 @@ watch(lbZoom, async (val) => { if (val) { await nextTick(); lbZoomEl.value?.focu
       <button class="hv-lb-zoom-close" @click.stop="lbZoom = false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
+
+      <button v-if="lbFotos.length > 1" class="hv-lb-zoom-nav hv-lb-zoom-nav--prev" @click.stop="prevLb">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button v-if="lbFotos.length > 1" class="hv-lb-zoom-nav hv-lb-zoom-nav--next" @click.stop="nextLb">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
     </div>
 
   </Teleport>
@@ -1656,4 +1663,26 @@ watch(lbZoom, async (val) => { if (val) { await nextTick(); lbZoomEl.value?.focu
 }
 .hv-lb-zoom-close:hover { background: rgba(255,255,255,.25); }
 .hv-lb-zoom-close svg { width: 17px; height: 17px; }
+
+.hv-lb-zoom-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s;
+  pointer-events: all;
+}
+.hv-lb-zoom-nav:hover { background: rgba(255,255,255,.25); }
+.hv-lb-zoom-nav svg { width: 24px; height: 24px; }
+.hv-lb-zoom-nav--prev { left: 30px; }
+.hv-lb-zoom-nav--next { right: 30px; }
 </style>
