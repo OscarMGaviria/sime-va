@@ -18,7 +18,10 @@ const {
   openVia,
   flyToVia,
   flyToCoords,
+  layerPuentesVisible, layerPAPVisible, togglePuentesLayer, togglePAPLayer,
 } = useMapOrchestrator(mapContainer, () => store.activeFilters)
+
+const layerCtrlOpen = ref(false)
 
 defineExpose({ openVia, flyToVia })
 
@@ -245,6 +248,49 @@ onUnmounted(() => window.removeEventListener('keydown', _onGlobalKey))
         </div>
       </div>
     </Transition>
+
+    <!-- Control de capas -->
+    <div class="layer-ctrl">
+      <Transition name="panel">
+        <div v-if="layerCtrlOpen" class="layer-panel">
+          <div class="lp-title">Capas</div>
+
+          <button class="lp-item" :class="{ 'lp-item--off': !layerPuentesVisible }" @click="togglePuentesLayer">
+            <span class="lp-dot lp-dot--puente"></span>
+            <span class="lp-label">Puentes</span>
+            <svg class="lp-check" viewBox="0 0 16 16" fill="currentColor">
+              <path v-if="layerPuentesVisible" d="M13.5 3.5L6 11 2.5 7.5 1.5 8.5l4.5 4.5 8.5-8.5z"/>
+              <rect v-else x="2" y="7.5" width="12" height="1.5" rx="0.75"/>
+            </svg>
+          </button>
+
+          <button class="lp-item" :class="{ 'lp-item--off': !layerPAPVisible }" @click="togglePAPLayer">
+            <span class="lp-dot lp-dot--pap"></span>
+            <span class="lp-label">PAPs</span>
+            <svg class="lp-check" viewBox="0 0 16 16" fill="currentColor">
+              <path v-if="layerPAPVisible" d="M13.5 3.5L6 11 2.5 7.5 1.5 8.5l4.5 4.5 8.5-8.5z"/>
+              <rect v-else x="2" y="7.5" width="12" height="1.5" rx="0.75"/>
+            </svg>
+          </button>
+        </div>
+      </Transition>
+
+      <button
+        class="lc-toggle"
+        :class="{ 'is-open': layerCtrlOpen }"
+        @click="layerCtrlOpen = !layerCtrlOpen"
+        title="Control de capas"
+      >
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <circle cx="10" cy="6"  r="2"/>
+          <circle cx="10" cy="14" r="2"/>
+          <line x1="2" y1="6"  x2="7"  y2="6"/>
+          <line x1="13" y1="6" x2="18" y2="6"/>
+          <line x1="2" y1="14" x2="7"  y2="14"/>
+          <line x1="13" y1="14" x2="18" y2="14"/>
+        </svg>
+      </button>
+    </div>
 
     <!-- Botón relieve 3D -->
     <button
@@ -1034,6 +1080,136 @@ onUnmounted(() => window.removeEventListener('keydown', _onGlobalKey))
 .coord-search-leave-to {
   opacity: 0;
   transform: translateX(-50%) translateY(-6px);
+}
+
+/* ── Control de capas ─────────────────────────────────────────────────────── */
+.layer-ctrl {
+  position: absolute;
+  bottom: 168px;
+  right: 12px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.lc-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  padding: 0;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  color: #6b7280;
+  outline: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+.lc-toggle svg { width: 18px; height: 18px; }
+.lc-toggle:active { transform: scale(0.93); }
+@media (hover: hover) and (pointer: fine) {
+  .lc-toggle:hover {
+    background: #f3f4f6;
+    border-color: #cbd5e1;
+    color: #374151;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+  }
+}
+.lc-toggle.is-open {
+  border-color: #7c3aed;
+  background: #f5f3ff;
+  color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+.layer-panel {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 6px;
+  min-width: 168px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transform-origin: bottom right;
+}
+
+.lp-title {
+  font-family: 'Prompt', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: #9ca3af;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 8px 2px;
+}
+
+.lp-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 1.5px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, opacity 0.12s;
+  width: 100%;
+  text-align: left;
+  outline: none;
+}
+.lp-item:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) {
+  .lp-item:hover { background: #f3f4f6; }
+}
+.lp-item--off { opacity: 0.48; }
+.lp-item--off:hover { opacity: 0.72; }
+
+.lp-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1.5px currentColor;
+  flex-shrink: 0;
+}
+.lp-dot--puente { background: #f59e0b; box-shadow: 0 0 0 1.5px #f59e0b; }
+.lp-dot--pap    { background: #3b82f6; box-shadow: 0 0 0 1.5px #3b82f6; }
+
+.lp-label {
+  flex: 1;
+  font-family: 'Prompt', sans-serif;
+  font-size: 13px;
+  color: #374151;
+}
+
+.lp-badge {
+  font-size: 9px;
+  font-weight: 700;
+  font-family: 'Prompt', sans-serif;
+  background: #fef3c7;
+  color: #92400e;
+  border-radius: 4px;
+  padding: 1px 5px;
+  letter-spacing: 0.04em;
+}
+.lp-badge--pap {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.lp-check {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: #6b7280;
 }
 
 </style>

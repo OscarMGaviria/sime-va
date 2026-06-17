@@ -30,6 +30,8 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
   const cachedVias       = ref(null)
   let _estabMarkers      = []
   let destroyed = false
+  const layerPuentesVisible = ref(true)
+  const layerPAPVisible     = ref(true)
 
   onUnmounted(() => { destroyed = true })
 
@@ -165,6 +167,26 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
       subregiones:      subregionesStats,
       viasDetalle,
     })
+
+    // Ajustar vista a los datos cargados
+    if (geoVias?.features.length) {
+      let lng0 = Infinity, lng1 = -Infinity, lat0 = Infinity, lat1 = -Infinity
+      for (const f of geoVias.features) {
+        const geom = f.geometry
+        if (!geom) continue
+        const lines = geom.type === 'LineString'      ? [geom.coordinates]
+                    : geom.type === 'MultiLineString' ? geom.coordinates : []
+        for (const line of lines) {
+          for (const [lng, lat] of line) {
+            if (lng < lng0) lng0 = lng; if (lng > lng1) lng1 = lng
+            if (lat < lat0) lat0 = lat; if (lat > lat1) lat1 = lat
+          }
+        }
+      }
+      if (lng0 !== Infinity) {
+        map.fitBounds([[lng0, lat0], [lng1, lat1]], { padding: 48, duration: 900, maxZoom: 10 })
+      }
+    }
 
     if (destroyed) return
 
@@ -446,7 +468,163 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
     }
 
     loading.value = false
+
+    // ── Puentes y PAPs (carga independiente, no bloquea el loader principal) ──
+    ;(async () => {
+      try {
+        const ts = new Date().getTime()
+        const r  = await fetch(import.meta.env.BASE_URL + `data/Puentes_PAP_Estructurados.geojson?v=${ts}`)
+        if (!r.ok) throw new Error(`HTTP ${r.status}`)
+        const geoRaw = await r.json()
+        if (destroyed) return
+        const map = getMap()
+        if (!map) return
+
+        const geoData = {
+          ...geoRaw,
+          features: geoRaw.features.map(f => ({
+            ...f,
+            properties: {
+              ...f.properties,
+              _tipo: (f.properties.Proyecto ?? '').toLowerCase().startsWith('pap') ? 'pap' : 'puente',
+            },
+          })),
+        }
+
+        map.addSource('puentes-pap', { type: 'geojson', data: geoData })
+
+        // Capa PAPs — azul
+        map.addLayer({
+          id: 'pap-layer',
+          type: 'circle',
+          source: 'puentes-pap',
+          filter: ['==', ['get', '_tipo'], 'pap'],
+          layout: { visibility: 'visible' },
+          paint: {
+            'circle-radius': ['interpolate', ['linear'], ['zoom'], 7, 5, 12, 9],
+            'circle-color': '#3b82f6',
+            'circle-stroke-width': 2,
+            'circle-stroke-color': '#ffffff',
+            'circle-opacity': 0.92,
+          },
+        })
+
+        // Crear e integrar icono de puente dinámico si no existe en el mapa
+        if (!map.hasImage('bridge-icon')) {
+          const canvas = document.createElement('canvas');
+          canvas.width = 32;
+          canvas.height = 32;
+          const ctx = canvas.getContext('2d');
+
+          // Círculo de fondo
+          ctx.beginPath();
+          ctx.arc(16, 16, 13, 0, 2 * Math.PI);
+          ctx.fillStyle = '#f59e0b'; // Color ámbar
+          ctx.fill();
+
+          // Borde blanco
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 1.8;
+          ctx.stroke();
+
+          // Dibujar el icono de puente
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 1.8;
+          ctx.lineCap = 'round';
+          ctx.lineJoin = 'round';
+
+          // Tablero horizontal del puente
+          ctx.beginPath();
+          ctx.moveTo(7, 18);
+          ctx.lineTo(25, 18);
+          ctx.stroke();
+
+          // Pilares principales
+          ctx.beginPath();
+          ctx.moveTo(9, 10);
+          ctx.lineTo(9, 22);
+          ctx.moveTo(23, 10);
+          ctx.lineTo(23, 22);
+          ctx.stroke();
+
+          // Cable principal curvado
+          ctx.beginPath();
+          ctx.moveTo(9, 11);
+          ctx.quadraticCurveTo(16, 19, 23, 11);
+          ctx.stroke();
+
+          // Cables tensores verticales
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(13, 15);
+          ctx.lineTo(13, 18);
+          ctx.moveTo(16, 17);
+          ctx.lineTo(16, 18);
+          ctx.moveTo(19, 15);
+          ctx.lineTo(19, 18);
+          ctx.stroke();
+
+          map.addImage('bridge-icon', ctx.getImageData(0, 0, 32, 32));
+        }
+
+        // Capa Puentes — tipo symbol con icono de puente
+        map.addLayer({
+          id: 'puentes-layer',
+          type: 'symbol',
+          source: 'puentes-pap',
+          filter: ['==', ['get', '_tipo'], 'puente'],
+          layout: {
+            'visibility': 'visible',
+            'icon-image': 'bridge-icon',
+            'icon-size': ['interpolate', ['linear'], ['zoom'], 7, 0.65, 12, 0.95],
+            'icon-allow-overlap': true,
+            'icon-ignore-placement': true,
+          },
+        })
+
+        // Popup compartido
+        const popup = new maplibregl.Popup({ closeButton: true, maxWidth: '300px', className: 'simeva-popup' })
+        const fmtCOP = v => v != null ? new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(v) : '—'
+
+        for (const layerId of ['puentes-layer', 'pap-layer']) {
+          map.on('click', layerId, (e) => {
+            const p    = e.features[0].properties
+            const rows = [
+              ['Municipio',   p.Municipio  ?? '—'],
+              ['Subregión',   p.Subregion  ?? '—'],
+              ['Longitud',    p.Longitud_m ? `${p.Longitud_m} m` : '—'],
+              ['Costo total', fmtCOP(p.Costo_tota)],
+              ['Estado',      p.Estado     ?? '—'],
+              ['Ejecutor',    p.Ejecutor   ?? '—'],
+            ].map(([k, v]) => `<tr><td class="sp-key">${k}</td><td class="sp-val">${v}</td></tr>`).join('')
+
+            popup
+              .setLngLat(e.lngLat)
+              .setHTML(`<div class="sp-header">${p.Proyecto ?? ''}</div><table class="sp-table">${rows}</table>`)
+              .addTo(map)
+          })
+          map.on('mouseenter', layerId, () => { map.getCanvas().style.cursor = 'pointer' })
+          map.on('mouseleave', layerId, () => { map.getCanvas().style.cursor = '' })
+        }
+      } catch (err) {
+        console.warn('[SIMEVA] Puentes/PAPs no disponibles:', err)
+      }
+    })()
   }
 
-  return { loading, loadError, fromCache, hoverLabel, viaHoverLabel, selectedVia, selectedMpio, cachedMunicipios, cachedVias, loadSimeva }
+  function togglePuentesLayer() {
+    layerPuentesVisible.value = !layerPuentesVisible.value
+    const map = getMap()
+    if (map?.getLayer('puentes-layer'))
+      map.setLayoutProperty('puentes-layer', 'visibility', layerPuentesVisible.value ? 'visible' : 'none')
+  }
+
+  function togglePAPLayer() {
+    layerPAPVisible.value = !layerPAPVisible.value
+    const map = getMap()
+    if (map?.getLayer('pap-layer'))
+      map.setLayoutProperty('pap-layer', 'visibility', layerPAPVisible.value ? 'visible' : 'none')
+  }
+
+  return { loading, loadError, fromCache, hoverLabel, viaHoverLabel, selectedVia, selectedMpio, cachedMunicipios, cachedVias, loadSimeva, layerPuentesVisible, layerPAPVisible, togglePuentesLayer, togglePAPLayer }
 }
