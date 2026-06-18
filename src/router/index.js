@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
-import App from '../App.vue'
+import RootView from '../views/RootView.vue'
 
 const routes = [
-  { path: '/', component: App },
+  { path: '/', component: RootView },
+  { path: '/home', redirect: '/' },
 ]
 
 // Siempre disponible (protegida por login Microsoft en la propia vista)

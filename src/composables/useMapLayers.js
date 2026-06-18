@@ -1,10 +1,11 @@
-import { ref, onUnmounted } from 'vue'
+import { ref, onUnmounted, watch } from 'vue'
 import maplibregl from 'maplibre-gl'
 import { getLocalizaciones, getMunicipios } from '../services/api.js'
 import { pctTiempoTranscurrido } from '../utils/stats.js'
+import { useMapStore } from '../stores/useMapStore.js'
 import hitosData from '../data/hitos.json'
 
-const normStr = s => (s ?? '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim()
+const normStr = s => (s ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim()
 const _circuitosConSeguimiento = new Set(Object.keys(hitosData).map(normStr))
 
 function sentenceCase(str) {
@@ -18,6 +19,32 @@ function capitalize(str) {
   return str.toLowerCase().replace(/\b\w/g, c => c.toUpperCase())
 }
 
+const SUBREGIONES_FIJAS = [
+  'Valle de aburrá', 'Oriente', 'Occidente', 'Norte',
+  'Nordeste', 'Urabá', 'Bajo cauca', 'Magdalena medio', 'Suroeste',
+]
+const subNorm = SUBREGIONES_FIJAS.map(normStr)
+
+function canonicalSub(raw) {
+  const idx = subNorm.indexOf(normStr(sentenceCase(raw ?? '')))
+  return idx !== -1 ? SUBREGIONES_FIJAS[idx] : sentenceCase(raw ?? '')
+}
+
+function collectCoords(coords, out) {
+  if (typeof coords[0] === 'number') out.push(coords)
+  else coords.forEach(c => collectCoords(c, out))
+}
+
+function getCentroid(geometry) {
+  const pts = []
+  collectCoords(geometry.coordinates, pts)
+  if (!pts.length) return [0, 0]
+  return [
+    pts.reduce((s, p) => s + p[0], 0) / pts.length,
+    pts.reduce((s, p) => s + p[1], 0) / pts.length,
+  ]
+}
+
 export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { buildCallouts, updateCalloutPositions } = {}) {
   const loading          = ref(true)
   const loadError        = ref(false)
@@ -26,14 +53,29 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
   const viaHoverLabel    = ref({ name: '', km: null, x: 0, y: 0, visible: false })
   const selectedVia      = ref(null)
   const selectedMpio     = ref(null)
+  const selectedPuente   = ref(null)
+  let _justClickedBridge = false
   const cachedMunicipios = ref(null)
+
+  function logMsg(msg) {
+    console.log('[SIMEVA]', msg)
+    if (window.addSimevaLog) window.addSimevaLog(msg)
+  }
   const cachedVias       = ref(null)
+  const cachedPuentesPAP = ref(null)
   let _estabMarkers      = []
+  let _clusterMarkers    = []
   let destroyed = false
   const layerPuentesVisible = ref(true)
   const layerPAPVisible     = ref(true)
+  const layerViasVisible    = ref(true)
+  const store = useMapStore()
 
-  onUnmounted(() => { destroyed = true })
+  onUnmounted(() => {
+    destroyed = true
+    _estabMarkers.forEach(m => m.remove())
+    _clusterMarkers.forEach(m => m.remove())
+  })
 
   async function loadSimeva() {
     const map = getMap()
@@ -65,18 +107,7 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
     }
 
     // Normaliza texto para comparar sin acentos ni mayúsculas
-    const norm = s => (s ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim()
-
-    const SUBREGIONES_FIJAS = [
-      'Valle de aburrá', 'Oriente', 'Occidente', 'Norte',
-      'Nordeste', 'Urabá', 'Bajo cauca', 'Magdalena medio', 'Suroeste',
-    ]
-    const subNorm = SUBREGIONES_FIJAS.map(norm)
-
-    function canonicalSub(raw) {
-      const idx = subNorm.indexOf(norm(sentenceCase(raw ?? '')))
-      return idx !== -1 ? SUBREGIONES_FIJAS[idx] : sentenceCase(raw ?? '')
-    }
+    const norm = normStr
 
     // ── Opciones para filtros ─────────────────────────────────────────────────
     const subregiones = geoMunicipios
@@ -230,18 +261,67 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
 
         let hoveredMpio = null
         map.on('mousemove', 'municipios-fill', (e) => {
+          map.getCanvas().style.cursor = 'pointer'
           if (hoveredMpio !== null)
             map.setFeatureState({ source: 'municipios', id: hoveredMpio }, { hover: false })
           hoveredMpio = e.features[0].id
           map.setFeatureState({ source: 'municipios', id: hoveredMpio }, { hover: true })
+
+          const activeLayers = []
+          if (map.getLayer('puentes-layer')) activeLayers.push('puentes-layer')
+          if (map.getLayer('pap-layer')) activeLayers.push('pap-layer')
+          if (map.getLayer('puentes-pap-clusters-trigger')) activeLayers.push('puentes-pap-clusters-trigger')
+
+          if (activeLayers.length > 0) {
+            const feats = map.queryRenderedFeatures(e.point, { layers: activeLayers })
+            if (feats && feats.length > 0) {
+              hoverLabel.value.visible = false
+              return
+            }
+          }
+
+          const p = e.features[0].properties
+          hoverLabel.value = {
+            name: sentenceCase(p.MPIO_NOMBR ?? ''),
+            sub: canonicalSub(p.SUBREGION),
+            x: e.point.x,
+            y: e.point.y,
+            visible: true
+          }
         })
         map.on('mouseleave', 'municipios-fill', () => {
+          map.getCanvas().style.cursor = ''
           if (hoveredMpio !== null)
             map.setFeatureState({ source: 'municipios', id: hoveredMpio }, { hover: false })
           hoveredMpio = null
+          hoverLabel.value.visible = false
         })
 
         map.on('click', 'municipios-fill', (e) => {
+          logMsg('Click en municipios-fill')
+          const activeLayers = []
+          if (map.getLayer('puentes-layer')) activeLayers.push('puentes-layer')
+          if (map.getLayer('pap-layer')) activeLayers.push('pap-layer')
+          if (map.getLayer('puentes-pap-clusters-trigger')) activeLayers.push('puentes-pap-clusters-trigger')
+          if (activeLayers.length > 0) {
+            const feats = map.queryRenderedFeatures(e.point, { layers: activeLayers })
+            if (feats && feats.length > 0) {
+              logMsg('municipios-fill click ignorado: capa activa detectada')
+              return
+            }
+          }
+
+          if (_justClickedBridge) {
+            logMsg('municipios-fill click ignorado: _justClickedBridge es true')
+            return
+          }
+
+          if (store.currentProject === 'puentes') {
+            logMsg('Limpiando selectedPuente desde municipios-fill')
+            selectedPuente.value = null
+            return
+          }
+
           const p = e.features[0].properties
           selectedMpio.value = {
             nombre:    sentenceCase(p.MPIO_NOMBR ?? ''),
@@ -288,7 +368,7 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
           id: 'vias-casing',
           type: 'line',
           source: 'vias',
-          layout: { 'line-cap': 'round', 'line-join': 'round' },
+          layout: { 'line-cap': 'round', 'line-join': 'round', 'visibility': layerViasVisible.value ? 'visible' : 'none' },
           paint: { 'line-color': '#ffffff', 'line-width': 7, 'line-opacity': 0.4 },
         })
         // 2. Halo blanco ampliado en hover
@@ -296,7 +376,7 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
           id: 'vias-hover-casing',
           type: 'line',
           source: 'vias',
-          layout: { 'line-cap': 'round', 'line-join': 'round' },
+          layout: { 'line-cap': 'round', 'line-join': 'round', 'visibility': layerViasVisible.value ? 'visible' : 'none' },
           filter: ['==', ['get', 'NOMBRE_VIA'], ''],
           paint: { 'line-color': '#ffffff', 'line-width': 13, 'line-opacity': 0.55 },
         })
@@ -305,7 +385,7 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
           id: 'vias-glow',
           type: 'line',
           source: 'vias',
-          layout: { 'line-cap': 'round', 'line-join': 'round' },
+          layout: { 'line-cap': 'round', 'line-join': 'round', 'visibility': layerViasVisible.value ? 'visible' : 'none' },
           filter: ['==', ['get', 'NOMBRE_VIA'], ''],
           paint: {
             'line-color': [
@@ -322,7 +402,7 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
           id: 'vias-line',
           type: 'line',
           source: 'vias',
-          layout: { 'line-cap': 'round', 'line-join': 'round' },
+          layout: { 'line-cap': 'round', 'line-join': 'round', 'visibility': layerViasVisible.value ? 'visible' : 'none' },
           paint: {
             'line-color': [
               'case',
@@ -365,6 +445,7 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
             el.innerHTML = `<div style="width:14px;height:14px;background:#10b981;border:2px solid #fff;border-radius:50%;position:relative;box-shadow:0 1px 4px rgba(0,0,0,0.3);">
                <div style="position:absolute;inset:-2px;border-radius:50%;background:#10b981;animation:estabPulse 1.5s infinite ease-out;pointer-events:none;"></div>
             </div>`
+            el.style.display = layerViasVisible.value ? 'block' : 'none'
             
             const m = new maplibregl.Marker({ element: el })
               .setLngLat([clng, clat])
@@ -377,7 +458,7 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
           id: 'vias-hover-line',
           type: 'line',
           source: 'vias',
-          layout: { 'line-cap': 'round', 'line-join': 'round' },
+          layout: { 'line-cap': 'round', 'line-join': 'round', 'visibility': layerViasVisible.value ? 'visible' : 'none' },
           filter: ['==', ['get', 'NOMBRE_VIA'], ''],
           paint: { 'line-color': '#ffffff', 'line-width': 7.5, 'line-opacity': 0.45 },
         })
@@ -385,8 +466,8 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
         const HOVER_FILTER_ON  = (circuito) => ['==', ['get', 'CIRCUITO'], circuito]
         const HOVER_FILTER_OFF = ['==', ['get', 'CIRCUITO'], '']
 
-        function startHover(nombreVia) {
-          const f = HOVER_FILTER_ON(nombreVia)
+        function startHover(circuito) {
+          const f = HOVER_FILTER_ON(circuito)
           map.setFilter('vias-hover-casing', f)
           map.setFilter('vias-glow', f)
           map.setFilter('vias-hover-line', f)
@@ -415,6 +496,8 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
         let hoveredVia = null
 
         map.on('click', 'vias-line', (e) => {
+          if (store.currentProject === 'puentes') return
+
           const p        = e.features[0].properties
           const circuito = p.CIRCUITO ?? ''
           const circuitFeats = cachedVias.value?.features.filter(f => f.properties.CIRCUITO === circuito) ?? []
@@ -491,7 +574,12 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
           })),
         }
 
-        map.addSource('puentes-pap', { type: 'geojson', data: geoData })
+        cachedPuentesPAP.value = geoData
+
+        map.addSource('puentes-pap', {
+          type: 'geojson',
+          data: geoData
+        })
 
         // Capa PAPs — azul
         map.addLayer({
@@ -499,11 +587,11 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
           type: 'circle',
           source: 'puentes-pap',
           filter: ['==', ['get', '_tipo'], 'pap'],
-          layout: { visibility: 'visible' },
+          layout: { visibility: layerPAPVisible.value ? 'visible' : 'none' },
           paint: {
-            'circle-radius': ['interpolate', ['linear'], ['zoom'], 7, 5, 12, 9],
+            'circle-radius': ['interpolate', ['linear'], ['zoom'], 7, 10, 12, 18],
             'circle-color': '#3b82f6',
-            'circle-stroke-width': 2,
+            'circle-stroke-width': 3,
             'circle-stroke-color': '#ffffff',
             'circle-opacity': 0.92,
           },
@@ -574,9 +662,9 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
           source: 'puentes-pap',
           filter: ['==', ['get', '_tipo'], 'puente'],
           layout: {
-            'visibility': 'visible',
+            'visibility': layerPuentesVisible.value ? 'visible' : 'none',
             'icon-image': 'bridge-icon',
-            'icon-size': ['interpolate', ['linear'], ['zoom'], 7, 0.65, 12, 0.95],
+            'icon-size': ['interpolate', ['linear'], ['zoom'], 7, 1.3, 12, 1.9],
             'icon-allow-overlap': true,
             'icon-ignore-placement': true,
           },
@@ -588,6 +676,17 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
 
         for (const layerId of ['puentes-layer', 'pap-layer']) {
           map.on('click', layerId, (e) => {
+            logMsg(`Click detectado en la capa: ${layerId}`)
+            _justClickedBridge = true
+            setTimeout(() => { _justClickedBridge = false }, 50)
+
+            if (store.currentProject === 'puentes') {
+              const props = e.features?.[0]?.properties
+              logMsg(`Asignando selectedPuente: ${props?.Proyecto}`)
+              selectedPuente.value = props || null
+              return
+            }
+
             const p    = e.features[0].properties
             const rows = [
               ['Municipio',   p.Municipio  ?? '—'],
@@ -603,28 +702,317 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
               .setHTML(`<div class="sp-header">${p.Proyecto ?? ''}</div><table class="sp-table">${rows}</table>`)
               .addTo(map)
           })
-          map.on('mouseenter', layerId, () => { map.getCanvas().style.cursor = 'pointer' })
-          map.on('mouseleave', layerId, () => { map.getCanvas().style.cursor = '' })
+          map.on('mousemove', layerId, (e) => {
+            map.getCanvas().style.cursor = 'pointer'
+            const p = e.features[0].properties
+            hoverLabel.value = {
+              name: p.Proyecto ?? 'Proyecto',
+              sub: `${p.Municipio ?? ''} (${p.Subregion ?? ''})`,
+              x: e.point.x,
+              y: e.point.y,
+              visible: true
+            }
+          })
+          map.on('mouseleave', layerId, () => {
+            map.getCanvas().style.cursor = ''
+            hoverLabel.value.visible = false
+          })
         }
+
+        updateClusters()
+        map.on('move', updateClusters)
+        map.on('moveend', updateClusters)
       } catch (err) {
         console.warn('[SIMEVA] Puentes/PAPs no disponibles:', err)
       }
     })()
   }
 
+  function renderClusterMarker(map, coords, count, paps, puentes, title, desc, onClick) {
+    const el = document.createElement('div')
+    el.className = 'simeva-cluster-marker'
+
+    if (count === 1) {
+      if (puentes === 1) {
+        el.innerHTML = `
+          <div style="
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+          "
+          onmouseover="this.style.transform='scale(1.15)'"
+          onmouseout="this.style.transform='scale(1)'"
+          >
+            <svg width="32" height="32" viewBox="0 0 32 32">
+              <circle cx="16" cy="16" r="13" fill="#f59e0b" stroke="#ffffff" stroke-width="1.8" />
+              <path d="M7 18 L25 18" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M9 10 L9 22 M23 10 L23 22" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M9 11 Q16 19 23 11" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M13 15 L13 18 M16 17 L16 18 M19 15 L19 18" stroke="#ffffff" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+        `
+      } else {
+        el.innerHTML = `
+          <div style="
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #3b82f6;
+            border: 3px solid #ffffff;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
+          "
+          onmouseover="this.style.transform='scale(1.15)'"
+          onmouseout="this.style.transform='scale(1)'"
+          >
+          </div>
+        `
+      }
+    } else {
+      let bgGradient = 'linear-gradient(135deg, #0b5640 0%, #16a34a 100%)'
+      let shadowColor = 'rgba(11, 86, 64, 0.4)'
+      if (paps > 0 && puentes === 0) {
+        bgGradient = 'linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%)'
+        shadowColor = 'rgba(59, 130, 246, 0.4)'
+      } else if (puentes > 0 && paps === 0) {
+        bgGradient = 'linear-gradient(135deg, #b45309 0%, #f59e0b 100%)'
+        shadowColor = 'rgba(245, 158, 11, 0.4)'
+      }
+
+      el.innerHTML = `
+        <div style="
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+          background: ${bgGradient};
+          border: 2px solid #ffffff;
+          color: #ffffff;
+          font-family: 'Prompt', sans-serif;
+          font-size: 14px;
+          font-weight: 700;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 12px ${shadowColor};
+          cursor: pointer;
+          transition: transform 0.15s ease;
+        "
+        onmouseover="this.style.transform='scale(1.1)'"
+        onmouseout="this.style.transform='scale(1)'"
+        >
+          ${count}
+        </div>
+      `
+    }
+
+    el.addEventListener('mousemove', (e) => {
+      map.getCanvas().style.cursor = 'pointer'
+      const rect = map.getContainer().getBoundingClientRect()
+      hoverLabel.value = {
+        name: title,
+        sub: desc,
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+        visible: true
+      }
+    })
+
+    el.addEventListener('mouseleave', () => {
+      map.getCanvas().style.cursor = ''
+      hoverLabel.value.visible = false
+    })
+
+    el.addEventListener('click', onClick)
+
+    const m = new maplibregl.Marker({ element: el })
+      .setLngLat(coords)
+      .addTo(map)
+    _clusterMarkers.push(m)
+  }
+
+  function updateClusters() {
+    _clusterMarkers.forEach(m => m.remove())
+    _clusterMarkers = []
+
+    const map = getMap()
+    if (!map || !cachedPuentesPAP.value) return
+
+    const anyVisible = layerPuentesVisible.value || layerPAPVisible.value
+    if (!anyVisible) {
+      if (map.getLayer('puentes-layer')) map.setLayoutProperty('puentes-layer', 'visibility', 'none')
+      if (map.getLayer('pap-layer')) map.setLayoutProperty('pap-layer', 'visibility', 'none')
+      return
+    }
+
+    const zoom = map.getZoom()
+    const visibleFeatures = cachedPuentesPAP.value.features.filter(f => {
+      if (f.properties._tipo === 'puente' && !layerPuentesVisible.value) return false
+      if (f.properties._tipo === 'pap' && !layerPAPVisible.value) return false
+      return true
+    })
+
+    if (zoom >= 10.2) {
+      if (map.getLayer('puentes-layer')) map.setLayoutProperty('puentes-layer', 'visibility', layerPuentesVisible.value ? 'visible' : 'none')
+      if (map.getLayer('pap-layer')) map.setLayoutProperty('pap-layer', 'visibility', layerPAPVisible.value ? 'visible' : 'none')
+      return
+    }
+
+    if (map.getLayer('puentes-layer')) map.setLayoutProperty('puentes-layer', 'visibility', 'none')
+    if (map.getLayer('pap-layer')) map.setLayoutProperty('pap-layer', 'visibility', 'none')
+
+    const mpiosData = {}
+    if (cachedMunicipios.value) {
+      for (const f of cachedMunicipios.value.features) {
+        const mpio = sentenceCase(f.properties.MPIO_NOMBR)
+        if (!mpio) continue
+        const cent = getCentroid(f.geometry)
+        const bounds = new maplibregl.LngLatBounds()
+        const extend = (c) => {
+          if (typeof c[0] === 'number') bounds.extend(c)
+          else c.forEach(extend)
+        }
+        extend(f.geometry.coordinates)
+
+        mpiosData[mpio] = {
+          name: mpio,
+          subregion: canonicalSub(f.properties.SUBREGION),
+          centroid: cent,
+          bounds: bounds,
+          features: []
+        }
+      }
+    }
+
+    for (const f of visibleFeatures) {
+      const mpio = sentenceCase(f.properties.Municipio)
+      if (mpiosData[mpio]) {
+        mpiosData[mpio].features.push(f)
+      }
+    }
+
+    for (const mpio of Object.keys(mpiosData)) {
+      const data = mpiosData[mpio]
+      if (!data.features.length) continue
+
+      const paps = data.features.filter(f => f.properties._tipo === 'pap').length
+      const puentes = data.features.filter(f => f.properties._tipo === 'puente').length
+      const count = data.features.length
+
+      const cent = count === 1
+        ? data.features[0].geometry.coordinates
+        : data.centroid
+
+      const title = count === 1
+        ? data.features[0].properties.Proyecto
+        : `Municipio: ${mpio}`
+
+      let desc = ''
+      if (count === 1) {
+        const f = data.features[0]
+        desc = `${f.properties.Municipio ?? ''} (${f.properties.Subregion ?? ''})`
+      } else {
+        if (puentes > 0 && paps > 0) {
+          desc = `${puentes} puentes y ${paps} puntos críticos`
+        } else if (puentes > 0) {
+          desc = `${puentes} puentes`
+        } else {
+          desc = `${paps} puntos críticos`
+        }
+      }
+
+      renderClusterMarker(map, cent, count, paps, puentes, title, desc, () => {
+        logMsg(`Click en marcador de clúster count=${count}, title=${title}`)
+        if (count === 1) {
+          _justClickedBridge = true
+          setTimeout(() => { _justClickedBridge = false }, 50)
+          map.flyTo({ center: cent, zoom: 11, duration: 800 })
+          if (store.currentProject === 'puentes') {
+            const props = data.features?.[0]?.properties
+            logMsg(`Asignando selectedPuente desde clúster 1: ${props?.Proyecto}`)
+            selectedPuente.value = props || null
+          }
+        } else {
+          map.fitBounds(data.bounds, { padding: 80, duration: 600 })
+        }
+      })
+    }
+  }
+
+  watch(() => store.currentProject, (proj) => {
+    selectedPuente.value = null
+    let puentesVisible = true
+    let papVisible = true
+    let viasVisible = true
+
+    if (proj === 'puentes') {
+      puentesVisible = true
+      papVisible = true
+      viasVisible = false
+    } else if (proj === 'estabilizacion') {
+      puentesVisible = false
+      papVisible = false
+      viasVisible = true
+    }
+
+    layerPuentesVisible.value = puentesVisible
+    layerPAPVisible.value = papVisible
+    layerViasVisible.value = viasVisible
+
+    const map = getMap()
+    if (map) {
+      if (map.getLayer('puentes-layer')) {
+        map.setLayoutProperty('puentes-layer', 'visibility', puentesVisible ? 'visible' : 'none')
+      }
+      if (map.getLayer('pap-layer')) {
+        map.setLayoutProperty('pap-layer', 'visibility', papVisible ? 'visible' : 'none')
+      }
+      if (map.getLayer('puentes-pap-clusters-trigger')) {
+        map.setLayoutProperty('puentes-pap-clusters-trigger', 'visibility', (puentesVisible || papVisible) ? 'visible' : 'none')
+      }
+      const viasLayers = ['vias-line', 'vias-casing', 'vias-hover-casing', 'vias-glow', 'vias-hover-line']
+      viasLayers.forEach(ly => {
+        if (map.getLayer(ly)) {
+          map.setLayoutProperty(ly, 'visibility', viasVisible ? 'visible' : 'none')
+        }
+      })
+      _estabMarkers.forEach(m => {
+        const el = m.getElement()
+        if (el) el.style.display = viasVisible ? 'block' : 'none'
+      })
+      updateClusters()
+    }
+  }, { immediate: true })
+
   function togglePuentesLayer() {
     layerPuentesVisible.value = !layerPuentesVisible.value
     const map = getMap()
-    if (map?.getLayer('puentes-layer'))
+    if (map?.getLayer('puentes-layer')) {
       map.setLayoutProperty('puentes-layer', 'visibility', layerPuentesVisible.value ? 'visible' : 'none')
+    }
+    if (map?.getLayer('puentes-pap-clusters-trigger')) {
+      map.setLayoutProperty('puentes-pap-clusters-trigger', 'visibility', (layerPuentesVisible.value || layerPAPVisible.value) ? 'visible' : 'none')
+    }
+    updateClusters()
   }
 
   function togglePAPLayer() {
     layerPAPVisible.value = !layerPAPVisible.value
     const map = getMap()
-    if (map?.getLayer('pap-layer'))
+    if (map?.getLayer('pap-layer')) {
       map.setLayoutProperty('pap-layer', 'visibility', layerPAPVisible.value ? 'visible' : 'none')
+    }
+    if (map?.getLayer('puentes-pap-clusters-trigger')) {
+      map.setLayoutProperty('puentes-pap-clusters-trigger', 'visibility', (layerPuentesVisible.value || layerPAPVisible.value) ? 'visible' : 'none')
+    }
+    updateClusters()
   }
 
-  return { loading, loadError, fromCache, hoverLabel, viaHoverLabel, selectedVia, selectedMpio, cachedMunicipios, cachedVias, loadSimeva, layerPuentesVisible, layerPAPVisible, togglePuentesLayer, togglePAPLayer }
+  return { loading, loadError, fromCache, hoverLabel, viaHoverLabel, selectedVia, selectedMpio, selectedPuente, cachedMunicipios, cachedVias, loadSimeva, layerPuentesVisible, layerPAPVisible, layerViasVisible, togglePuentesLayer, togglePAPLayer }
 }

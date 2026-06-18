@@ -13,7 +13,7 @@ export function useMapOrchestrator(mapContainer, filtersGetter) {
   const { visibleCallouts, buildCallouts, updateCalloutPositions, refreshVisibleCallouts }
     = useCallouts(() => _map)
 
-  const { loading, loadError, fromCache, hoverLabel, viaHoverLabel, selectedVia, selectedMpio, cachedMunicipios, cachedVias, loadSimeva, layerPuentesVisible, layerPAPVisible, togglePuentesLayer, togglePAPLayer }
+  const { loading, loadError, fromCache, hoverLabel, viaHoverLabel, selectedVia, selectedMpio, selectedPuente, cachedMunicipios, cachedVias, loadSimeva, layerPuentesVisible, layerPAPVisible, togglePuentesLayer, togglePAPLayer }
     = useMapLayers(
         () => _map,
         {
@@ -100,7 +100,7 @@ export function useMapOrchestrator(mapContainer, filtersGetter) {
   return {
     activeBasemap, switcherOpen, terrainActive, switchBasemap, toggleTerrain,
     loading, loadError, fromCache, hoverLabel, viaHoverLabel, loadSimeva,
-    selectedVia, selectedMpio,
+    selectedVia, selectedMpio, selectedPuente,
     selectedSubregion, selectedMunicipio,
     noResults,
     openVia,

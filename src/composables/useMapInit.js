@@ -12,7 +12,7 @@ export const BASEMAPS = [
   },
   {
     id: 'claro', label: 'Claro', color: '#e8e8e8',
-    tiles: ['https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'],
+    tiles: ['https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'],
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/">CARTO</a>',
   },
   {

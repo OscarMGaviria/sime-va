@@ -5,17 +5,25 @@ import AppHeader  from './components/organisms/AppHeader.vue'
 import MapView    from './components/organisms/MapView.vue'
 import StatsPanel from './components/organisms/StatsPanel.vue'
 import AppTour    from './components/organisms/AppTour.vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useMapStore } from './stores/useMapStore.js'
 
 const isInternal = import.meta.env.VITE_INTERNAL === 'true'
 
 const store = useMapStore()
 const { activeFilters, filterOptions, mapStats, filteredStats, mapLoading, filteredMunicipioOptions } = storeToRefs(store)
-const router = isInternal ? useRouter() : null
+const router = useRouter()
+const route  = useRoute()
 const isPanelOpen = ref(true)
 const showTour    = ref(localStorage.getItem('simeva-tour-done') !== '1')
 const mapViewRef  = ref(null)
+
+if (route) {
+  watch(() => route.query.project, (newProj) => {
+    store.setProject(newProj || null)
+  }, { immediate: true })
+}
+
 
 // Subregión activa en la gráfica: la seleccionada explícitamente,
 // o la que corresponde al municipio seleccionado (inferida del mapa municipiosPorSubregion)
@@ -71,10 +79,12 @@ watch(activeFilters, (f) => {
       :municipio-options="filteredMunicipioOptions"
       :circuito-options="filterOptions.circuitos"
       :active-filters="activeFilters"
+      :show-panel-toggle="store.currentProject !== 'puentes'"
     />
     <div class="content-area">
       <MapView ref="mapViewRef" />
       <StatsPanel
+        v-if="store.currentProject !== 'puentes'"
         :is-open="isPanelOpen"
         :loading="mapLoading"
         :vias-intervenidas="filteredStats.viasIntervenidas"

@@ -1,9 +1,11 @@
 <script setup>
 import { PanelRightClose, PanelRightOpen, HelpCircle, FileText } from 'lucide-vue-next'
+import { useRouter } from 'vue-router'
 import FilterBar from '../molecules/FilterBar.vue'
 
 const isInternal = import.meta.env.VITE_INTERNAL === 'true'
 const escudoSrc  = import.meta.env.BASE_URL + 'Escudo de armas.png'
+const router     = useRouter()
 
 const props = defineProps({
   title:            { type: String,  default: 'Pavimentación Vial' },
@@ -13,6 +15,7 @@ const props = defineProps({
   circuitoOptions:  { type: Array,   default: () => ['Todos los circuitos'] },
   panelOpen:        { type: Boolean, default: true },
   activeFilters:    { type: Object,  default: null },
+  showPanelToggle:  { type: Boolean, default: true },
 })
 
 const emit = defineEmits(['filter-change', 'toggle-panel', 'start-tour', 'generate-report'])
@@ -22,7 +25,7 @@ const emit = defineEmits(['filter-change', 'toggle-panel', 'start-tour', 'genera
   <header class="app-header">
 
     <!-- LEFT: logo + branding -->
-    <div class="header-brand">
+    <div class="header-brand" @click="router.push('/')" style="cursor: pointer;">
       <div class="header-logo">
         <img :src="escudoSrc" alt="Gobernación de Antioquia" class="header-logo-img" fetchpriority="high" />
       </div>
@@ -68,7 +71,7 @@ const emit = defineEmits(['filter-change', 'toggle-panel', 'start-tour', 'genera
         <span class="btn-tooltip">¿Cómo usar SIMEVA?</span>
       </div>
 
-      <div class="btn-panel-wrapper">
+      <div v-if="showPanelToggle" class="btn-panel-wrapper">
         <button
           class="btn-panel"
           @click="emit('toggle-panel')"

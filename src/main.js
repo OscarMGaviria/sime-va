@@ -5,7 +5,7 @@ import './style.css'
 async function bootstrap() {
   const isInternal = import.meta.env.VITE_INTERNAL === 'true'
   const isAdminGeoJson = window.location.pathname.startsWith('/admin-geojson')
-  const useRoutes = isInternal || isAdminGeoJson
+  const useRoutes = true // Habilitado siempre para soportar el flujo del Home y los parámetros del mapa
   const isMsalRedirect = window.location.hash.includes('code=') || window.location.hash.includes('error=')
 
   // Si es una redirección de MSAL (regreso de Microsoft tras login/token),

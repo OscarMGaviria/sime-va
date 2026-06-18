@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { parseDescription, extractKm, calcGeomKm } from '../services/api.js'
 import { useMapStore } from '../stores/useMapStore.js'
 
@@ -176,6 +176,13 @@ export function useCallouts(getMap) {
   }
 
   function refreshVisibleCallouts(filters) {
+    if (store.currentProject === 'puentes') {
+      filteredNames = new Set()
+      _offsets = []
+      visibleCallouts.value = []
+      return
+    }
+
     const sub      = filters.subregion ?? ''
     const mpio     = filters.municipio ?? ''
     const circuito = filters.circuito  ?? ''
@@ -201,6 +208,16 @@ export function useCallouts(getMap) {
     const filtered = callouts.value.filter(c => allowedNames.has(c.name))
     visibleCallouts.value = layoutAndPlace(filtered.filter(isInViewport))
   }
+
+  watch(() => store.currentProject, (proj) => {
+    if (proj === 'puentes') {
+      filteredNames = new Set()
+      _offsets = []
+      visibleCallouts.value = []
+    } else {
+      refreshVisibleCallouts(store.activeFilters)
+    }
+  })
 
   return { callouts, visibleCallouts, buildCallouts, updateCalloutPositions, refreshVisibleCallouts }
 }

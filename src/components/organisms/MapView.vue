@@ -12,7 +12,7 @@ const mapContainer = ref(null)
 const {
   activeBasemap, switcherOpen, terrainActive, switchBasemap, toggleTerrain,
   loading, loadError, fromCache, hoverLabel, viaHoverLabel, loadSimeva,
-  selectedVia, selectedMpio,
+  selectedVia, selectedMpio, selectedPuente,
   selectedSubregion, selectedMunicipio,
   noResults,
   openVia,
@@ -104,14 +104,113 @@ function _onGlobalKey(e) {
   }
 }
 
+const formatCOP = v => v != null ? new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(v) : '—'
+
+function statusClass(status) {
+  if (!status) return 'bp-status--default'
+  const norm = status.toLowerCase()
+  if (norm.includes('aprobado')) return 'bp-status--approved'
+  if (norm.includes('viabilidad')) return 'bp-status--pending'
+  if (norm.includes('presentación') || norm.includes('presentacion')) return 'bp-status--info'
+  return 'bp-status--default'
+}
+
+
+
 onMounted(()  => window.addEventListener('keydown', _onGlobalKey))
 onUnmounted(() => window.removeEventListener('keydown', _onGlobalKey))
 </script>
 
 <template>
-  <div class="map-wrapper">
+  <div class="map-wrapper" :class="{ 'has-panel': selectedPuente }">
     <!-- Fondo menta cuando no hay mapa base -->
-    <div class="map-container" :class="{ 'bg-mint': activeBasemap === 'ninguno' }" ref="mapContainer" />
+    <div class="map-container" :class="{ 'bg-mint': activeBasemap === 'ninguno' }" ref="mapContainer">
+      <!-- Control de capas -->
+      <div class="layer-ctrl">
+        <Transition name="panel">
+          <div v-if="layerCtrlOpen" class="layer-panel">
+            <div class="lp-title">Capas</div>
+
+            <button class="lp-item" :class="{ 'lp-item--off': !layerPuentesVisible }" @click="togglePuentesLayer">
+              <span class="lp-dot lp-dot--puente"></span>
+              <span class="lp-label">Puentes</span>
+              <svg class="lp-check" viewBox="0 0 16 16" fill="currentColor">
+                <path v-if="layerPuentesVisible" d="M13.5 3.5L6 11 2.5 7.5 1.5 8.5l4.5 4.5 8.5-8.5z"/>
+                <rect v-else x="2" y="7.5" width="12" height="1.5" rx="0.75"/>
+              </svg>
+            </button>
+
+            <button class="lp-item" :class="{ 'lp-item--off': !layerPAPVisible }" @click="togglePAPLayer">
+              <span class="lp-dot lp-dot--pap"></span>
+              <span class="lp-label">PAPs</span>
+              <svg class="lp-check" viewBox="0 0 16 16" fill="currentColor">
+                <path v-if="layerPAPVisible" d="M13.5 3.5L6 11 2.5 7.5 1.5 8.5l4.5 4.5 8.5-8.5z"/>
+                <rect v-else x="2" y="7.5" width="12" height="1.5" rx="0.75"/>
+              </svg>
+            </button>
+          </div>
+        </Transition>
+
+        <button
+          class="lc-toggle"
+          :class="{ 'is-open': layerCtrlOpen }"
+          @click="layerCtrlOpen = !layerCtrlOpen"
+          title="Control de capas"
+        >
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="10" cy="6"  r="2"/>
+            <circle cx="10" cy="14" r="2"/>
+            <line x1="2" y1="6"  x2="7"  y2="6"/>
+            <line x1="13" y1="6" x2="18" y2="6"/>
+            <line x1="2" y1="14" x2="7"  y2="14"/>
+            <line x1="13" y1="14" x2="18" y2="14"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Botón relieve 3D -->
+      <button
+        class="terrain-toggle"
+        :class="{ 'is-active': terrainActive }"
+        @click="toggleTerrain"
+        title="Relieve 3D"
+      >
+        <Mountain :size="16" />
+      </button>
+
+      <!-- Selector de mapa base -->
+      <div class="basemap-switcher">
+        <!-- Panel colapsable (arriba del toggle) -->
+        <Transition name="panel">
+          <div v-if="switcherOpen" class="switcher-panel">
+            <button
+              v-for="bm in BASEMAPS"
+              :key="bm.id"
+              class="basemap-btn"
+              :class="{ 'is-active': activeBasemap === bm.id }"
+              @click="switchBasemap(bm)"
+            >
+              <span
+                class="bm-swatch"
+                :class="{ 'bm-swatch--none': bm.id === 'ninguno' }"
+                :style="bm.color ? { background: bm.color } : {}"
+              />
+              <span class="bm-label">{{ bm.label }}</span>
+            </button>
+          </div>
+        </Transition>
+
+        <!-- Toggle (solo icono) — siempre abajo -->
+        <button
+          class="switcher-toggle"
+          @click="switcherOpen = !switcherOpen"
+          :class="{ 'is-open': switcherOpen }"
+          title="Mapa base"
+        >
+          <Layers :size="16" />
+        </button>
+      </div>
+    </div>
 
     <!-- Modal detalle de tramo -->
     <ViaDetailModal
@@ -141,6 +240,8 @@ onUnmounted(() => window.removeEventListener('keydown', _onGlobalKey))
         </div>
       </div>
     </Transition>
+
+
 
     <!-- Error overlay -->
     <Transition name="loader-fade">
@@ -188,6 +289,20 @@ onUnmounted(() => window.removeEventListener('keydown', _onGlobalKey))
         <div class="vt-meta">
           <span v-if="viaHoverLabel.km != null" class="vt-km">{{ viaHoverLabel.km.toLocaleString('es-CO') }} km</span>
           <span v-if="viaHoverLabel.avance != null" class="vt-avance">{{ viaHoverLabel.avance }}% avance</span>
+        </div>
+      </div>
+    </Transition>
+
+    <!-- Tooltip hover general (municipios, puentes, PAP) -->
+    <Transition name="via-tip">
+      <div
+        v-if="hoverLabel.visible"
+        class="via-tooltip"
+        :style="{ left: hoverLabel.x + 'px', top: hoverLabel.y + 'px' }"
+      >
+        <div class="vt-name">{{ hoverLabel.name }}</div>
+        <div v-if="hoverLabel.sub" class="vt-meta">
+          <span class="vt-km" style="color: rgba(255,255,255,0.85); font-weight: 500;">{{ hoverLabel.sub }}</span>
         </div>
       </div>
     </Transition>
@@ -249,92 +364,83 @@ onUnmounted(() => window.removeEventListener('keydown', _onGlobalKey))
       </div>
     </Transition>
 
-    <!-- Control de capas -->
-    <div class="layer-ctrl">
-      <Transition name="panel">
-        <div v-if="layerCtrlOpen" class="layer-panel">
-          <div class="lp-title">Capas</div>
 
-          <button class="lp-item" :class="{ 'lp-item--off': !layerPuentesVisible }" @click="togglePuentesLayer">
-            <span class="lp-dot lp-dot--puente"></span>
-            <span class="lp-label">Puentes</span>
-            <svg class="lp-check" viewBox="0 0 16 16" fill="currentColor">
-              <path v-if="layerPuentesVisible" d="M13.5 3.5L6 11 2.5 7.5 1.5 8.5l4.5 4.5 8.5-8.5z"/>
-              <rect v-else x="2" y="7.5" width="12" height="1.5" rx="0.75"/>
-            </svg>
-          </button>
 
-          <button class="lp-item" :class="{ 'lp-item--off': !layerPAPVisible }" @click="togglePAPLayer">
-            <span class="lp-dot lp-dot--pap"></span>
-            <span class="lp-label">PAPs</span>
-            <svg class="lp-check" viewBox="0 0 16 16" fill="currentColor">
-              <path v-if="layerPAPVisible" d="M13.5 3.5L6 11 2.5 7.5 1.5 8.5l4.5 4.5 8.5-8.5z"/>
-              <rect v-else x="2" y="7.5" width="12" height="1.5" rx="0.75"/>
-            </svg>
-          </button>
+    <!-- Ventana lateral de detalle del puente / PAP -->
+    <div v-if="selectedPuente" class="bridge-detail-panel">
+      <div class="bp-header">
+        <div class="bp-title-wrap">
+          <span class="bp-type-tag" :class="selectedPuente._tipo">
+            {{ selectedPuente._tipo === 'pap' ? 'Punto Crítico (PAP)' : 'Puente' }}
+          </span>
+          <h3 class="bp-title">{{ selectedPuente.Proyecto }}</h3>
         </div>
-      </Transition>
+        <button class="bp-close" @click="selectedPuente = null" title="Cerrar panel">✕</button>
+      </div>
 
-      <button
-        class="lc-toggle"
-        :class="{ 'is-open': layerCtrlOpen }"
-        @click="layerCtrlOpen = !layerCtrlOpen"
-        title="Control de capas"
-      >
-        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-          <circle cx="10" cy="6"  r="2"/>
-          <circle cx="10" cy="14" r="2"/>
-          <line x1="2" y1="6"  x2="7"  y2="6"/>
-          <line x1="13" y1="6" x2="18" y2="6"/>
-          <line x1="2" y1="14" x2="7"  y2="14"/>
-          <line x1="13" y1="14" x2="18" y2="14"/>
-        </svg>
-      </button>
-    </div>
-
-    <!-- Botón relieve 3D -->
-    <button
-      class="terrain-toggle"
-      :class="{ 'is-active': terrainActive }"
-      @click="toggleTerrain"
-      title="Relieve 3D"
-    >
-      <Mountain :size="16" />
-    </button>
-
-    <!-- Selector de mapa base -->
-    <div class="basemap-switcher">
-
-      <!-- Panel colapsable (arriba del toggle) -->
-      <Transition name="panel">
-        <div v-if="switcherOpen" class="switcher-panel">
-          <button
-            v-for="bm in BASEMAPS"
-            :key="bm.id"
-            class="basemap-btn"
-            :class="{ 'is-active': activeBasemap === bm.id }"
-            @click="switchBasemap(bm)"
-          >
-            <span
-              class="bm-swatch"
-              :class="{ 'bm-swatch--none': bm.id === 'ninguno' }"
-              :style="bm.color ? { background: bm.color } : {}"
-            />
-            <span class="bm-label">{{ bm.label }}</span>
-          </button>
+      <div class="bp-body">
+        <div class="bp-section">
+          <div class="bp-section-title">Ubicación</div>
+          <div class="bp-grid">
+            <div class="bp-item">
+              <span class="bp-label">Municipio</span>
+              <span class="bp-val">{{ selectedPuente.Municipio || '—' }}</span>
+            </div>
+            <div class="bp-item">
+              <span class="bp-label">Subregión</span>
+              <span class="bp-val">{{ selectedPuente.Subregion || '—' }}</span>
+            </div>
+          </div>
         </div>
-      </Transition>
 
-      <!-- Toggle (solo icono) — siempre abajo -->
-      <button
-        class="switcher-toggle"
-        @click="switcherOpen = !switcherOpen"
-        :class="{ 'is-open': switcherOpen }"
-        title="Mapa base"
-      >
-        <Layers :size="16" />
-      </button>
+        <div class="bp-section">
+          <div class="bp-section-title">Detalles Técnicos</div>
+          <div class="bp-grid">
+            <div class="bp-item">
+              <span class="bp-label">Longitud</span>
+              <span class="bp-val">{{ selectedPuente.Longitud_m ? `${selectedPuente.Longitud_m} m` : '—' }}</span>
+            </div>
+            <div class="bp-item">
+              <span class="bp-label">Costo Total</span>
+              <span class="bp-val">{{ formatCOP(selectedPuente.Costo_tota) }}</span>
+            </div>
+          </div>
+          <div class="bp-grid bp-grid--single">
+            <div class="bp-item">
+              <span class="bp-label">Estado</span>
+              <span class="bp-val bp-status" :class="statusClass(selectedPuente.Estado)">
+                {{ selectedPuente.Estado || '—' }}
+              </span>
+            </div>
+          </div>
+          <div class="bp-grid bp-grid--single" v-if="selectedPuente.Ejecutor">
+            <div class="bp-item">
+              <span class="bp-label">Ejecutor</span>
+              <span class="bp-val">{{ selectedPuente.Ejecutor }}</span>
+            </div>
+          </div>
+        </div>
 
+        <div class="bp-section">
+          <div class="bp-section-title">Coordenadas y Observación</div>
+          <div class="bp-grid">
+            <div class="bp-item">
+              <span class="bp-label">Latitud</span>
+              <span class="bp-val">{{ selectedPuente.Latitud }}</span>
+            </div>
+            <div class="bp-item">
+              <span class="bp-label">Longitud</span>
+              <span class="bp-val">{{ selectedPuente.Longitud }}</span>
+            </div>
+          </div>
+          <div class="bp-grid bp-grid--single" v-if="selectedPuente.Obs_coord">
+            <div class="bp-item">
+              <span class="bp-label">Observación</span>
+              <span class="bp-val bp-obs">{{ selectedPuente.Obs_coord }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -346,12 +452,16 @@ onUnmounted(() => window.removeEventListener('keydown', _onGlobalKey))
   min-height: 0;
   height: 100%;
   position: relative;
+  display: flex;
+  flex-direction: row;
 }
 
 .map-container {
-  width: 100%;
+  flex: 1;
   height: 100%;
   transition: background-color 0.4s ease;
+  min-width: 0;
+  position: relative;
 }
 
 .map-container.bg-mint {
@@ -1211,5 +1321,191 @@ onUnmounted(() => window.removeEventListener('keydown', _onGlobalKey))
   flex-shrink: 0;
   color: #6b7280;
 }
+
+/* ── Bridge Detail Panel ────────────────────────────────────────────────────── */
+.bridge-detail-panel {
+  width: 400px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-left: 1px solid rgba(11, 86, 64, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+  flex-shrink: 0;
+  box-shadow: -6px 0 24px rgba(11, 86, 64, 0.08);
+  font-family: 'Prompt', sans-serif;
+  z-index: 45;
+}
+
+.bp-header {
+  padding: 24px 20px;
+  border-bottom: 1px solid rgba(11, 86, 64, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(234, 244, 237, 0.5) 0%, rgba(255, 255, 255, 0.8) 100%);
+}
+
+.bp-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.bp-type-tag {
+  align-self: flex-start;
+  font-family: 'Prompt', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+.bp-type-tag.puente {
+  background: #fef3c7;
+  color: #d97706;
+}
+.bp-type-tag.pap {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.bp-title {
+  margin: 0;
+  font-family: 'Prompt', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0b5640;
+  line-height: 1.3;
+}
+
+.bp-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(107, 114, 128, 0.08);
+  color: #4b5563;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background 0.15s, color 0.15s, transform 0.1s;
+}
+.bp-close:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+}
+.bp-close:active {
+  transform: scale(0.92);
+}
+
+.bp-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bp-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #9ca3af;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-bottom: 1.5px solid rgba(11, 86, 64, 0.08);
+  padding-bottom: 4px;
+}
+
+.bp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.bp-grid--single {
+  grid-template-columns: 1fr;
+  margin-top: 4px;
+}
+
+.bp-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: rgba(234, 244, 237, 0.25);
+  border: 1px solid rgba(11, 86, 64, 0.06);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.bp-label {
+  font-size: 10.5px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.bp-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.bp-status {
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11.5px;
+}
+.bp-status--approved {
+  background: #ecfdf5;
+  color: #059669;
+}
+.bp-status--pending {
+  background: #fffbeb;
+  color: #d97706;
+}
+.bp-status--info {
+  background: #eff6ff;
+  color: #2563eb;
+}
+.bp-status--default {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.bp-obs {
+  font-weight: 500;
+  font-size: 12.5px;
+  color: #374151;
+  line-height: 1.4;
+}
+
+/* Slide Transition */
+.slide-panel-enter-active {
+  transition: transform 0.4s cubic-bezier(0.34, 1.10, 0.64, 1), opacity 0.4s ease;
+}
+.slide-panel-leave-active {
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+}
+.slide-panel-enter-from,
+.slide-panel-leave-to {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+
 
 </style>

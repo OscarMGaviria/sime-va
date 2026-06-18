@@ -9,6 +9,9 @@ export const useMapStore = defineStore('map', () => {
     circuito:  'Todos los circuitos',
   })
 
+  const currentProject = ref(null) // 'estabilizacion', 'puentes', or null
+
+
   const filterOptions = ref({
     subregiones:            ['Todas las subregiones'],
     municipios:             ['Todos los municipios'],
@@ -86,6 +89,7 @@ export const useMapStore = defineStore('map', () => {
 
   function setFilterOptions(options) { filterOptions.value = options }
   function setMapStats(stats)        { mapStats.value = stats }
+  function setProject(proj)          { currentProject.value = proj }
 
   return {
     activeFilters,
@@ -94,9 +98,11 @@ export const useMapStore = defineStore('map', () => {
     filteredStats,
     mapLoading,
     filteredMunicipioOptions,
+    currentProject,
     setFilter,
     setFilterOptions,
     setMapStats,
     setMapLoading,
+    setProject,
   }
 })
