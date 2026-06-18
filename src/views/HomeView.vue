@@ -20,6 +20,8 @@ import {
 
 const router = useRouter()
 
+const baseUrl = import.meta.env.BASE_URL
+
 const projects = [
   {
     id: 'toyo',
@@ -114,7 +116,10 @@ const projects = [
     desc: 'Reactivación de la red férrea del departamento para transporte de carga y pasajeros.',
     stats: [{ label: 'Tramos', val: '3' }, { label: 'Distancia', val: '80 km' }]
   }
-]
+].map(p => ({
+  ...p,
+  poster: baseUrl + p.poster.replace(/^\//, '')
+}))
 
 const activeInfoProject = ref(null)
 const loadedImages = ref({})
@@ -350,7 +355,7 @@ function handleCardClick(proj) {
     <!-- ── Cabecera (Hero) ── -->
     <header class="home-hero">
       <div class="hero-brand">
-        <img src="/Escudo de armas 2.png" alt="Escudo de Antioquia" class="hero-logo" />
+        <img :src="baseUrl + 'Escudo de armas 2.png'" alt="Escudo de Antioquia" class="hero-logo" />
         <div class="hero-titles">
           <span class="hero-tagline">Secretaría de Infraestructura Física</span>
           <p class="hero-subtitle">Sistema de Información y Monitoreo de Infraestructura Vial (SIMEVA)</p>
@@ -451,7 +456,7 @@ function handleCardClick(proj) {
           <!-- Cabecera del Modal -->
           <header class="airport-modal-header">
             <div class="airport-header-left">
-              <img src="/Escudo de armas 2.png" alt="Escudo de Antioquia" class="airport-header-logo" />
+              <img :src="baseUrl + 'Escudo de armas 2.png'" alt="Escudo de Antioquia" class="airport-header-logo" />
               <div class="airport-header-titles">
                 <span class="airport-header-tagline">Secretaría de Infraestructura Física</span>
                 <h2 class="airport-header-title">{{ activeInfoProject.name }}</h2>
@@ -532,7 +537,7 @@ function handleCardClick(proj) {
 
     <!-- Logo Flotante Animado (A Toda Máquina) -->
     <div class="floating-atm-logo">
-      <img src="/A toda maquina.png" alt="A Toda Máquina" />
+      <img :src="baseUrl + 'A toda maquina.png'" alt="A Toda Máquina" />
     </div>
 
     <!-- Footer de página -->
