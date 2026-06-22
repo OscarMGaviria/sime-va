@@ -138,6 +138,35 @@ const selectedPuenteId = ref(null)
 const showPuentePhoto = ref(true)
 const showEnlargedPhoto = ref(false)
 
+const slides = [
+  '20260622_PPT PUENTES PAP (1)_page-0001.jpg',
+  '20260622_PPT PUENTES PAP (1)_page-0002.jpg',
+  '20260622_PPT PUENTES PAP (1)_page-0003.jpg',
+  '20260622_PPT PUENTES PAP (1)_page-0005.jpg',
+  '20260622_PPT PUENTES PAP (1)_page-0006.jpg',
+  '20260622_PPT PUENTES PAP (1)_page-0007.jpg'
+]
+
+const currentSlideIndex = ref(0)
+const showPresentation = ref(false)
+
+function openPresentation() {
+  currentSlideIndex.value = 0
+  showPresentation.value = true
+}
+
+function nextSlide() {
+  if (currentSlideIndex.value < slides.length - 1) {
+    currentSlideIndex.value++
+  }
+}
+
+function prevSlide() {
+  if (currentSlideIndex.value > 0) {
+    currentSlideIndex.value--
+  }
+}
+
 function getPuenteSlug(name) {
   if (!name) return ''
   return name
@@ -190,6 +219,7 @@ watch(activeInfoProject, (newProj) => {
 watch(selectedPuenteHome, (val) => {
   showPuentePhoto.value = true
   showEnlargedPhoto.value = false
+  showPresentation.value = false
   if (val) {
     selectedPuenteId.value = val.Proyecto || null
   } else {
@@ -702,6 +732,10 @@ function onLoaderLeave() {
 
 const handleKeyDown = (e) => {
   if (e.key === 'Escape') {
+    if (showPresentation.value) {
+      showPresentation.value = false
+      return
+    }
     if (showEnlargedPhoto.value) {
       showEnlargedPhoto.value = false
       return
@@ -715,6 +749,10 @@ const handleKeyDown = (e) => {
         activeInfoProject.value = null
       }
     }
+  } else if (e.key === 'ArrowRight' && showPresentation.value) {
+    nextSlide()
+  } else if (e.key === 'ArrowLeft' && showPresentation.value) {
+    prevSlide()
   }
 }
 
@@ -1011,7 +1049,8 @@ function handleCardClick(proj) {
                   </div>
                 </div>
                 
-                <button class="btn-airport-close" @click="activeInfoProject = null">Cerrar Ficha</button>
+                <button class="btn-airport-presentation" @click="openPresentation" style="width: 100%; margin-top: auto; margin-bottom: 10px;">Ver presentación</button>
+                <button class="btn-airport-close" @click="activeInfoProject = null" style="margin-top: 0; width: 100%;">Cerrar Ficha</button>
               </div>
 
               <!-- Si hay puente seleccionado: Ficha técnica detallada -->
@@ -1129,6 +1168,46 @@ function handleCardClick(proj) {
         <button class="bp-lightbox-close" @click="showEnlargedPhoto = false">✕</button>
         <img :src="getPuentePhotoUrl(selectedPuenteHome.Proyecto)" class="bp-lightbox-image" alt="Foto ampliada del proyecto" />
         <div class="bp-lightbox-caption">{{ selectedPuenteHome.Proyecto }}</div>
+      </div>
+    </div>
+
+    <!-- Presentación de Diapositivas (Slideshow) overlay -->
+    <div v-if="showPresentation" class="presentation-overlay" @click="showPresentation = false">
+      <!-- Columna izquierda: Botón Anterior (5% de ancho) -->
+      <div class="presentation-nav-col left-col" @click.stop>
+        <button class="presentation-nav-btn prev" @click="prevSlide" :disabled="currentSlideIndex === 0">❮</button>
+      </div>
+
+      <!-- Columna central: Contenido Principal (90% de ancho) -->
+      <div class="presentation-content" @click.stop>
+        <button class="presentation-close-btn" @click="showPresentation = false">✕</button>
+        
+        <div class="presentation-slide-container">
+          <img 
+            :src="baseUrl + 'images/presentacion puentes/' + slides[currentSlideIndex]" 
+            class="presentation-slide-image" 
+            alt="Diapositiva" 
+          />
+        </div>
+
+        <!-- Indicador de página -->
+        <div class="presentation-footer-info">
+          <div class="presentation-indicators">
+            <span 
+              v-for="(slide, index) in slides" 
+              :key="index" 
+              class="presentation-dot" 
+              :class="{ active: currentSlideIndex === index }"
+              @click="currentSlideIndex = index"
+            ></span>
+          </div>
+          <div class="presentation-slide-counter">Diapositiva {{ currentSlideIndex + 1 }} de {{ slides.length }}</div>
+        </div>
+      </div>
+
+      <!-- Columna derecha: Botón Siguiente (5% de ancho) -->
+      <div class="presentation-nav-col right-col" @click.stop>
+        <button class="presentation-nav-btn next" @click="nextSlide" :disabled="currentSlideIndex === slides.length - 1">❯</button>
       </div>
     </div>
 
@@ -2718,5 +2797,175 @@ function handleCardClick(proj) {
 @keyframes bp-zoomIn {
   from { transform: scale(0.95); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
+}
+
+/* ── Estilos Premium de Botón de Presentación y Slideshow ── */
+.btn-airport-presentation {
+  background: #10b981;
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-family: 'Prompt', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s ease-out;
+  text-align: center;
+}
+
+.btn-airport-presentation:hover {
+  background: #059669;
+}
+
+.btn-airport-presentation:active {
+  transform: scale(0.98);
+}
+
+.presentation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  animation: bp-fadeIn 0.25s ease-out;
+}
+
+.presentation-nav-col {
+  width: 5vw;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.presentation-content {
+  position: relative;
+  width: 90vw;
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.presentation-slide-container {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.presentation-slide-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  animation: bp-zoomIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.presentation-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.presentation-close-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.1);
+}
+
+.presentation-nav-btn {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+  z-index: 5;
+}
+
+.presentation-nav-btn:hover:not(:disabled) {
+  background: rgba(16, 185, 129, 0.8);
+  border-color: #10b981;
+  transform: scale(1.1);
+}
+
+.presentation-nav-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.presentation-footer-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.presentation-indicators {
+  display: flex;
+  gap: 8px;
+}
+
+.presentation-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.presentation-dot.active {
+  background: #10b981;
+  transform: scale(1.2);
+  box-shadow: 0 0 8px #10b981;
+}
+
+.presentation-slide-counter {
+  font-family: 'Prompt', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
 }
 </style>
