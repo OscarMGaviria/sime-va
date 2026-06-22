@@ -169,6 +169,38 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mqp7ao1p",
+      "fecha": "2026-06-22",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Limpieza de obras transversales",
+          "desc": "Se avanzó en la limpieza de las alcantarillas 4 durante la semana, para un acumulado de 6 unidades.",
+          "fotos": [
+            "/images/actividades/c306342a-6c6e-4681-a77d-64d1cf53437c.jpg"
+          ]
+        },
+        {
+          "nombre": "Retiro de alcantarillas",
+          "desc": "Se avanzó en el retiro de las alcantarillas  6 durante la semana, para un acumulado de 24 unidades.",
+          "fotos": [
+            "/images/actividades/4323a265-57f2-47c8-8a73-38ea97167adb.jpg"
+          ]
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "Localización y actualización de abscisado en 5,0 km.",
+          "fotos": [
+            "/images/actividades/b70272f6-a462-4c00-ac44-4ba7b6e7aa4f.jpg",
+            "/images/actividades/92eed27c-c423-43a5-b5db-3ba44f6185c3.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "Cáceres - La Chilona": [
@@ -306,6 +338,34 @@
             "/images/actividades/b6c94955-8213-4f52-8ce5-ea9cd038e694.jpg",
             "/images/actividades/5ea45523-b119-4b10-a668-a2068ac53f78.jpg",
             "/images/actividades/9533aee0-4a4c-4ece-b288-e05d86639164.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqp803vw",
+      "fecha": "2026-06-22",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Estabilización",
+          "desc": "Pista de prueba — conformación de calzada - Conformación de calzada con motoniveladora, definición de peraltes, bombeos y ancho de vía.",
+          "fotos": [
+            "/images/actividades/555f47be-a024-4a81-b878-f9aa2e2a564b.jpg",
+            "/images/actividades/47d88517-7bc9-49aa-a387-aa9e951f61ee.jpg",
+            "/images/actividades/29123f7c-9c3d-460f-bc8d-b2836b3a9543.jpg",
+            "/images/actividades/8cb967ae-3479-4678-9e73-be3b664d0de7.jpg",
+            "/images/actividades/3e7ae618-7ee9-492b-bfe7-14f426dd12a7.jpg"
+          ]
+        },
+        {
+          "nombre": "Contrucción de filtro",
+          "desc": "Se continuó con la construcción de filtros dentro del tramo de prueba.",
+          "fotos": [
+            "/images/actividades/c7a733b1-4eb1-4412-a2c8-b9e4f747f2ae.jpg"
           ]
         }
       ],
@@ -491,6 +551,32 @@
         }
       ],
       "obs": ""
+    },
+    {
+      "id": "mqp7fshh",
+      "fecha": "2026-06-22",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Limpieza de obras de drenaje",
+          "desc": "Incremento respecto al reporte anterior: 8 obras adicionales limpiadas.",
+          "fotos": [
+            "/images/actividades/5d0d2166-4709-4047-8d9f-5694544dfced.jpg",
+            "/images/actividades/c2136fd8-3b0d-4531-8316-ffe50bbdee79.jpg"
+          ]
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "Marcación de abscisado definitivo entre K1+830 y K5+400.",
+          "fotos": [
+            "/images/actividades/07c1bc8e-d844-43be-93ad-848f98f9b367.jpg",
+            "/images/actividades/793798de-5a86-4639-9d66-fe07b23c7e18.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "Valparaíso - Támesis": [
@@ -603,6 +689,31 @@
           "desc": "Demarcación de bordes de vía entre el K1+100 y el K2+000. Longitud intervenida: 900 m.",
           "fotos": [
             "/images/actividades/ac1cbb13-489f-45e4-8fdd-ef215640aceb.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqp7six3",
+      "fecha": "2026-06-22",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Topografía",
+          "desc": "Demarcación de bordes de vía entre K1+100 y K2+000. Longitud demarcada: 900 m",
+          "fotos": [
+            "/images/actividades/3b91b9df-1331-42d6-bc2a-4644e39bccc8.jpg"
+          ]
+        },
+        {
+          "nombre": "Limpieza de obras de drenaje",
+          "desc": "Obras limpiadas: 90 unidades.Limpieza en ejecución entre K12+000 y K12+450.",
+          "fotos": [
+            "/images/actividades/6cb27519-71ad-47af-bb38-955490e89874.jpg",
+            "/images/actividades/f3a20cdd-acbd-4c6f-a89f-b83e3e4cfa7d.jpg"
           ]
         }
       ],
@@ -802,6 +913,21 @@
     {
       "id": "mqgqkgx7",
       "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Sin avances de obra",
+          "desc": "",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqp6p4u9",
+      "fecha": "2026-06-22",
       "frentes": [],
       "ejecutadas": [],
       "en_ejecucion": [
@@ -1053,6 +1179,43 @@
         }
       ],
       "obs": ""
+    },
+    {
+      "id": "mqp72dj8",
+      "fecha": "2026-06-22",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Construcción de filtro francés",
+          "desc": "Se avanzó en la construcción de filtro francés - 367 m de filtro francés construido.",
+          "fotos": [
+            "/images/actividades/ee15fd74-abd3-4dce-a7d0-d56c61bdecb3.jpg",
+            "/images/actividades/677b8833-7bd0-4848-bb99-c7180655afa5.jpg"
+          ]
+        },
+        {
+          "nombre": "Limpieza de obras transversales",
+          "desc": "Se realizó limpieza de obras transversales en los sectores K3+900 y K4+050.",
+          "fotos": [
+            "/images/actividades/0864afa6-0bc5-45e8-b348-063ce81813df.jpg"
+          ]
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "La comisión de topografía continuó con el levantamiento del corredor y el lineamiento para la construcción de filtros.",
+          "fotos": [
+            "/images/actividades/5b8db055-7cf0-45e1-b242-bd4198295a2d.jpg"
+          ]
+        },
+        {
+          "nombre": "Inventario de obras transversales",
+          "desc": "40 obras transversales identificadas.",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "San Pedro de Urabá - Necoclí": [
@@ -1243,6 +1406,38 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mqp6vsdz",
+      "fecha": "2026-06-22",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Acero de refuerzo para cabezotes",
+          "desc": "Se continuó con la instalación de acero de refuerzo para cabezotes en las obras transversales",
+          "fotos": [
+            "/images/actividades/19d73d2d-79f2-4fda-b3c8-e0c2b57483ce.jpg"
+          ]
+        },
+        {
+          "nombre": "Concreto en obras transversales",
+          "desc": "Se realizó vaciado de losa de descole",
+          "fotos": [
+            "/images/actividades/09e1756c-c43a-42b8-ad01-2f9eb6636cb6.jpg"
+          ]
+        },
+        {
+          "nombre": "Construcción de filtros",
+          "desc": "263 m de filtros instalados durante la semana para un total de 743 m de filtros instalados",
+          "fotos": [
+            "/images/actividades/a6594762-0781-433d-b735-7fd71f34d878.jpg",
+            "/images/actividades/77f37b37-ffbd-4651-b81a-d254ba9f7e90.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "San Pedro - El Tres - Turbo": [
@@ -1314,6 +1509,21 @@
       "en_ejecucion": [
         {
           "nombre": "Las actividades se encuentran suspendidas.",
+          "desc": "",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqp6wgtj",
+      "fecha": "2026-06-22",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Sin avances de obra",
           "desc": "",
           "fotos": []
         }
@@ -1921,6 +2131,34 @@
         }
       ],
       "obs": ""
+    },
+    {
+      "id": "mqp6on95",
+      "fecha": "2026-06-22",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Subbase granular",
+          "desc": "Se continuó con el suministro, instalación y compactación de subbase granular - Avance semanal: 357,96 m³. Avance acumulado: 357,96 m³.",
+          "fotos": [
+            "/images/actividades/6ff93d93-0ed2-44af-b38e-bcfb2019dbbe.jpg",
+            "/images/actividades/3f506ad8-e81b-40f2-b04b-bddfb24eac94.jpg"
+          ]
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "El contratista continuó con actividades de levantamiento topográfico.",
+          "fotos": []
+        },
+        {
+          "nombre": "Obras de drenaje",
+          "desc": "Se realizó excavación manual y perfilado de encoles y descoles en las obras - Avance semanal: intervención en 4 obras de drenaje.",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "Frontino - Nutibara": [
@@ -2096,6 +2334,52 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mqp6cmpc",
+      "fecha": "2026-06-22",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Plan de Manejo de Tráfico — PMT",
+          "desc": "Avance semanal: PMT instalado entre K1+400 y K3+500, y entre K8+800 y K10+500.",
+          "fotos": [
+            "/images/actividades/e9707002-210d-44da-aab7-1d4c68762b6d.jpg",
+            "/images/actividades/605e3b8b-af13-451b-997f-6403e253c17d.jpg"
+          ]
+        },
+        {
+          "nombre": "Reposición de obras transversales",
+          "desc": "8 transversales adicionales, pasando de 37 a 45 unidades.",
+          "fotos": []
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "Trazado de niveles y bordes de vía en el sector K1+500",
+          "fotos": [
+            "/images/actividades/95b533fc-3574-4b94-92fa-9b90ae08aa35.jpg",
+            "/images/actividades/54209a46-bca3-4b36-ab73-dd2d7e44d526.jpg"
+          ]
+        },
+        {
+          "nombre": "Seguimiento a punto crítico K14+520",
+          "desc": "La masa de material que presentaba grieta colapsó, persisten grietas y se mantiene posible pérdida del bloque de masa.",
+          "fotos": [
+            "/images/actividades/771920fa-aade-4334-8e83-2ca7c1e8e31f.jpg"
+          ]
+        },
+        {
+          "nombre": "Conformación geométrica de la vía",
+          "desc": "Conformación geométrica desde K1+530",
+          "fotos": [
+            "/images/actividades/bcbcd49d-2460-4e1f-a7fd-3661cea52cda.jpg",
+            "/images/actividades/9e26b4a8-7760-49b7-b342-8bc5c76de56c.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "Ebejico - Miserenga": [
@@ -2134,6 +2418,21 @@
       "en_ejecucion": [
         {
           "nombre": "Sin Avances",
+          "desc": "",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqp6pim1",
+      "fecha": "2026-06-22",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Sin avances de obra",
           "desc": "",
           "fotos": []
         }
@@ -2267,6 +2566,33 @@
         }
       ],
       "obs": ""
+    },
+    {
+      "id": "mqp8dtm5",
+      "fecha": "2026-06-22",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Reemplazo de obras transversales",
+          "desc": "Instalación de 8 tuberías de 36”, para un acumulado de 35 tuberías de 36” instaladas.",
+          "fotos": [
+            "/images/actividades/2c814ea1-ed72-42f6-84c7-a3374642a29b.jpg",
+            "/images/actividades/5f58eac2-d161-4e33-8005-d6b135325085.jpg",
+            "/images/actividades/0ce2d2d1-cb9b-4bec-8c66-38628857345f.jpg",
+            "/images/actividades/3b42cc59-43c6-403c-9e88-bc9e28b2d6b6.jpg"
+          ]
+        },
+        {
+          "nombre": "Limpieza y mantenimiento de obras transversales",
+          "desc": "Incremento de limpieza completa: de 107 a 117 unidades, es decir, 10 unidades adicionales.",
+          "fotos": [
+            "/images/actividades/fd99df4c-9ffb-4e5e-b80e-33fd4576c3cb.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "Santa Rosa - Carolina del Príncipe": [
@@ -2335,6 +2661,31 @@
           "fotos": [
             "/images/actividades/d4f46ba8-6a1d-45c2-8757-f094a9039f0b.jpg",
             "/images/actividades/7307a462-7ca6-4c65-bc90-89d46b20bb84.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqp8j7jd",
+      "fecha": "2026-06-22",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Demolición y reemplazo de tubería",
+          "desc": "Inicio de intervención en 7 puntos para demolición y reemplazo de tubería.",
+          "fotos": [
+            "/images/actividades/55a80364-cebe-4279-93ad-6ffabb425aaa.jpg"
+          ]
+        },
+        {
+          "nombre": "Intalacion de tubería",
+          "desc": "Se continúa con la instalacion de tuberias para otras transversales",
+          "fotos": [
+            "/images/actividades/68bcb5e0-1120-42c6-bae4-0dc1fd97c7f0.jpg",
+            "/images/actividades/53c321b3-76a9-489e-9699-bbb6a2fe2531.jpg"
           ]
         }
       ],
@@ -2485,6 +2836,36 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mqp6l7v6",
+      "fecha": "2026-06-22",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Limpieza de obras transversales",
+          "desc": "Avance semanal: 306,70 m. Avance acumulado: 1.107,54 m.",
+          "fotos": [
+            "/images/actividades/2890c7a3-5ebf-443a-9212-b8951f0ffe2d.jpg",
+            "/images/actividades/0ae6c9b0-2e9d-465c-a0b7-9bf4080bd81e.jpg"
+          ]
+        },
+        {
+          "nombre": "Conformación de vía",
+          "desc": "Se continuó con la recuperación del ancho de la vía y conformación de la calzada mediante uso de ripper, con posterior compactación del material.",
+          "fotos": [
+            "/images/actividades/dcf3ff00-539f-4b8c-9fa1-e1430b575975.jpg"
+          ]
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "El contratista continuó con actividades topográficas y se realizó recorrido para identificar, medir y verificar afectaciones en las obras de drenaje transversal",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "El Guayabo - El Salto - Partidas a Guadalupe": [],
@@ -2510,6 +2891,15 @@
           "fotos": []
         }
       ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqp8k04i",
+      "fecha": "2026-06-22",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [],
       "pendientes": [],
       "obs": ""
     }
