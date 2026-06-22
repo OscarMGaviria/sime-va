@@ -65,9 +65,9 @@ export function pctTiempoTranscurrido(fechaIni, plazoMeses, hoy = new Date()) {
 export function calcAvanceKm(vias) {
   if (!vias.length) return { pct: 0, intervenidos: 0, contractuales: 0, pendientes: 0 }
   const contractuales   = vias.reduce((s, v) => s + (v.km           || 0), 0)
-  const intervenidos    = vias.reduce((s, v) => s + (v.estabilizado || 0), 0)
+  const intervenidos    = vias.reduce((s, v) => s + (typeof v.estabilizado === 'number' ? v.estabilizado : (v.km || 0) * (v.avance || 0) / 100), 0)
   const pendientes      = contractuales - intervenidos
-  const pct             = contractuales > 0 ? (intervenidos / contractuales) * 100 : 0
+  const pct             = vias.reduce((s, v) => s + (v.avance || 0), 0) / vias.length
 
   return {
     pct:           Math.round(pct * 10) / 10,

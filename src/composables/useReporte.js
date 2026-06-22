@@ -2138,6 +2138,7 @@ function buildPptSeguimientoSlide(logoUrl, circuito, registros, cronData, avF, a
 
   const carouselId = 'carrusel_' + norm(circuito).replace(/[\W_]+/g, '')
   const actModalId = 'modal_act_' + norm(circuito).replace(/[\W_]+/g, '')
+  const actNavModalId = 'actNav_' + norm(circuito).replace(/[\W_]+/g, '')
 
   function actividadCard(act, color, bgColor) {
     const isEstab = /estabilizaci[oó]n/i.test(act.nombre ?? '')
@@ -2145,9 +2146,10 @@ function buildPptSeguimientoSlide(logoUrl, circuito, registros, cronData, avF, a
     const safeDesc = act.desc ? esc(act.desc).replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/[\r\n]+/g, '<br>') : ''
     const fotosArray = (act.fotos || []).map(fixUrl)
     
-    const fotosStr = fotosArray.map(url => `<img src=\\'${url}\\' style=\\'width:100%;height:180px;object-fit:cover;border-radius:8px;cursor:zoom-in;border:1px solid rgba(0,0,0,0.05)\\' onclick=\\'const mx=document.getElementById("modal_${carouselId}");const ix=document.getElementById("img_modal_${carouselId}");if(mx&&ix){ix.src="${url}";mx.style.display="flex";}\\'/>`).join('')
+    const fotosStr = fotosArray.map((url, i) => `<img src=\\'${url}\\' style=\\'width:100%;height:180px;object-fit:cover;border-radius:8px;cursor:zoom-in;border:1px solid rgba(0,0,0,0.05)\\' onclick=\\'openActNav_${actNavModalId}(${i})\\'/>` ).join('')
 
-    const onclickStr = `const m = document.getElementById('${actModalId}');if(m){document.getElementById('${actModalId}_title').innerHTML = '${safeName}';document.getElementById('${actModalId}_desc').innerHTML = '${safeDesc}';document.getElementById('${actModalId}_fotos').innerHTML = '${fotosStr}';m.style.display = 'flex';}`
+    const photosArrayLiteral = fotosArray.length ? `[${fotosArray.map(u => `'${u}'`).join(',')}]` : '[]'
+    const onclickStr = `window['_p_${actNavModalId}']=${photosArrayLiteral};const m = document.getElementById('${actModalId}');if(m){document.getElementById('${actModalId}_title').innerHTML = '${safeName}';document.getElementById('${actModalId}_desc').innerHTML = '${safeDesc}';document.getElementById('${actModalId}_fotos').innerHTML = '${fotosStr}';m.style.display = 'flex';}`
     const safeOnclick = onclickStr.replace(/"/g, '&quot;')
 
     let miniFotos = ''
@@ -2345,6 +2347,39 @@ function buildPptSeguimientoSlide(logoUrl, circuito, registros, cronData, avF, a
     </div>
   `
 
+  const actNavScript = `<img src="x" style="display:none" onerror="
+    if(window['_s_${actNavModalId}'])return;window['_s_${actNavModalId}']=true;
+    window['openActNav_${actNavModalId}']=function(idx){
+      var photos=window['_p_${actNavModalId}']||[];if(!photos.length)return;
+      idx=Math.max(0,Math.min(idx,photos.length-1));window['_i_${actNavModalId}']=idx;
+      var m=document.getElementById('${actNavModalId}'),img=document.getElementById('${actNavModalId}_img'),
+          ctr=document.getElementById('${actNavModalId}_ctr'),
+          pv=document.getElementById('${actNavModalId}_pv'),nx=document.getElementById('${actNavModalId}_nx');
+      if(img)img.src=photos[idx];
+      if(ctr)ctr.textContent=(idx+1)+' / '+photos.length;
+      if(pv){pv.style.opacity=idx>0?'1':'0.25';pv.style.pointerEvents=idx>0?'auto':'none';}
+      if(nx){nx.style.opacity=idx<photos.length-1?'1':'0.25';nx.style.pointerEvents=idx<photos.length-1?'auto':'none';}
+      if(m)m.style.display='flex';
+    };
+    document.addEventListener('keydown',function(e){
+      var m=document.getElementById('${actNavModalId}');if(!m||m.style.display==='none')return;
+      if(e.key==='ArrowRight'){e.preventDefault();window['openActNav_${actNavModalId}']((window['_i_${actNavModalId}']||0)+1);}
+      else if(e.key==='ArrowLeft'){e.preventDefault();window['openActNav_${actNavModalId}']((window['_i_${actNavModalId}']||0)-1);}
+      else if(e.key==='Escape'){m.style.display='none';}
+    });
+  "/>`
+
+  const actNavModalHtml = `
+    <div id="${actNavModalId}" onclick="if(event.target===this)this.style.display='none'" style="display:none;position:absolute;inset:0;z-index:199999;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center">
+      <button onclick="document.getElementById('${actNavModalId}').style.display='none'" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:36px;height:36px;font-size:22px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2">&times;</button>
+      <button id="${actNavModalId}_pv" onclick="window['openActNav_${actNavModalId}']((window['_i_${actNavModalId}']||0)-1)" style="position:absolute;left:16px;background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:52px;height:52px;font-size:32px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;transition:background 0.2s" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">&#8249;</button>
+      <img id="${actNavModalId}_img" src="" style="max-width:82%;max-height:82%;border-radius:12px;box-shadow:0 25px 50px rgba(0,0,0,0.8);object-fit:contain;border:3px solid rgba(255,255,255,0.12)" />
+      <button id="${actNavModalId}_nx" onclick="window['openActNav_${actNavModalId}']((window['_i_${actNavModalId}']||0)+1)" style="position:absolute;right:16px;background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:52px;height:52px;font-size:32px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;transition:background 0.2s" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">&#8250;</button>
+      <div id="${actNavModalId}_ctr" style="position:absolute;bottom:18px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.75);font-size:13px;font-weight:700;font-family:'Prompt',sans-serif;letter-spacing:0.1em;background:rgba(0,0,0,0.45);padding:4px 14px;border-radius:20px;white-space:nowrap"></div>
+    </div>
+    ${actNavScript}
+  `
+
   return `
   ${pulseStyle}
   <div id="${tabId}" class="ppt-slide" style="position:relative;overflow:hidden;font-family:'Prompt',sans-serif">
@@ -2365,6 +2400,7 @@ function buildPptSeguimientoSlide(logoUrl, circuito, registros, cronData, avF, a
     </div>
     ${actModalFullHtml}
     ${modalHtml}
+    ${actNavModalHtml}
   </div>`
 }
 
@@ -2445,12 +2481,13 @@ function buildPptSubregionSeguimientoSlide(logoUrl, subregion, circuits, geoFeat
     function actCard(act, color, badge) {
       const isEstab = /estabilizaci[oó]n/i.test(act.nombre ?? '')
       const fotos = (act.fotos ?? []).map(fixUrl)
-      
+      const fotosLiteral = `[${fotos.map(u => `'${u.replace(/'/g, '%27')}'`).join(',')}]`
+
       if (isEstab) {
-        const thumbs = fotos.map(u => {
+        const thumbs = fotos.map((u, i) => {
           const safeU = u.replace(/'/g, '%27')
           return `<div
-            onclick="(function(e){e.stopPropagation();var l=document.getElementById('${tabId}_lbx');var i=document.getElementById('${tabId}_lbx_img');if(l&&i){i.src='${safeU}';l.style.display='flex';}})(event)"
+            onclick="(function(e){e.stopPropagation();window['_lbxP_${tabId}']=${fotosLiteral};window['openLbx_${tabId}'](${i});})(event)"
             style="width:80px;height:80px;border-radius:8px;background:url('${safeU}') center/cover;border:2px solid #f59e0b50;flex-shrink:0;cursor:zoom-in;transition:transform .2s,box-shadow .2s"
             onmouseover="this.style.transform='scale(1.07)';this.style.boxShadow='0 4px 14px rgba(245,158,11,0.3)'"
             onmouseout="this.style.transform='';this.style.boxShadow=''"></div>`
@@ -2471,10 +2508,10 @@ function buildPptSubregionSeguimientoSlide(logoUrl, subregion, circuits, geoFeat
         </div>`
       }
 
-      const thumbs = fotos.map(u => {
+      const thumbs = fotos.map((u, i) => {
         const safeU = u.replace(/'/g, '%27')
         return `<div
-          onclick="(function(e){e.stopPropagation();var l=document.getElementById('${tabId}_lbx');var i=document.getElementById('${tabId}_lbx_img');if(l&&i){i.src='${safeU}';l.style.display='flex';}})(event)"
+          onclick="(function(e){e.stopPropagation();window['_lbxP_${tabId}']=${fotosLiteral};window['openLbx_${tabId}'](${i});})(event)"
           style="width:80px;height:80px;border-radius:8px;background:url('${safeU}') center/cover;border:2px solid ${color}30;flex-shrink:0;cursor:zoom-in;transition:transform .2s,box-shadow .2s"
           onmouseover="this.style.transform='scale(1.07)';this.style.boxShadow='0 4px 14px rgba(0,0,0,0.25)'"
           onmouseout="this.style.transform='';this.style.boxShadow=''"></div>`
@@ -2541,8 +2578,12 @@ function buildPptSubregionSeguimientoSlide(logoUrl, subregion, circuits, geoFeat
         <div id="${tabId}_actBody" style="max-height:580px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.2) transparent;padding:0"></div>
       </div>
       <!-- Lightbox de fotos -->
-      <div id="${tabId}_lbx" onclick="this.style.display='none'" style="display:none;position:absolute;inset:0;z-index:99999;background:rgba(0,0,0,0.92);backdrop-filter:blur(6px);align-items:center;justify-content:center;cursor:zoom-out">
-        <img id="${tabId}_lbx_img" src="" style="max-width:88%;max-height:88%;border-radius:14px;box-shadow:0 30px 60px rgba(0,0,0,1);object-fit:contain;pointer-events:none" />
+      <div id="${tabId}_lbx" onclick="if(event.target===this)this.style.display='none'" style="display:none;position:absolute;inset:0;z-index:99999;background:rgba(0,0,0,0.92);backdrop-filter:blur(6px);align-items:center;justify-content:center">
+        <button onclick="document.getElementById('${tabId}_lbx').style.display='none'" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:36px;height:36px;font-size:22px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2">&times;</button>
+        <button id="${tabId}_lbx_pv" onclick="window['openLbx_${tabId}']((window['_lbxI_${tabId}']||0)-1)" style="position:absolute;left:16px;background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:52px;height:52px;font-size:32px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;transition:background 0.2s" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">&#8249;</button>
+        <img id="${tabId}_lbx_img" src="" style="max-width:82%;max-height:82%;border-radius:14px;box-shadow:0 30px 60px rgba(0,0,0,1);object-fit:contain;pointer-events:none" />
+        <button id="${tabId}_lbx_nx" onclick="window['openLbx_${tabId}']((window['_lbxI_${tabId}']||0)+1)" style="position:absolute;right:16px;background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:52px;height:52px;font-size:32px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;transition:background 0.2s" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">&#8250;</button>
+        <div id="${tabId}_lbx_ctr" style="position:absolute;bottom:18px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.75);font-size:13px;font-weight:700;font-family:'Prompt',sans-serif;letter-spacing:0.1em;background:rgba(0,0,0,0.45);padding:4px 14px;border-radius:20px;white-space:nowrap"></div>
       </div>
     </div>`
 
@@ -2559,7 +2600,26 @@ function buildPptSubregionSeguimientoSlide(logoUrl, subregion, circuits, geoFeat
     items.forEach(function(el,i){el.style.animationDelay=(i*0.45)+'s';});
     modal.style.display='flex';
     modal.scrollTop=0;
-  }"/>`
+  };
+  window['openLbx_${tabId}']=function(idx){
+    var photos=window['_lbxP_${tabId}']||[];if(!photos.length)return;
+    idx=Math.max(0,Math.min(idx,photos.length-1));window['_lbxI_${tabId}']=idx;
+    var l=document.getElementById('${tabId}_lbx'),img=document.getElementById('${tabId}_lbx_img'),
+        ctr=document.getElementById('${tabId}_lbx_ctr'),
+        pv=document.getElementById('${tabId}_lbx_pv'),nx=document.getElementById('${tabId}_lbx_nx');
+    if(img)img.src=photos[idx];
+    if(ctr)ctr.textContent=(idx+1)+' / '+photos.length;
+    if(pv){pv.style.opacity=idx>0?'1':'0.25';pv.style.pointerEvents=idx>0?'auto':'none';}
+    if(nx){nx.style.opacity=idx<photos.length-1?'1':'0.25';nx.style.pointerEvents=idx<photos.length-1?'auto':'none';}
+    if(l)l.style.display='flex';
+  };
+  document.addEventListener('keydown',function(e){
+    var l=document.getElementById('${tabId}_lbx');if(!l||l.style.display==='none')return;
+    if(e.key==='ArrowRight'){e.preventDefault();window['openLbx_${tabId}']((window['_lbxI_${tabId}']||0)+1);}
+    else if(e.key==='ArrowLeft'){e.preventDefault();window['openLbx_${tabId}']((window['_lbxI_${tabId}']||0)-1);}
+    else if(e.key==='Escape'){l.style.display='none';}
+  });
+  "/>`
 
   let minDate = null;
   let maxDate = null;

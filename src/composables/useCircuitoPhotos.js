@@ -56,7 +56,23 @@ export function useCircuitoPhotos(circuitoRef) {
     try {
       const res = await fetch(`/api/circuito-photos/${encodeURIComponent(circuito)}`)
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      photos.value = await res.json()
+      const data = await res.json()
+      const isManifest = data && !('antes' in data || 'durante' in data || 'despues' in data)
+      const raw = isManifest ? (data[circuito] ?? { antes: [], durante: [], despues: [] }) : (data?.data ?? data)
+      
+      const mapUrls = (arr, tipo) => {
+        if (!Array.isArray(arr)) return []
+        return arr.map(img => {
+          if (img.startsWith('http') || img.startsWith('/')) return img
+          return `/images/circuitos/${encodeURIComponent(circuito)}/${tipo}/${encodeURIComponent(img)}`
+        })
+      }
+      
+      photos.value = {
+        antes:   mapUrls(raw?.antes, 'antes'),
+        durante: mapUrls(raw?.durante, 'durante'),
+        despues: mapUrls(raw?.despues, 'despues'),
+      }
     } catch (err) {
       error.value  = err.message
       photos.value = { antes: [], durante: [], despues: [] }

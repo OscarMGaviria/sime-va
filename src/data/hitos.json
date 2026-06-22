@@ -1691,6 +1691,24 @@
         }
       ],
       "obs": ""
+    },
+    {
+      "id": "mqpf5wji",
+      "fecha": "2026-06-22",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Topografia",
+          "desc": "El constructor continúa con el levantamiento de cotas batea y clave de las ODT ubicadas entre K4+690 y K13+690",
+          "fotos": [
+            "/images/actividades/d2a0a6d9-2257-4a35-aef6-47fd27125b25.jpg",
+            "/images/actividades/d9858dc2-81d0-4230-8113-5fca652b683d.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "Amalfi - Portachuelos - Santa Isabel": [
@@ -1735,6 +1753,21 @@
     {
       "id": "mqgrfpak",
       "fecha": "2026-06-16",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Sin avances de obra en la semana",
+          "desc": "",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqpfdsje",
+      "fecha": "2026-06-22",
       "frentes": [],
       "ejecutadas": [],
       "en_ejecucion": [
@@ -1895,6 +1928,32 @@
           "desc": "Avance semanal: 36 alcantarillas identificadas.",
           "fotos": [
             "/images/actividades/8e5a1cd2-38fa-4cc9-add6-80d791083d83.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mqpfba21",
+      "fecha": "2026-06-22",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Topográfia",
+          "desc": "Se continuó con el levantamiento topográfico final para el perfil de la vía hasta el K10+500. Cumplimiento de topografía: 50,30 %.",
+          "fotos": [
+            "/images/actividades/4f37ccf7-ce22-4949-9718-19f54440bf84.jpg",
+            "/images/actividades/82282790-915a-4c68-bb44-9c4951e68f36.jpg"
+          ]
+        },
+        {
+          "nombre": "Inventario de obras de drenaje transversal",
+          "desc": "Inventario finalizado entre K0+000 y K5+000. identificadas: 70 unidades. Requieren limpieza: 58 unidades. Cambio o traslado general: 12 unidades.",
+          "fotos": [
+            "/images/actividades/322dbbcf-ba35-4b3e-bd96-fdf2ffadf426.jpg",
+            "/images/actividades/6225f79e-b77f-4f52-8efa-645f8d3cfb13.jpg"
           ]
         }
       ],
@@ -2149,7 +2208,10 @@
         {
           "nombre": "Topografía",
           "desc": "El contratista continuó con actividades de levantamiento topográfico.",
-          "fotos": []
+          "fotos": [
+            "/images/actividades/ca2bfe0e-cccb-4e93-995b-f390c318b4a4.jpg",
+            "/images/actividades/82babf62-7247-435f-8b4f-5635f9053c89.jpg"
+          ]
         },
         {
           "nombre": "Obras de drenaje",
@@ -2350,11 +2412,6 @@
           ]
         },
         {
-          "nombre": "Reposición de obras transversales",
-          "desc": "8 transversales adicionales, pasando de 37 a 45 unidades.",
-          "fotos": []
-        },
-        {
           "nombre": "Topografía",
           "desc": "Trazado de niveles y bordes de vía en el sector K1+500",
           "fotos": [
@@ -2376,6 +2433,11 @@
             "/images/actividades/bcbcd49d-2460-4e1f-a7fd-3661cea52cda.jpg",
             "/images/actividades/9e26b4a8-7760-49b7-b342-8bc5c76de56c.jpg"
           ]
+        },
+        {
+          "nombre": "Reposición de obras transversales",
+          "desc": "8 transversales adicionales, pasando de 37 a 45 unidades.",
+          "fotos": []
         }
       ],
       "pendientes": [],
@@ -2573,6 +2635,18 @@
       "frentes": [],
       "ejecutadas": [],
       "en_ejecucion": [
+        {
+          "nombre": "Estabilización",
+          "desc": "Se inicio con tramo de prueba",
+          "fotos": [
+            "/images/actividades/93d32e70-a04c-4df9-b645-bb9d5b7b68fc.jpg",
+            "/images/actividades/d4d9026f-398d-430d-9527-f0a1360c3717.jpg",
+            "/images/actividades/15b30e03-acbe-4f52-93dd-d85a4535b9cd.jpg",
+            "/images/actividades/3750f7d2-0b45-432a-b6b1-75ed0a746a28.jpg",
+            "/images/actividades/ece38969-a7d2-4f56-b48d-b2742f16b851.jpg"
+          ],
+          "_editing": false
+        },
         {
           "nombre": "Reemplazo de obras transversales",
           "desc": "Instalación de 8 tuberías de 36”, para un acumulado de 35 tuberías de 36” instaladas.",
