@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
@@ -15,7 +15,9 @@ import {
   GitMerge,
   Train,
   ArrowRight,
-  Info
+  Info,
+  CheckSquare,
+  ClipboardList
 } from 'lucide-vue-next'
 
 const router = useRouter()
@@ -129,6 +131,28 @@ let airportMap = null
 let puentesMap = null
 const selectedPuenteHome = ref(null)
 let selectMarker = null
+let executionMarkers = []
+const bridgesList = ref([])
+const papsList = ref([])
+const selectedPuenteId = ref(null)
+const showPuentePhoto = ref(true)
+const showEnlargedPhoto = ref(false)
+
+function getPuenteSlug(name) {
+  if (!name) return ''
+  return name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // remove accents
+    .replace(/[^a-z0-9_]+/g, '_') // replace spaces and special chars with underscores
+    .replace(/^_+|_+$/g, '') // trim leading/trailing underscores
+    .replace(/__+/g, '_') // collapse multiple underscores
+}
+
+function getPuentePhotoUrl(name) {
+  if (!name) return ''
+  return `${import.meta.env.BASE_URL}images/puentes/${getPuenteSlug(name)}.jpg`
+}
 
 watch(activeInfoProject, (newProj) => {
   if (newProj && newProj.id === 'intercambio-aeropuerto') {
@@ -152,11 +176,26 @@ watch(activeInfoProject, (newProj) => {
       selectMarker.remove()
       selectMarker = null
     }
+    if (executionMarkers.length > 0) {
+      executionMarkers.forEach(m => m.remove())
+      executionMarkers = []
+    }
     selectedPuenteHome.value = null
+    selectedPuenteId.value = null
+    bridgesList.value = []
+    papsList.value = []
   }
 })
 
 watch(selectedPuenteHome, (val) => {
+  showPuentePhoto.value = true
+  showEnlargedPhoto.value = false
+  if (val) {
+    selectedPuenteId.value = val.Proyecto || null
+  } else {
+    selectedPuenteId.value = null
+  }
+
   if (selectMarker) {
     selectMarker.remove()
     selectMarker = null
@@ -171,7 +210,7 @@ watch(selectedPuenteHome, (val) => {
         <div class="pulse-ring"></div>
         <div class="pulse-center"></div>
       `
-      selectMarker = new maplibregl.Marker({ element: el })
+      selectMarker = new maplibregl.Marker({ element: el, anchor: 'center' })
         .setLngLat([lng, lat])
         .addTo(puentesMap)
 
@@ -181,6 +220,23 @@ watch(selectedPuenteHome, (val) => {
         duration: 1000
       })
     }
+  } else if (!val && puentesMap) {
+    // Volver el mapa a su estado inicial de Antioquia
+    puentesMap.fitBounds([[-77.192, 5.412], [-73.841, 8.905]], {
+      padding: 20,
+      duration: 1000
+    })
+  }
+})
+
+watch(selectedPuenteId, (newId) => {
+  if (!newId) {
+    selectedPuenteHome.value = null
+    return
+  }
+  const found = [...bridgesList.value, ...papsList.value].find(f => f.id === newId)
+  if (found) {
+    selectedPuenteHome.value = found.rawProperties
   }
 })
 
@@ -218,6 +274,15 @@ function initAirportMap() {
     airportMap.addControl(new maplibregl.NavigationControl(), 'top-right')
 
     airportMap.on('load', () => {
+      airportMap.resize()
+      airportMap.setCenter([-75.436024, 6.176055])
+      setTimeout(() => {
+        if (airportMap) {
+          airportMap.resize()
+          airportMap.setCenter([-75.436024, 6.176055])
+        }
+      }, 300)
+
       // Cargar la capa de municipios de Antioquia usando ruta con BASE_URL
       airportMap.addSource('municipios', {
         type: 'geojson',
@@ -364,13 +429,22 @@ function initPuentesMap() {
           }
         ]
       },
-      center: [-75.5812, 6.2442],
-      zoom: 7.8
+      bounds: [[-77.192, 5.412], [-73.841, 8.905]],
+      fitBoundsOptions: { padding: 20 }
     })
 
     puentesMap.addControl(new maplibregl.NavigationControl(), 'top-right')
 
     puentesMap.on('load', () => {
+      puentesMap.resize()
+      puentesMap.fitBounds([[-77.192, 5.412], [-73.841, 8.905]], { padding: 20, animate: false })
+      setTimeout(() => {
+        if (puentesMap) {
+          puentesMap.resize()
+          puentesMap.fitBounds([[-77.192, 5.412], [-73.841, 8.905]], { padding: 20, animate: false })
+        }
+      }, 300)
+
       puentesMap.addSource('municipios', {
         type: 'geojson',
         data: import.meta.env.BASE_URL + 'data/municipios.geojson'
@@ -437,105 +511,120 @@ function initPuentesMap() {
         mpioPopup.remove()
       })
 
-      const addSvgImage = (name, svgString) => {
-        return new Promise((resolve) => {
-          const img = new Image()
-          img.onload = () => {
-            const canvas = document.createElement('canvas')
-            canvas.width = 48
-            canvas.height = 48
-            const ctx = canvas.getContext('2d')
-            ctx.drawImage(img, 0, 0, 48, 48)
-            const imgData = ctx.getImageData(0, 0, 48, 48)
-            if (puentesMap && !puentesMap.hasImage(name)) {
-              puentesMap.addImage(name, imgData)
+      fetch(import.meta.env.BASE_URL + 'data/Puentes_PAP_Estructurados.geojson')
+        .then(res => res.json())
+        .then(geoRaw => {
+          if (!puentesMap) return
+
+          // Extract lists for dropdown with project type color emoji (green for bridges, blue for pap)
+          const featuresList = geoRaw.features.map((f, index) => {
+            const props = f.properties
+            const tipo = (props.Proyecto ?? '').toLowerCase().startsWith('pap') ? 'pap' : 'puente'
+            const colorEmoji = tipo === 'pap' ? '🔵' : '🟢'
+
+            return {
+              id: props.Proyecto || `struct-${index}`,
+              name: props.Proyecto || 'Proyecto sin nombre',
+              tipo: tipo,
+              municipio: props.Municipio || 'Antioquia',
+              emoji: colorEmoji,
+              rawProperties: props
             }
-            resolve()
-          }
-          img.onerror = () => resolve()
-          img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString)
-        })
-      }
+          })
 
-      const bridgeSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="46" fill="#ffcc00" stroke="#000000" stroke-width="4"/>
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#000000" stroke-width="2"/>
-        <path d="M 30,25 L 40,25 L 40,32 L 47,39 L 47,61 L 40,68 L 40,75 L 30,75 L 30,68 L 37,61 L 37,39 L 30,32 Z" fill="#000000"/>
-        <path d="M 70,25 L 60,25 L 60,32 L 53,39 L 53,61 L 60,68 L 60,75 L 70,75 L 70,68 L 63,61 L 63,39 L 70,32 Z" fill="#000000"/>
-      </svg>`
+          bridgesList.value = featuresList.filter(f => f.tipo === 'puente').sort((a, b) => a.name.localeCompare(b.name))
+          papsList.value = featuresList.filter(f => f.tipo === 'pap').sort((a, b) => a.name.localeCompare(b.name))
 
-      const papSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="46" fill="#ffcc00" stroke="#000000" stroke-width="4"/>
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#000000" stroke-width="2"/>
-        <g clip-path="url(#inner-clip)">
-          <clipPath id="inner-clip">
-            <circle cx="50" cy="50" r="39"/>
-          </clipPath>
-          <rect x="10" y="63" width="80" height="6" fill="#000000"/>
-          <path d="M 57,20 L 59,25 L 57,32 L 60,39 L 58,47 L 60,55 L 58,62 L 58,68 L 90,68 L 90,20 Z" fill="#000000"/>
-          <polygon points="54,28 56,29 55,32 53,31" fill="#000000"/>
-          <polygon points="51,34 55,33 54,37 52,37" fill="#000000"/>
-          <polygon points="53,40 55,42 53,45 51,43" fill="#000000"/>
-          <polygon points="52,48 54,49 53,52 51,51" fill="#000000"/>
-          <rect x="27" y="60" width="4" height="4" fill="#000000" rx="1"/>
-          <rect x="45" y="60" width="4" height="4" fill="#000000" rx="1"/>
-          <path d="M 32,44 L 44,44 L 48,51 L 51,51 L 51,60 L 25,60 L 25,51 L 28,51 Z" fill="#000000"/>
-          <polygon points="33,46 43,46 45,50 31,50" fill="#ffcc00"/>
-          <circle cx="29" cy="55" r="2" fill="#ffcc00"/>
-          <circle cx="47" cy="55" r="2" fill="#ffcc00"/>
-        </g>
-      </svg>`
-
-      Promise.all([
-        addSvgImage('bridge-icon', bridgeSvg),
-        addSvgImage('pap-icon', papSvg)
-      ]).then(() => {
-        if (!puentesMap) return
-        fetch(import.meta.env.BASE_URL + 'data/Puentes_PAP_Estructurados.geojson')
-          .then(res => res.json())
-          .then(geoRaw => {
-            if (!puentesMap) return
-            const geoData = {
-              ...geoRaw,
-              features: geoRaw.features.map(f => ({
+          const geoData = {
+            ...geoRaw,
+            features: geoRaw.features.map(f => {
+              const props = f.properties
+              const tipo = (props.Proyecto ?? '').toLowerCase().startsWith('pap') ? 'pap' : 'puente'
+              const estado = (props.Estado || '').toLowerCase()
+              const enEjecucion = estado.includes('ejecuc')
+              return {
                 ...f,
                 properties: {
-                  ...f.properties,
-                  _tipo: (f.properties.Proyecto ?? '').toLowerCase().startsWith('pap') ? 'pap' : 'puente',
-                },
-              })),
+                  ...props,
+                  _tipo: tipo,
+                  _enEjecucion: enEjecucion
+                }
+              }
+            }),
+          }
+
+          puentesMap.addSource('puentes-pap', {
+            type: 'geojson',
+            data: geoData
+          })
+
+          puentesMap.addLayer({
+            id: 'pap-layer',
+            type: 'circle',
+            source: 'puentes-pap',
+            filter: ['==', ['get', '_tipo'], 'pap'],
+            paint: {
+              'circle-radius': ['interpolate', ['linear'], ['zoom'], 7, 6.875, 12, 11.25],
+              'circle-color': [
+                'case',
+                ['get', '_enEjecucion'],
+                '#1e40af', // Stronger blue for execution
+                '#3b82f6'  // Softer blue for others
+              ],
+              'circle-stroke-width': 2,
+              'circle-stroke-color': '#ffffff',
+              'circle-opacity': 0.95,
+            },
+          })
+
+          puentesMap.addLayer({
+            id: 'puentes-layer',
+            type: 'circle',
+            source: 'puentes-pap',
+            filter: ['==', ['get', '_tipo'], 'puente'],
+            paint: {
+              'circle-radius': ['interpolate', ['linear'], ['zoom'], 7, 6.875, 12, 11.25],
+              'circle-color': [
+                'case',
+                ['get', '_enEjecucion'],
+                '#047857', // Stronger green for execution
+                '#10b981'  // Softer green for others
+              ],
+              'circle-stroke-width': 2,
+              'circle-stroke-color': '#ffffff',
+              'circle-opacity': 0.95,
+            },
+          })
+
+          // Remove any existing execution markers first
+          if (executionMarkers.length > 0) {
+            executionMarkers.forEach(m => m.remove())
+            executionMarkers = []
+          }
+
+          geoRaw.features.forEach(f => {
+            const props = f.properties
+            const state = (props.Estado || '').toLowerCase()
+            if (state.includes('ejecuc')) {
+              if (f.geometry && f.geometry.coordinates) {
+                const lng = f.geometry.coordinates[0]
+                const lat = f.geometry.coordinates[1]
+                if (!isNaN(lat) && !isNaN(lng)) {
+                  const tipo = (props.Proyecto ?? '').toLowerCase().startsWith('pap') ? 'pap' : 'puente'
+                  const colorClass = tipo === 'pap' ? 'exec-pulse-ring--pap' : 'exec-pulse-ring--bridge'
+
+                  const pulseEl = document.createElement('div')
+                  pulseEl.className = 'execution-pulse-marker'
+                  pulseEl.innerHTML = `<div class="exec-pulse-ring ${colorClass}"></div>`
+                  
+                  const marker = new maplibregl.Marker({ element: pulseEl, anchor: 'center' })
+                    .setLngLat([lng, lat])
+                  .addTo(puentesMap)
+                executionMarkers.push(marker)
+              }
             }
-
-            puentesMap.addSource('puentes-pap', {
-              type: 'geojson',
-              data: geoData
-            })
-
-            puentesMap.addLayer({
-              id: 'pap-layer',
-              type: 'symbol',
-              source: 'puentes-pap',
-              filter: ['==', ['get', '_tipo'], 'pap'],
-              layout: {
-                'icon-image': 'pap-icon',
-                'icon-size': ['interpolate', ['linear'], ['zoom'], 7, 0.9, 12, 1.4],
-                'icon-allow-overlap': true,
-                'icon-ignore-placement': true,
-              },
-            })
-
-            puentesMap.addLayer({
-              id: 'puentes-layer',
-              type: 'symbol',
-              source: 'puentes-pap',
-              filter: ['==', ['get', '_tipo'], 'puente'],
-              layout: {
-                'icon-image': 'bridge-icon',
-                'icon-size': ['interpolate', ['linear'], ['zoom'], 7, 0.9, 12, 1.4],
-                'icon-allow-overlap': true,
-                'icon-ignore-placement': true,
-              },
-            })
+          }
+        })
 
             let _justClickedBridgeHome = false
 
@@ -582,7 +671,6 @@ function initPuentesMap() {
           .catch(err => console.error('[SIMEVA] Error cargando GeoJSON en inicio:', err))
       })
     })
-  })
 }
 
 const formatCOP = v => v != null ? new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(v) : '—'
@@ -596,11 +684,43 @@ function statusClass(status) {
   return 'bp-status--default'
 }
 
+function onModalEnter() {
+  if (activeInfoProject.value) {
+    if (activeInfoProject.value.id === 'intercambio-aeropuerto' && airportMap) {
+      airportMap.resize()
+      airportMap.setCenter([-75.436024, 6.176055])
+    } else if (activeInfoProject.value.id === 'puentes' && puentesMap) {
+      puentesMap.resize()
+      puentesMap.fitBounds([[-77.192, 5.412], [-73.841, 8.905]], { padding: 20, animate: false })
+    }
+  }
+}
+
 function onLoaderLeave() {
   showCards.value = true
 }
 
+const handleKeyDown = (e) => {
+  if (e.key === 'Escape') {
+    if (showEnlargedPhoto.value) {
+      showEnlargedPhoto.value = false
+      return
+    }
+    if (activeInfoProject.value) {
+      if (activeInfoProject.value.id === 'puentes') {
+        if (selectedPuenteHome.value) {
+          selectedPuenteHome.value = null
+        }
+      } else {
+        activeInfoProject.value = null
+      }
+    }
+  }
+}
+
 onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown)
+
   const startTime = Date.now()
   let finished = false
   const triggerShow = () => {
@@ -629,6 +749,10 @@ onMounted(() => {
     const remainingTime = Math.max(0, 700 - elapsedTime)
     setTimeout(triggerShow, remainingTime)
   })
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyDown)
 })
 
 function handleCardClick(proj) {
@@ -750,7 +874,7 @@ function handleCardClick(proj) {
     </main>
 
     <!-- ── Modal Ficha Técnica (Megaproyectos en diseño/desarrollo) ── -->
-    <Transition name="modal-fade">
+    <Transition name="modal-fade" @after-enter="onModalEnter">
       <div v-if="activeInfoProject" class="modal-overlay" @click.self="activeInfoProject = null">
         
         <!-- Especial para Intercambio Aeropuerto (Mapa en pantalla casi completa con Header y Bordes Rectos) -->
@@ -810,20 +934,74 @@ function handleCardClick(proj) {
           
           <!-- Contenido del Modal (Mapa + Barra Lateral) -->
           <div class="airport-modal-content">
-            <div id="puentes-map-container" class="airport-map-canvas"></div>
+            <div style="position: relative; flex: 1; height: 100%;">
+              <div id="puentes-map-container" class="airport-map-canvas"></div>
+              
+              <!-- Dropdown Selector overlay -->
+              <div class="map-dropdown-container">
+                <select v-model="selectedPuenteId" class="map-select">
+                  <option :value="null">🔍 Seleccionar Puente o PAP...</option>
+                  <optgroup label="Puentes Vehiculares">
+                    <option v-for="item in bridgesList" :key="item.id" :value="item.id">
+                      {{ item.emoji }} {{ item.name }} ({{ item.municipio }})
+                    </option>
+                  </optgroup>
+                  <optgroup label="Puntos Críticos (PAP)">
+                    <option v-for="item in papsList" :key="item.id" :value="item.id">
+                      {{ item.emoji }} {{ item.name }} ({{ item.municipio }})
+                    </option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
             
             <div class="airport-map-sidebar">
-              <span class="modal-badge">{{ activeInfoProject.badge }}</span>
-              
               <!-- Si no hay puente seleccionado: Vista general de Puentes -->
               <div v-if="!selectedPuenteHome" style="display: contents;">
-                <p class="airport-modal-desc">{{ activeInfoProject.desc }}</p>
-                
-                <div class="airport-modal-stats">
-                  <div v-for="(st, idx) in activeInfoProject.stats" :key="idx" class="airport-stat-card">
-                    <span class="airport-stat-val">{{ st.val }}</span>
-                    <span class="airport-stat-lbl">{{ st.label }}</span>
+                <div class="summary-section">
+                  <div class="summary-header">
+                    <div class="summary-title-bar">En Resumen</div>
                   </div>
+                  
+                  <p class="summary-intro-text">
+                    A la fecha se han revisado, observado, viabilizado o estructurado <strong>62 puentes y PAP</strong> ...
+                  </p>
+
+                  <div class="summary-cards-container">
+                    <!-- Viabilizado -->
+                    <div class="summary-row">
+                      <div class="summary-icon-col">
+                        <CheckSquare class="summary-icon" :size="20" />
+                        <span class="summary-icon-label">Viabilizado</span>
+                      </div>
+                      <div class="summary-values-col">
+                        <span class="summary-badge summary-badge--green-dark">14 Proyectos</span>
+                        <span class="summary-badge summary-badge--green-light">109,8 mil millones</span>
+                      </div>
+                    </div>
+
+                    <!-- En Ajuste -->
+                    <div class="summary-row">
+                      <div class="summary-icon-col">
+                        <ClipboardList class="summary-icon" :size="20" />
+                        <span class="summary-icon-label">En Ajuste</span>
+                      </div>
+                      <div class="summary-values-col">
+                        <span class="summary-badge summary-badge--green-dark">15 Puentes</span>
+                        <span class="summary-badge summary-badge--green-light">58 mil millones</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Total Box -->
+                  <div class="summary-total-box">
+                    <div class="summary-total-content">
+                      <div class="total-amount">$ 167.8 mil millones*</div>
+                      <div class="total-projects">29 Proyectos</div>
+                    </div>
+                  </div>
+
+                  <div class="summary-footnote">* Valores estimados de inversión.</div>
                 </div>
 
                 <div class="airport-modal-notice" style="margin-top: auto; margin-bottom: 24px;">
@@ -876,6 +1054,17 @@ function handleCardClick(proj) {
                     <span style="font-size: 12px; color: #64748b; font-weight: 500;">Observación</span>
                     <span style="font-size: 12.5px; color: #475569; background: #f8fafc; padding: 8px 10px; border-radius: 6px; border: 1px dashed #cbd5e1; word-break: break-word;">{{ selectedPuenteHome.Obs_coord }}</span>
                   </div>
+                </div>
+
+                <!-- Contenedor premium para foto asociada si existe y se carga con éxito (va después de la información) -->
+                <div class="bp-photo-wrapper" v-if="showPuentePhoto" @click="showEnlargedPhoto = true" style="width: 100%; height: 160px; border-radius: 8px; overflow: hidden; margin-bottom: 16px; border: 1px solid #e2e8f0; background: #f1f5f9; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer;">
+                  <img 
+                    :src="getPuentePhotoUrl(selectedPuenteHome.Proyecto)" 
+                    class="bp-photo" 
+                    @error="showPuentePhoto = false" 
+                    alt="Foto del proyecto" 
+                    style="width: 100%; height: 100%; object-fit: cover;"
+                  />
                 </div>
 
                 <button class="btn-airport-close" @click="selectedPuenteHome = null" style="background: #475569; margin-top: auto; width: 100%;">
@@ -932,6 +1121,15 @@ function handleCardClick(proj) {
     <!-- Logo Flotante Animado (A Toda Máquina) -->
     <div class="floating-atm-logo">
       <img :src="baseUrl + 'A toda maquina.png'" alt="A Toda Máquina" />
+    </div>
+
+    <!-- Lightbox Premium para ampliar la foto del puente/PAP -->
+    <div v-if="showEnlargedPhoto && selectedPuenteHome" class="bp-lightbox-overlay" @click="showEnlargedPhoto = false">
+      <div class="bp-lightbox-content" @click.stop>
+        <button class="bp-lightbox-close" @click="showEnlargedPhoto = false">✕</button>
+        <img :src="getPuentePhotoUrl(selectedPuenteHome.Proyecto)" class="bp-lightbox-image" alt="Foto ampliada del proyecto" />
+        <div class="bp-lightbox-caption">{{ selectedPuenteHome.Proyecto }}</div>
+      </div>
     </div>
 
     <!-- Footer de página -->
@@ -2096,6 +2294,222 @@ function handleCardClick(proj) {
   background: #f1f5f9;
   color: #475569;
 }
+
+/* Estilos para el panel de resumen de Puentes */
+.summary-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.summary-header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.summary-title-bar {
+  background-color: #0b5640;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 800;
+  padding: 6px 20px;
+  border-radius: 0 20px 20px 0;
+  margin-left: -32px;
+  box-shadow: 0 4px 6px rgba(11, 86, 64, 0.15);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.summary-intro-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #334155;
+  margin: 0;
+}
+
+.summary-intro-text strong {
+  color: #0b5640;
+  font-weight: 800;
+}
+
+.summary-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+}
+
+.summary-row {
+  display: grid;
+  grid-template-columns: 85px 1fr;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 8px 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.summary-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.summary-icon-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-right: 1px solid #e2e8f0;
+  padding-right: 10px;
+}
+
+.summary-icon {
+  color: #0b5640;
+}
+
+.summary-icon-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.summary-values-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 12px;
+}
+
+.summary-badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 6px;
+  text-align: center;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.summary-badge--green-dark {
+  background-color: #0c3c26;
+  color: #ffffff;
+}
+
+.summary-badge--green-light {
+  background-color: #a2d399;
+  color: #0b2e1b;
+}
+
+.summary-total-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: linear-gradient(135deg, #0b5640 0%, #073527 100%);
+  color: #ffffff;
+  padding: 14px 18px;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(11, 86, 64, 0.2);
+}
+
+.summary-total-box::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 70px;
+  height: 70px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 80%);
+  border-radius: 50%;
+}
+
+.summary-total-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.total-amount {
+  font-size: 19px;
+  font-weight: 950;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.total-projects {
+  font-size: 12px;
+  font-weight: 600;
+  color: #a7f3d0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.summary-footnote {
+  font-size: 10.5px;
+  color: #64748b;
+  font-style: italic;
+}
+
+/* Estilos para el selector de mapa desplegable */
+.map-dropdown-container {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  width: 320px;
+  max-width: calc(100% - 32px);
+  filter: drop-shadow(0 4px 12px rgba(11, 86, 64, 0.15));
+}
+
+.map-select {
+  width: 100%;
+  padding: 10px 14px;
+  font-family: 'Prompt', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e293b;
+  background-color: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 36px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.map-select:focus {
+  border-color: #0b5640;
+  box-shadow: 0 0 0 3px rgba(11, 86, 64, 0.15);
+}
+
+.map-select optgroup {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  background: #f8fafc;
+}
+
+.map-select option {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #1e293b;
+  background: #ffffff;
+  padding: 8px;
+}
 </style>
 
 <style>
@@ -2144,9 +2558,9 @@ function handleCardClick(proj) {
 }
 
 .selected-bridge-pulse {
-  position: relative;
-  width: 38px;
-  height: 38px;
+  position: absolute;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2180,5 +2594,129 @@ function handleCardClick(proj) {
     transform: scale(1.6);
     opacity: 0;
   }
+}
+.execution-pulse-marker {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.execution-pulse-marker .exec-pulse-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  animation: execPulse 2s infinite ease-out;
+  box-sizing: border-box;
+}
+
+.exec-pulse-ring--bridge {
+  border: 2.5px solid #047857;
+}
+
+.exec-pulse-ring--pap {
+  border: 2.5px solid #1e40af;
+}
+
+@keyframes execPulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(2.0);
+    opacity: 0;
+  }
+}
+
+/* ── Estilos Premium de Hover para Foto y Lightbox de Ampliación ── */
+.bp-photo-wrapper {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.bp-photo-wrapper:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.bp-lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: bp-fadeIn 0.2s ease-out;
+}
+
+.bp-lightbox-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.bp-lightbox-image {
+  max-width: 100%;
+  max-height: 75vh;
+  border-radius: 12px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  object-fit: contain;
+  animation: bp-zoomIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.bp-lightbox-close {
+  position: absolute;
+  top: -48px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.bp-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.1);
+}
+
+.bp-lightbox-caption {
+  font-family: 'Prompt', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+@keyframes bp-fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes bp-zoomIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 </style>

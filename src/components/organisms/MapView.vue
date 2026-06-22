@@ -108,11 +108,23 @@ const formatCOP = v => v != null ? new Intl.NumberFormat('es-CO', { style: 'curr
 
 function statusClass(status) {
   if (!status) return 'bp-status--default'
-  const norm = status.toLowerCase()
-  if (norm.includes('aprobado')) return 'bp-status--approved'
-  if (norm.includes('viabilidad')) return 'bp-status--pending'
-  if (norm.includes('presentación') || norm.includes('presentacion')) return 'bp-status--info'
+  const n = status.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+  if (n.includes('aprobado')) return 'bp-status--approved'
+  if (n.includes('ejecucion') || n.includes('ejecución')) return 'bp-status--exec'
+  if (n.includes('contratado') || n.includes('contrato')) return 'bp-status--contracted'
+  if (n.includes('viabilidad')) return 'bp-status--pending'
+  if (n.includes('presentacion') || n.includes('presentación')) return 'bp-status--info'
   return 'bp-status--default'
+}
+
+const BASE_URL = import.meta.env.BASE_URL
+
+function bridgePhotoUrl(proyecto) {
+  if (!proyecto) return null
+  const slug = proyecto.toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '')
+  return `${BASE_URL}images/puentes/${slug}.jpg`
 }
 
 
@@ -378,6 +390,20 @@ onUnmounted(() => window.removeEventListener('keydown', _onGlobalKey))
         <button class="bp-close" @click="selectedPuente = null" title="Cerrar panel">✕</button>
       </div>
 
+      <!-- Foto del puente -->
+      <div class="bp-photo-wrap" :key="selectedPuente.Proyecto">
+        <img
+          :src="bridgePhotoUrl(selectedPuente.Proyecto)"
+          class="bp-photo"
+          @error="$event.target.closest('.bp-photo-wrap').classList.add('bp-photo-wrap--empty')"
+          alt=""
+        />
+        <div class="bp-photo-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline stroke-linecap="round" stroke-linejoin="round" points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Sin foto disponible</span>
+        </div>
+      </div>
+
       <div class="bp-body">
         <div class="bp-section">
           <div class="bp-section-title">Ubicación</div>
@@ -398,11 +424,17 @@ onUnmounted(() => window.removeEventListener('keydown', _onGlobalKey))
           <div class="bp-grid">
             <div class="bp-item">
               <span class="bp-label">Longitud</span>
-              <span class="bp-val">{{ selectedPuente.Longitud_m ? `${selectedPuente.Longitud_m} m` : '—' }}</span>
+              <span class="bp-val">{{ selectedPuente.Longitud_m && selectedPuente.Longitud_m !== '-' ? `${selectedPuente.Longitud_m} m` : '—' }}</span>
             </div>
             <div class="bp-item">
               <span class="bp-label">Costo Total</span>
-              <span class="bp-val">{{ formatCOP(selectedPuente.Costo_tota) }}</span>
+              <span class="bp-val">{{ formatCOP(selectedPuente.Costo_total) }}</span>
+            </div>
+          </div>
+          <div class="bp-grid bp-grid--single" v-if="selectedPuente.BPIN">
+            <div class="bp-item">
+              <span class="bp-label">BPIN</span>
+              <span class="bp-val bp-bpin">{{ selectedPuente.BPIN }}</span>
             </div>
           </div>
           <div class="bp-grid bp-grid--single">
@@ -421,24 +453,69 @@ onUnmounted(() => window.removeEventListener('keydown', _onGlobalKey))
           </div>
         </div>
 
-        <div class="bp-section">
-          <div class="bp-section-title">Coordenadas y Observación</div>
-          <div class="bp-grid">
-            <div class="bp-item">
-              <span class="bp-label">Latitud</span>
-              <span class="bp-val">{{ selectedPuente.Latitud }}</span>
+        <!-- Barras de avance (solo si hay datos) -->
+        <div class="bp-section" v-if="selectedPuente.Av_fisico != null || selectedPuente.Av_financiero != null">
+          <div class="bp-section-title">Avance a Junio 2025</div>
+          <div class="bp-progress-group">
+            <div class="bp-progress-row">
+              <div class="bp-progress-header">
+                <span class="bp-progress-label">Físico</span>
+                <span class="bp-progress-pct">{{ selectedPuente.Av_fisico ?? 0 }}%</span>
+              </div>
+              <div class="bp-progress-bar">
+                <div class="bp-progress-fill bp-progress-fill--fisico" :style="{ width: (selectedPuente.Av_fisico ?? 0) + '%' }"></div>
+              </div>
             </div>
-            <div class="bp-item">
-              <span class="bp-label">Longitud</span>
-              <span class="bp-val">{{ selectedPuente.Longitud }}</span>
+            <div class="bp-progress-row">
+              <div class="bp-progress-header">
+                <span class="bp-progress-label">Financiero</span>
+                <span class="bp-progress-pct">{{ selectedPuente.Av_financiero ?? 0 }}%</span>
+              </div>
+              <div class="bp-progress-bar">
+                <div class="bp-progress-fill bp-progress-fill--financiero" :style="{ width: (selectedPuente.Av_financiero ?? 0) + '%' }"></div>
+              </div>
             </div>
           </div>
-          <div class="bp-grid bp-grid--single" v-if="selectedPuente.Obs_coord">
+        </div>
+
+        <div class="bp-section" v-if="selectedPuente.Obs_coord">
+          <div class="bp-section-title">Observación</div>
+          <div class="bp-grid bp-grid--single">
             <div class="bp-item">
-              <span class="bp-label">Observación</span>
               <span class="bp-val bp-obs">{{ selectedPuente.Obs_coord }}</span>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards de resumen puentes/PAP -->
+    <div v-if="store.currentProject === 'puentes'" class="bp-summary-bar">
+      <div class="bp-summary-card bp-summary-card--green">
+        <div class="bp-summary-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </div>
+        <div class="bp-summary-content">
+          <div class="bp-summary-label">Viabilizados</div>
+          <div class="bp-summary-value">14 Proyectos</div>
+          <div class="bp-summary-sub">109,8 mil millones</div>
+        </div>
+      </div>
+      <div class="bp-summary-card bp-summary-card--amber">
+        <div class="bp-summary-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </div>
+        <div class="bp-summary-content">
+          <div class="bp-summary-label">En Ajuste</div>
+          <div class="bp-summary-value">15 Puentes</div>
+          <div class="bp-summary-sub">58 mil millones</div>
+        </div>
+      </div>
+      <div class="bp-summary-card bp-summary-card--total">
+        <div class="bp-summary-content">
+          <div class="bp-summary-label">Total invertido</div>
+          <div class="bp-summary-value bp-summary-value--big">$167,8 mil M</div>
+          <div class="bp-summary-sub">29 proyectos · 62 puentes y PAPs</div>
         </div>
       </div>
     </div>
@@ -1473,6 +1550,14 @@ onUnmounted(() => window.removeEventListener('keydown', _onGlobalKey))
   background: #ecfdf5;
   color: #059669;
 }
+.bp-status--exec {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+.bp-status--contracted {
+  background: #eff6ff;
+  color: #2563eb;
+}
 .bp-status--pending {
   background: #fffbeb;
   color: #d97706;
@@ -1486,12 +1571,132 @@ onUnmounted(() => window.removeEventListener('keydown', _onGlobalKey))
   color: #4b5563;
 }
 
+.bp-bpin {
+  font-family: monospace;
+  font-size: 12px;
+  color: #6b7280;
+  letter-spacing: 0.05em;
+}
+
 .bp-obs {
   font-weight: 500;
   font-size: 12.5px;
   color: #374151;
   line-height: 1.4;
 }
+
+/* ── Foto del puente ── */
+.bp-photo-wrap {
+  position: relative;
+  height: 160px;
+  overflow: hidden;
+  background: #f3f4f6;
+  flex-shrink: 0;
+}
+.bp-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.bp-photo-placeholder {
+  display: none;
+  position: absolute;
+  inset: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #9ca3af;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.bp-photo-wrap--empty .bp-photo { display: none; }
+.bp-photo-wrap--empty .bp-photo-placeholder { display: flex; }
+
+/* ── Barras de avance ── */
+.bp-progress-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.bp-progress-row { display: flex; flex-direction: column; gap: 5px; }
+.bp-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.bp-progress-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #4b5563;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.bp-progress-pct {
+  font-size: 13px;
+  font-weight: 800;
+  color: #111827;
+}
+.bp-progress-bar {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 99px;
+  overflow: hidden;
+}
+.bp-progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.bp-progress-fill--fisico { background: linear-gradient(90deg, #0b5640, #16a34a); }
+.bp-progress-fill--financiero { background: linear-gradient(90deg, #1d4ed8, #3b82f6); }
+
+/* ── Cards de resumen ── */
+.bp-summary-bar {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 20;
+  pointer-events: auto;
+}
+.bp-summary-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  font-family: 'Prompt', sans-serif;
+  white-space: nowrap;
+}
+.bp-summary-card--green {
+  background: rgba(11, 86, 64, 0.88);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.bp-summary-card--amber {
+  background: rgba(180, 83, 9, 0.88);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.bp-summary-card--total {
+  background: rgba(255,255,255,0.92);
+  color: #0b5640;
+  border: 2px solid rgba(11, 86, 64, 0.25);
+}
+.bp-summary-icon { opacity: 0.85; flex-shrink: 0; }
+.bp-summary-content { display: flex; flex-direction: column; gap: 1px; }
+.bp-summary-label { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.75; }
+.bp-summary-value { font-size: 15px; font-weight: 800; line-height: 1.2; }
+.bp-summary-value--big { font-size: 17px; }
+.bp-summary-sub { font-size: 10px; font-weight: 500; opacity: 0.7; }
 
 /* Slide Transition */
 .slide-panel-enter-active {
