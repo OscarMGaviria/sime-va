@@ -149,6 +149,41 @@ const slides = [
 
 const currentSlideIndex = ref(0)
 const showPresentation = ref(false)
+const isPuentesVisible = ref(true)
+const isPapsVisible = ref(true)
+
+function toggleLayer(type) {
+  if (!puentesMap) return
+  if (type === 'puente') {
+    isPuentesVisible.value = !isPuentesVisible.value
+    puentesMap.setLayoutProperty('puentes-layer', 'visibility', isPuentesVisible.value ? 'visible' : 'none')
+    executionMarkers.forEach(marker => {
+      if (marker._tipo === 'puente') {
+        marker.getElement().style.display = isPuentesVisible.value ? '' : 'none'
+      }
+    })
+    if (!isPuentesVisible.value && selectedPuenteHome.value) {
+      const isPap = (selectedPuenteHome.value.Proyecto ?? '').toLowerCase().startsWith('pap')
+      if (!isPap) {
+        selectedPuenteHome.value = null
+      }
+    }
+  } else if (type === 'pap') {
+    isPapsVisible.value = !isPapsVisible.value
+    puentesMap.setLayoutProperty('pap-layer', 'visibility', isPapsVisible.value ? 'visible' : 'none')
+    executionMarkers.forEach(marker => {
+      if (marker._tipo === 'pap') {
+        marker.getElement().style.display = isPapsVisible.value ? '' : 'none'
+      }
+    })
+    if (!isPapsVisible.value && selectedPuenteHome.value) {
+      const isPap = (selectedPuenteHome.value.Proyecto ?? '').toLowerCase().startsWith('pap')
+      if (isPap) {
+        selectedPuenteHome.value = null
+      }
+    }
+  }
+}
 
 function openPresentation() {
   currentSlideIndex.value = 0
@@ -209,6 +244,8 @@ watch(activeInfoProject, (newProj) => {
       executionMarkers.forEach(m => m.remove())
       executionMarkers = []
     }
+    isPuentesVisible.value = true
+    isPapsVisible.value = true
     selectedPuenteHome.value = null
     selectedPuenteId.value = null
     bridgesList.value = []
@@ -649,8 +686,9 @@ function initPuentesMap() {
                   
                   const marker = new maplibregl.Marker({ element: pulseEl, anchor: 'center' })
                     .setLngLat([lng, lat])
-                  .addTo(puentesMap)
-                executionMarkers.push(marker)
+                    .addTo(puentesMap)
+                  marker._tipo = tipo
+                  executionMarkers.push(marker)
               }
             }
           }
@@ -991,6 +1029,29 @@ function handleCardClick(proj) {
                   </optgroup>
                 </select>
               </div>
+
+              <!-- Leyenda interactiva (Bottom Right) -->
+              <div class="map-legend-container">
+                <div class="legend-title">Capas del Mapa</div>
+                <div class="legend-items">
+                  <div 
+                    class="legend-item" 
+                    :class="{ 'legend-item--hidden': !isPuentesVisible }"
+                    @click="toggleLayer('puente')"
+                  >
+                    <span class="legend-color-dot color-bridge"></span>
+                    <span class="legend-label">Puentes Vehiculares</span>
+                  </div>
+                  <div 
+                    class="legend-item" 
+                    :class="{ 'legend-item--hidden': !isPapsVisible }"
+                    @click="toggleLayer('pap')"
+                  >
+                    <span class="legend-color-dot color-pap"></span>
+                    <span class="legend-label">Puntos Críticos (PAP)</span>
+                  </div>
+                </div>
+              </div>
             </div>
             
             <div class="airport-map-sidebar">
@@ -1183,11 +1244,14 @@ function handleCardClick(proj) {
         <button class="presentation-close-btn" @click="showPresentation = false">✕</button>
         
         <div class="presentation-slide-container">
-          <img 
-            :src="baseUrl + 'images/presentacion puentes/' + slides[currentSlideIndex]" 
-            class="presentation-slide-image" 
-            alt="Diapositiva" 
-          />
+          <Transition name="slide-fade" mode="out-in">
+            <img 
+              :key="currentSlideIndex"
+              :src="baseUrl + 'images/presentacion puentes/' + slides[currentSlideIndex]" 
+              class="presentation-slide-image" 
+              alt="Diapositiva" 
+            />
+          </Transition>
         </div>
 
         <!-- Indicador de página -->
@@ -2878,7 +2942,22 @@ function handleCardClick(proj) {
   object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  animation: bp-zoomIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Transición fluida de diapositivas */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-fade-enter-from {
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+.slide-fade-leave-to {
+  opacity: 0;
+  transform: scale(1.02);
 }
 
 .presentation-close-btn {
@@ -2967,5 +3046,105 @@ function handleCardClick(proj) {
   font-size: 13.5px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.7);
+}
+
+/* ── Leyenda Interactiva del Mapa ── */
+.map-legend-container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.1);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 180px;
+  pointer-events: auto;
+  user-select: none;
+  animation: bp-fadeIn 0.3s ease-out;
+}
+
+.legend-title {
+  font-family: 'Prompt', sans-serif;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 4px;
+  margin-bottom: 2px;
+  text-align: left;
+}
+
+.legend-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.legend-item:hover {
+  background: rgba(15, 23, 42, 0.05);
+  transform: translateX(2px);
+}
+
+.legend-color-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.legend-color-dot.color-bridge {
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+  border: 1px solid #ffffff;
+}
+
+.legend-color-dot.color-pap {
+  background: #3b82f6;
+  box-shadow: 0 0 6px rgba(59, 130, 246, 0.6);
+  border: 1px solid #ffffff;
+}
+
+.legend-label {
+  font-family: 'Prompt', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #334155;
+  transition: all 0.2s ease;
+}
+
+/* Estado Desactivado / Oculto */
+.legend-item--hidden {
+  opacity: 0.5;
+}
+
+.legend-item--hidden .legend-color-dot {
+  background: #cbd5e1 !important;
+  box-shadow: none !important;
+  border-color: #94a3b8 !important;
+}
+
+.legend-item--hidden .legend-label {
+  color: #94a3b8;
+  text-decoration: line-through;
 }
 </style>

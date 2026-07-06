@@ -1,5 +1,21 @@
 {
-  "La Ye - Yondó": [],
+  "La Ye - Yondó": [
+    {
+      "id": "oc1jy55q",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "pendientes": [],
+      "obs": "",
+      "en_ejecucion": [
+        {
+          "nombre": "Sin avance de obra en la semana",
+          "desc": "",
+          "fotos": []
+        }
+      ]
+    }
+  ],
   "Remedios - La Y De La Virgen - Puerto Berrío": [
     {
       "id": "mp2zpnxb",
@@ -201,6 +217,44 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "k2f3ex77",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "pendientes": [],
+      "obs": "",
+      "en_ejecucion": [
+        {
+          "nombre": "Limpieza de tuberías colmatadas",
+          "desc": "Limpieza de 13 alcantarillas de 24 pulgadas (Nos. 2, 4, 3, 5, 21, 29, 36, 50, 61, 62, 67, 76 y 81).",
+          "fotos": [
+            "/images/actividades/e6d71a5d-67be-4a7a-ad88-6c6783e7bfcc.jpg",
+            "/images/actividades/9ff0438a-096f-496e-a84a-861c59ae20e1.jpg"
+          ]
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "Nivelación de poligonal entre km7+250 y km9+100, actualización de abscisado y referenciación de apiques.",
+          "fotos": [
+            "/images/actividades/bd8938d9-7163-43fe-acba-cd14b06a7687.jpg",
+            "/images/actividades/29a7d87c-7486-4807-87fc-89924877683b.jpg"
+          ]
+        },
+        {
+          "nombre": "Cambio de tubería",
+          "desc": "Cambio de tubería de 24 a 36 pulgadas en las alcantarillas No. 14 y 15, incluyendo colocación de subbase.",
+          "fotos": [
+            "/images/actividades/d7381e65-2637-449b-ad6c-d9d11f05aae2.jpg"
+          ]
+        },
+        {
+          "nombre": "Toma de densidades",
+          "desc": "Toma de densidades en capas de recuperación y subbase en los cambios de tubería de las alcantarillas No. 14 y 15.",
+          "fotos": []
+        }
+      ]
     }
   ],
   "Cáceres - La Chilona": [
@@ -577,6 +631,32 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "n4ci8nbo",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "pendientes": [],
+      "obs": "",
+      "en_ejecucion": [
+        {
+          "nombre": "Limpieza de obras de drenaje",
+          "desc": "Limpieza de tuberías, encoles y descoles. Avance acumulado: 1.235,76 ml (78 obras limpiadas de 229 identificadas, 13 nuevas).",
+          "fotos": [
+            "/images/actividades/f5296875-f306-43ae-bcb0-f7705a67d653.jpg",
+            "/images/actividades/16c9b1aa-05a4-4a3e-af4f-34e073d7511c.jpg",
+            "/images/actividades/c44ad7ca-9848-43d8-a3a1-d5025027c30d.jpg"
+          ]
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "Levantamiento de detalle de 3 km (K20+000 a K16+613) para completar tramo Andes-Pueblorrico. Levantamiento en broche del centro poblado de San José.",
+          "fotos": [
+            "/images/actividades/c460da75-3c84-417d-bd71-9302953f7864.jpg"
+          ]
+        }
+      ]
     }
   ],
   "Valparaíso - Támesis": [
@@ -939,6 +1019,21 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mjj2y2vk",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Sin avance de obra en la semana",
+          "desc": "",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "Abejorral - Santa Barbara": [
@@ -1014,6 +1109,40 @@
           "nombre": "Inventario de drenaje",
           "desc": "40 alcantarillas identificadas en los primeros 5 km",
           "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "mr9ccm3h",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Limpieza de obras transversales",
+          "desc": "Se inició la limpieza de las obras transversales para verificar su estado real, tanto en la parte estructural como en las tuberías.",
+          "fotos": [
+            "/images/actividades/9a86fecf-3e1a-41f1-bc12-1cc762cc6b07.jpg",
+            "/images/actividades/c161045a-3c55-44a7-aefb-9f29087f0048.jpg"
+          ]
+        },
+        {
+          "nombre": "Revisión de obras transversales",
+          "desc": "Se realizó recorrido conjunto en los primeros 5 kilómetros de la vía, evidenciando 28 obras transversales por limpiar, 8 obras colmatadas en su totalidad, 4 obras en muy mal estado para cambio y la necesidad de construir una nueva obra transversal aproximadamente en el K2+860",
+          "fotos": [
+            "/images/actividades/abca4872-ce5e-46f3-8d0f-17e584bd2358.jpg"
+          ],
+          "_editing": false
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "Se realizó levantamiento topográfico de obra durante las actividades de revisión y limpieza.",
+          "fotos": [
+            "/images/actividades/16a61513-10bb-4069-ac19-b5a22e66730d.jpg",
+            "/images/actividades/c738e713-d1f0-40ee-bcdf-6eca90d4b4bc.jpg"
+          ]
         }
       ],
       "pendientes": [],
@@ -1438,6 +1567,39 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "fmz8mt3r",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "pendientes": [],
+      "obs": "",
+      "en_ejecucion": [
+        {
+          "nombre": "Limpieza de alcantarillas",
+          "desc": "Limpieza de 6 alcantarillas. Avance acumulado: 86 unidades (32.9% de ejecución).",
+          "fotos": [
+            "/images/actividades/ee273908-481d-42aa-979c-36263f7c01a0.jpg"
+          ]
+        },
+        {
+          "nombre": "Acero de refuerzo y concreto",
+          "desc": "Instalación de acero en cabezotes K3+240 al K3+520. Acumulado: 5.8% acero, 3.5% concreto.",
+          "fotos": [
+            "/images/actividades/4ee5cbc7-a3c5-4af2-b419-e5403d385530.jpg",
+            "/images/actividades/f4481e29-925a-4b98-b741-5f3ec75cf380.jpg"
+          ]
+        },
+        {
+          "nombre": "Construcción de filtros",
+          "desc": "Construcción entre K1+070 y K1+500. Acumulado: 3.9% de ejecución.",
+          "fotos": [
+            "/images/actividades/eec18b14-6ef2-42b9-bd81-86c1a650fca2.jpg",
+            "/images/actividades/45e5eae1-f916-4e72-834b-8b176574a72a.jpg"
+          ]
+        }
+      ]
     }
   ],
   "San Pedro - El Tres - Turbo": [
@@ -1530,6 +1692,21 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "qvklsko3",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "pendientes": [],
+      "obs": "",
+      "en_ejecucion": [
+        {
+          "nombre": "Sin avances de obra en la semana",
+          "desc": "",
+          "fotos": []
+        }
+      ]
     }
   ],
   "Caramanta - Cristales - San Roque": [
@@ -2221,6 +2398,59 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mqz8kl2a",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Topografía",
+          "desc": "Se continúa por parte del contratista el levantamiento topográfico.",
+          "fotos": [
+            "/images/actividades/fc30be90-0d64-4199-a5eb-2c41d1b0bd90.jpg"
+          ]
+        },
+        {
+          "nombre": "Subbase granular",
+          "desc": "Instalación y compactación de subbase granular proveniente de la planta El Galpón.",
+          "fotos": [
+            "/images/actividades/a60439a1-bd3a-49f9-90ed-6b182ee9ffef.jpg",
+            "/images/actividades/e6053f4a-c6d3-427d-953a-cbb71cb7d63d.jpg"
+          ]
+        },
+        {
+          "nombre": "Excavación y perfilado",
+          "desc": "Se realiza excavación manual, perfilado de encole y descole de las obras #344 y #332.",
+          "fotos": [
+            "/images/actividades/3c6f91dd-d7a0-4290-b43c-de70ea012a7a.jpg",
+            "/images/actividades/349ade29-1145-43dc-82c5-fefd8494c460.jpg"
+          ]
+        },
+        {
+          "nombre": "Humectación",
+          "desc": "Humectación de la vía.",
+          "fotos": [
+            "/images/actividades/ee1d2c22-08cb-450a-92b6-1e65025dc444.jpg"
+          ]
+        },
+        {
+          "nombre": "Perforación para anclaje",
+          "desc": "Se continúa la perforación para el anclaje del realce de obras transversales.",
+          "fotos": [
+            "/images/actividades/d36d9ea4-309a-4c14-8629-14fac8a4ff15.jpg",
+            "/images/actividades/1470a7f8-d5b7-4912-aac2-a27540caafed.jpg"
+          ]
+        },
+        {
+          "nombre": "Suministro de cemento",
+          "desc": "Se suministra cemento.",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "Frontino - Nutibara": [
@@ -2442,6 +2672,39 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mqz7df9r",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Topografía",
+          "desc": "Topografía contratista e interventoría",
+          "fotos": [
+            "/images/actividades/00e4713d-c661-471e-8711-2c452c01ad7b.jpg",
+            "/images/actividades/06f99c0f-905c-46db-bebe-69e1220b48fa.jpg"
+          ]
+        },
+        {
+          "nombre": "Excavación",
+          "desc": "Excavación para estructuras varias en material común en seco.",
+          "fotos": [
+            "/images/actividades/f51b1787-ca4b-4110-aa0c-188f271b96c1.jpg"
+          ]
+        },
+        {
+          "nombre": "Instalación de tubería",
+          "desc": "Instalación de tubería 36 en transversales.",
+          "fotos": [
+            "/images/actividades/9f2daa19-01f4-422d-951e-46dc4459e666.jpg",
+            "/images/actividades/55e9b868-df81-4a51-9bad-dcb8c6995b46.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "Ebejico - Miserenga": [
@@ -2495,6 +2758,21 @@
       "en_ejecucion": [
         {
           "nombre": "Sin avances de obra",
+          "desc": "",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    },
+    {
+      "id": "a3rv5cdb",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Sin avance de obra en la semana",
           "desc": "",
           "fotos": []
         }
@@ -2940,6 +3218,45 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mqz8hg3k",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Recuperación y conformación de vía",
+          "desc": "Se continúa con la recuperación del ancho de la vía y la conformación de la calzada mediante el uso de ripper, seguida del proceso de compactación del material.",
+          "fotos": [
+            "/images/actividades/d2c4c5a5-144d-4586-b53a-8c2e14d0e1c4.jpg",
+            "/images/actividades/8d22d9b9-49e5-4673-9649-cb2fed645f81.jpg"
+          ]
+        },
+        {
+          "nombre": "Limpieza de obras de drenaje",
+          "desc": "Limpieza de las obras de drenaje transversal de la vía para garantizar el adecuado flujo de las aguas.",
+          "fotos": [
+            "/images/actividades/6dc56b34-7587-4459-be6c-594f20e17b2d.jpg",
+            "/images/actividades/ae0549b0-532c-4fba-a273-10edad04f973.jpg"
+          ]
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "Actividades de topografía por parte del contratista.",
+          "fotos": [
+            "/images/actividades/9e60715e-b079-4940-8acb-5ad0c1df6ba7.jpg",
+            "/images/actividades/a379282e-8570-4034-a594-39229fac5328.jpg"
+          ]
+        },
+        {
+          "nombre": "Recorrido de ODT",
+          "desc": "Se realiza un recorrido para identificar y medir las obras de drenaje transversal (ODT), así como para verificar las afectaciones que presentan.",
+          "fotos": []
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
     }
   ],
   "El Guayabo - El Salto - Partidas a Guadalupe": [],
@@ -3003,6 +3320,41 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "mr9chahy",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "en_ejecucion": [
+        {
+          "nombre": "Revisión de obras transversales",
+          "desc": "Se realizó revisión del estado de las obras transversales en los últimos 5 kilómetros de la vía.",
+          "fotos": [
+            "/images/actividades/a3e1af9e-9805-4810-8682-174276bc28c6.jpg",
+            "/images/actividades/d7fbdb7d-5dfa-4ae3-8df6-1e2547f7f3c9.jpg"
+          ]
+        }
+      ],
+      "pendientes": [],
+      "obs": ""
+    }
+  ],
+  "San Pedro de Urabá - Arboletes": [
+    {
+      "id": "darxj0jc",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "pendientes": [],
+      "obs": "",
+      "en_ejecucion": [
+        {
+          "nombre": "Sin avances de obra en la semana",
+          "desc": "",
+          "fotos": []
+        }
+      ]
     }
   ]
 }

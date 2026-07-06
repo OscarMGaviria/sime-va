@@ -166,6 +166,102 @@ function fmtFecha(iso) {
   return `${+d} ${M[+m - 1]} ${y}`
 }
 
+// ── Importación / Exportación CSV ─────────────────────────────────────────────
+function downloadTemplate() {
+  const corredores = Object.keys(allHitos.value)
+  const ejemplo = corredores.find(k => k.trim()) || 'Nombre del corredor'
+  const hoy = new Date().toISOString().slice(0, 10)
+  const rows = [
+    ['corredor', 'fecha', 'obs', 'categoria', 'nombre', 'desc'],
+    [ejemplo, hoy, 'Observación general del corte', 'en_ejecucion', 'Topografía', 'Avance de 5 km esta semana'],
+    [ejemplo, hoy, '', 'en_ejecucion', 'Limpieza de alcantarillas', 'Se intervinieron 12 unidades'],
+    [ejemplo, hoy, '', 'ejecutada', 'Exploración de campo', 'Completada al 100%'],
+    [ejemplo, hoy, '', 'pendiente', 'Estabilización', 'Inicia próxima semana'],
+    [],
+    ['# CORREDORES DISPONIBLES — usar nombre exacto en columna "corredor"'],
+    ...corredores.map(c => [c]),
+  ]
+  const csv = rows.map(r =>
+    r.length === 0 ? '' : r.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(',')
+  ).join('\r\n')
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url; a.download = 'plantilla_hitos.csv'; a.click()
+  URL.revokeObjectURL(url)
+}
+
+const importing = ref(false)
+
+function parseCSVLine(line) {
+  const result = []; let inQ = false; let field = ''
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i]
+    if (c === '"') { if (inQ && line[i + 1] === '"') { field += '"'; i++ } else inQ = !inQ }
+    else if (c === ',' && !inQ) { result.push(field); field = '' }
+    else field += c
+  }
+  result.push(field)
+  return result
+}
+
+async function importCSV(event) {
+  const file = event.target.files[0]
+  event.target.value = ''
+  if (!file) return
+  importing.value = true
+  try {
+    const text = await file.text()
+    const lines = text.replace(/^﻿/, '').trim().split(/\r?\n/)
+    const headers = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase())
+    const col = f => headers.indexOf(f)
+    const iCorredor = col('corredor'), iFecha = col('fecha'), iObs = col('obs')
+    const iCat = col('categoria'), iNombre = col('nombre'), iDesc = col('desc')
+    if ([iCorredor, iFecha, iCat, iNombre].some(i => i < 0)) {
+      showToast('CSV inválido: faltan columnas (corredor, fecha, categoria, nombre)', false); return
+    }
+    const groups = {}
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim()
+      if (!line || line.startsWith('"#') || line.startsWith('#')) continue
+      const row = parseCSVLine(lines[i])
+      const corredor = (row[iCorredor] ?? '').trim()
+      const fecha    = (row[iFecha]    ?? '').trim()
+      const obs      = (iObs >= 0 ? row[iObs]  ?? '' : '').trim()
+      const cat      = (row[iCat]     ?? '').trim().toLowerCase()
+      const nombre   = (row[iNombre]  ?? '').trim()
+      const desc     = (iDesc >= 0 ? row[iDesc] ?? '' : '').trim()
+      if (!corredor || !fecha || !nombre) continue
+      const key = `${corredor}|||${fecha}`
+      if (!groups[key]) groups[key] = { corredor, fecha, obs, ejecutadas: [], en_ejecucion: [], pendientes: [] }
+      else if (obs && !groups[key].obs) groups[key].obs = obs
+      const act = { nombre, desc, fotos: [] }
+      if      (cat === 'ejecutada'    || cat === 'ejecutadas')   groups[key].ejecutadas.push(act)
+      else if (cat === 'en_ejecucion' || cat === 'en ejecucion') groups[key].en_ejecucion.push(act)
+      else if (cat === 'pendiente'    || cat === 'pendientes')   groups[key].pendientes.push(act)
+    }
+    let added = 0
+    for (const g of Object.values(groups)) {
+      const matchKey = Object.keys(allHitos.value).find(k => norm(k) === norm(g.corredor)) ?? g.corredor
+      if (!allHitos.value[matchKey]) allHitos.value[matchKey] = []
+      allHitos.value[matchKey].push({
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
+        fecha: g.fecha, frentes: [],
+        ejecutadas: g.ejecutadas, en_ejecucion: g.en_ejecucion, pendientes: g.pendientes,
+        obs: g.obs,
+      })
+      added++
+    }
+    if (added === 0) { showToast('No se encontraron datos válidos en el CSV', false); return }
+    await persist()
+    showToast(`${added} corte(s) importado(s) correctamente`, true)
+  } catch (e) {
+    showToast('Error al importar: ' + e.message, false)
+  } finally {
+    importing.value = false
+  }
+}
+
 // ── Fotos por actividad ───────────────────────────────────────────────────────
 const uploading = ref(false)
 
@@ -257,10 +353,21 @@ watch(lbZoom, async (val) => { if (val) { await nextTick(); lbZoomEl.value?.focu
         Seguimiento de campo
         <span v-if="cortes.length" class="hv-count">{{ cortes.length }}</span>
       </div>
-      <button v-if="!showForm" class="hv-btn-new" @click="showForm = true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Nuevo corte
-      </button>
+      <div class="hv-topbar-actions">
+        <button class="hv-btn-tpl" @click="downloadTemplate" title="Descargar plantilla CSV con el formato correcto">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Plantilla
+        </button>
+        <label class="hv-btn-import" :class="{ 'hv-btn-import--busy': importing }" title="Importar hitos desde archivo CSV">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          {{ importing ? 'Importando…' : 'Importar CSV' }}
+          <input type="file" accept=".csv,text/csv" class="hv-file-hidden" @change="importCSV" :disabled="importing" />
+        </label>
+        <button v-if="!showForm" class="hv-btn-new" @click="showForm = true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nuevo corte
+        </button>
+      </div>
     </div>
 
     <!-- ── Formulario nuevo corte ── -->
@@ -770,6 +877,45 @@ watch(lbZoom, async (val) => { if (val) { await nextTick(); lbZoomEl.value?.focu
 }
 .hv-btn-new:hover { background: #0d6347; box-shadow: 0 4px 12px rgba(10,77,56,.4); }
 .hv-btn-new svg { width: 13px; height: 13px; }
+
+.hv-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hv-btn-tpl {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  color: #0a4d38;
+  border: 1.5px solid #0a4d38;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+}
+.hv-btn-tpl:hover { background: #e8f5ee; }
+.hv-btn-tpl svg { width: 13px; height: 13px; }
+.hv-btn-import {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  color: #1d4ed8;
+  border: 1.5px solid #1d4ed8;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+}
+.hv-btn-import:hover { background: #eff6ff; }
+.hv-btn-import svg { width: 13px; height: 13px; }
+.hv-btn-import--busy { opacity: .6; pointer-events: none; }
 
 /* ── Tarjeta formulario ── */
 .hv-form-card {
