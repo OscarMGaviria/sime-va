@@ -493,8 +493,22 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
         let hoveredVia = null
 
         map.on('click', 'vias-line', (e) => {
-          if (_justClickedPoint) return
           if (store.currentProject === 'puentes') return
+
+          // Validar si el click fue sobre un punto crítico, puente o alcantarilla para ignorar la vía
+          const activeLayers = []
+          if (map.getLayer('puentes-layer')) activeLayers.push('puentes-layer')
+          if (map.getLayer('pap-layer')) activeLayers.push('pap-layer')
+          if (map.getLayer('obras-transversales-layer')) activeLayers.push('obras-transversales-layer')
+          if (map.getLayer('puentes-pap-clusters-trigger')) activeLayers.push('puentes-pap-clusters-trigger')
+          
+          if (activeLayers.length > 0) {
+            const feats = map.queryRenderedFeatures(e.point, { layers: activeLayers })
+            if (feats && feats.length > 0) {
+              logMsg('vias-line click ignorado: se detectó un punto encima')
+              return
+            }
+          }
 
           const p        = e.features[0].properties
           const circuito = p.CIRCUITO ?? ''
@@ -788,37 +802,19 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
           setTimeout(() => { _justClickedPoint = false }, 50)
 
           const p = e.features[0].properties
-          const tipo = p.tipo || 'Obra Transversal'
-          const nombre = p.nombre || 'Sin nombre'
-          const estado = p.estado || 'No especificado'
-          const circuito = p.circuito || '—'
-          
-          let statusBadgeClass = 'bp-status--default'
-          if (estado.toLowerCase().includes('permiso')) statusBadgeClass = 'bp-status--approved'
-          else if (estado.toLowerCase().includes('ejecuc')) statusBadgeClass = 'bp-status--exec'
-          else if (estado.toLowerCase().includes('viabil')) statusBadgeClass = 'bp-status--pending'
-
+          let content = ''
+          for (let key in p) {
+            content += `<tr><td class="sp-key">${key}</td><td class="sp-val">${p[key]}</td></tr>`
+          }
           const html = `
             <div class="sp-wrap">
-              <div class="sp-header" style="border-bottom: 1.5px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 8px;">
-                <span class="sp-type" style="color: #64748b; font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px;">${tipo}</span>
-                <span class="sp-title" style="display: block; font-size: 15px; font-weight: 700; color: #0f172a; margin-top: 4px;">${nombre}</span>
+              <div class="sp-header">
+                <span class="sp-type">Obra Transversal (Alcantarilla)</span>
               </div>
               <div class="sp-body">
-                <table class="sp-table" style="width: 100%; border-collapse: separate; border-spacing: 0 8px;">
-                  <tbody>
-                    <tr>
-                      <td class="sp-key" style="color: #64748b; font-size: 11px; width: 35%;">Estado</td>
-                      <td class="sp-val" style="font-size: 12px; font-weight: 600;">
-                        <span class="bp-status ${statusBadgeClass}">${estado}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="sp-key" style="color: #64748b; font-size: 11px;">Circuito</td>
-                      <td class="sp-val" style="font-size: 12px; font-weight: 600; color: #334155;">${circuito}</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div style="max-height: 250px; overflow-y: auto;">
+                  <table class="sp-table"><tbody>${content}</tbody></table>
+                </div>
               </div>
             </div>`
           popup.setLngLat(e.lngLat).setHTML(html).addTo(map)
