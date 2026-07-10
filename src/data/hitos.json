@@ -425,6 +425,26 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "58f8dt5j",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "pendientes": [],
+      "obs": "Retraso físico del 34.19% y financiero del 30.31%. Falta personal (solo 4 trabajadores y 1 oficial). Incumplimientos administrativos y no se ha iniciado la construcción de las alcantarillas proyectadas.",
+      "en_ejecucion": [
+        {
+          "nombre": "Construcción de filtros",
+          "desc": "Construcción de filtros dentro del tramo de prueba.",
+          "fotos": []
+        },
+        {
+          "nombre": "Conformación de la vía",
+          "desc": "Conformación de la vía dentro del tramo de prueba, mejorando la accesibilidad desde el K22 hasta el K15+500.",
+          "fotos": []
+        }
+      ]
     }
   ],
   "Andes - San José - Pueblo Rico": [
@@ -799,6 +819,30 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "6bmgz1ju",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "pendientes": [],
+      "obs": "",
+      "en_ejecucion": [
+        {
+          "nombre": "Limpieza de obras de drenaje",
+          "desc": "Limpieza de obras (K19+500 al K19+000) con excavación manual. Medición de puntos críticos y broches. Avance acumulado: 92 obras limpiadas de 214 identificadas.",
+          "fotos": [
+            "/images/actividades/a5f0ef66-138b-470b-9a81-41493af2d4f2.jpg",
+            "/images/actividades/aba2b2af-430c-4eea-ac06-dffd69a24f01.jpg",
+            "/images/actividades/7372f176-6d56-4047-aafc-8ad716465483.jpg"
+          ]
+        },
+        {
+          "nombre": "Topografía",
+          "desc": "Ajuste del diseño geométrico de la vía en los primeros y últimos 5 km del corredor.",
+          "fotos": []
+        }
+      ]
     }
   ],
   "Salgar - La Quiebra - Concordia": [
@@ -949,6 +993,36 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "9ogxds5g",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "pendientes": [],
+      "obs": "",
+      "en_ejecucion": [
+        {
+          "nombre": "Topografía",
+          "desc": "Marcación de abscisa del corredor en las obras transversales obstruidas.",
+          "fotos": []
+        },
+        {
+          "nombre": "Inventario y reconocimiento",
+          "desc": "Recorrido de verificación del estado de obras transversales de drenaje para priorizar intervenciones.",
+          "fotos": [
+            "/images/actividades/c3176129-0a40-4dfd-8be7-d7d91c1e9809.jpg"
+          ]
+        },
+        {
+          "nombre": "Limpieza de obras transversales",
+          "desc": "Limpieza de 90 obras transversales de 116 identificadas. Medición en verificación por interventoría.",
+          "fotos": [
+            "/images/actividades/6159a7ab-7431-4d22-bccc-efa3366f5c6f.jpg",
+            "/images/actividades/d407291b-a37d-4d20-8335-7b23a36ed225.jpg"
+          ]
+        }
+      ]
     }
   ],
   "Titiribi - Armenia": [
@@ -1886,6 +1960,37 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "nt5jtem7",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "pendientes": [],
+      "obs": "",
+      "en_ejecucion": [
+        {
+          "nombre": "Topografía y Caracterización",
+          "desc": "Toma de muestras del material de la vía existente para ensayos de resistencia con cal y cemento en 5 apiques.",
+          "fotos": [
+            "/images/actividades/c49fb080-8761-4aca-a331-1217cc252525.jpg",
+            "/images/actividades/fa03e00e-8204-49d0-947e-97af8a033e93.jpg",
+            "/images/actividades/bd6121ae-fbdc-45e2-b4e2-c1cd9e9cb866.jpg"
+          ]
+        },
+        {
+          "nombre": "Obras de Drenaje",
+          "desc": "Relimpieza y paisajismo del material proveniente de la limpieza (avance acumulado 685m). Levantamiento de cotas batea y clave de las ODT entre el K3+000 y K13+690 (avance semanal 1.69 km).",
+          "fotos": []
+        },
+        {
+          "nombre": "Instalaciones",
+          "desc": "Construcción de instalaciones del almacén y laboratorio en el K13+190.",
+          "fotos": [
+            "/images/actividades/0aff9282-a150-4698-862b-8487f453448b.jpg"
+          ]
+        }
+      ]
     }
   ],
   "Amalfi - Portachuelos - Santa Isabel": [
@@ -1956,6 +2061,21 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "e3nzeez3",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "pendientes": [],
+      "obs": "",
+      "en_ejecucion": [
+        {
+          "nombre": "Sin avance de obra en la semana",
+          "desc": "El contratista no ejecutó ninguna actividad sobre este sector.",
+          "fotos": []
+        }
+      ]
     }
   ],
   "San Rafael - San Roque - Santo Domingo - Alejandría": [
@@ -2136,6 +2256,24 @@
       ],
       "pendientes": [],
       "obs": ""
+    },
+    {
+      "id": "f5jcf8l8",
+      "fecha": "2026-07-06",
+      "frentes": [],
+      "ejecutadas": [],
+      "pendientes": [],
+      "obs": "",
+      "en_ejecucion": [
+        {
+          "nombre": "Topografía y Caracterización",
+          "desc": "Toma de 96 apiques y 70 muestras en total. Replanteo topográfico finalizado hasta el K12+860 (San Roque-Santo Domingo). Instalación y nivelación de deltas desde el K5+630 hasta el K10+630 (San Rafael-San Roque).",
+          "fotos": [
+            "/images/actividades/009e9bdf-997e-4205-a3aa-1acd8417feca.jpg",
+            "/images/actividades/87da803d-9986-4b0c-8293-09be02c8b379.jpg"
+          ]
+        }
+      ]
     }
   ],
   "Sopetrán - Horizontes - Belmira": [

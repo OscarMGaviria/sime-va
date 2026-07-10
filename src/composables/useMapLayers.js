@@ -54,7 +54,7 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
   const selectedVia      = ref(null)
   const selectedMpio     = ref(null)
   const selectedPuente   = ref(null)
-  let _justClickedBridge = false
+  let _justClickedPoint = false
   const cachedMunicipios = ref(null)
 
   function logMsg(msg) {
@@ -68,6 +68,7 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
   let destroyed = false
   const layerPuentesVisible = ref(true)
   const layerPAPVisible     = ref(true)
+  const layerObrasTransversalesVisible = ref(true)
   const layerViasVisible    = ref(true)
   const store = useMapStore()
 
@@ -311,8 +312,8 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
             }
           }
 
-          if (_justClickedBridge) {
-            logMsg('municipios-fill click ignorado: _justClickedBridge es true')
+          if (_justClickedPoint) {
+            logMsg('municipios-fill click ignorado: _justClickedPoint es true')
             return
           }
 
@@ -322,11 +323,7 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
             return
           }
 
-          const p = e.features[0].properties
-          selectedMpio.value = {
-            nombre:    sentenceCase(p.MPIO_NOMBR ?? ''),
-            subregion: canonicalSub(p.SUBREGION),
-          }
+          // Se eliminó la asignación de selectedMpio.value para evitar abrir el modal del municipio
         })
       } catch (err) {
         console.error('[SIMEVA] Error cargando municipios:', err)
@@ -496,6 +493,7 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
         let hoveredVia = null
 
         map.on('click', 'vias-line', (e) => {
+          if (_justClickedPoint) return
           if (store.currentProject === 'puentes') return
 
           const p        = e.features[0].properties
@@ -677,8 +675,8 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
         for (const layerId of ['puentes-layer', 'pap-layer']) {
           map.on('click', layerId, (e) => {
             logMsg(`Click detectado en la capa: ${layerId}`)
-            _justClickedBridge = true
-            setTimeout(() => { _justClickedBridge = false }, 50)
+            _justClickedPoint = true
+            setTimeout(() => { _justClickedPoint = false }, 50)
 
             if (store.currentProject === 'puentes') {
               const props = e.features?.[0]?.properties
@@ -699,9 +697,20 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
 
             popup
               .setLngLat(e.lngLat)
-              .setHTML(`<div class="sp-header">${p.Proyecto ?? ''}</div><table class="sp-table">${rows}</table>`)
+              .setHTML(`
+                <div class="sp-wrap">
+                  <div class="sp-header">
+                    <span class="sp-type">${p._tipo === 'pap' ? 'Punto Crítico (PAP)' : 'Puente'}</span>
+                    <span class="sp-title">${p.Proyecto ?? 'Sin nombre'}</span>
+                  </div>
+                  <div class="sp-body">
+                    <table class="sp-table"><tbody>${rows}</tbody></table>
+                  </div>
+                </div>
+              `)
               .addTo(map)
           })
+          
           map.on('mousemove', layerId, (e) => {
             map.getCanvas().style.cursor = 'pointer'
             const p = e.features[0].properties
@@ -724,6 +733,102 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
         map.on('moveend', updateClusters)
       } catch (err) {
         console.warn('[SIMEVA] Puentes/PAPs no disponibles:', err)
+      }
+    })()
+
+    // ── Obras Transversales (Alcantarillas) ──
+    ;(async () => {
+      try {
+        const ts = new Date().getTime()
+        const r  = await fetch(import.meta.env.BASE_URL + `data/Obras_transversales.geojson?v=${ts}`)
+        if (!r.ok) throw new Error(`HTTP ${r.status}`)
+        const geoData = await r.json()
+        if (destroyed) return
+        const map = getMap()
+        if (!map) return
+
+        map.addSource('obras-transversales', {
+          type: 'geojson',
+          data: geoData
+        })
+
+        if (!map.hasImage('culvert-icon')) {
+          const canvas = document.createElement('canvas');
+          canvas.width = 32;
+          canvas.height = 32;
+          const ctx = canvas.getContext('2d');
+          
+          ctx.beginPath();
+          ctx.arc(16, 16, 10, 0, 2 * Math.PI);
+          ctx.fillStyle = '#64748b'; // slate-500
+          ctx.fill();
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 1.8;
+          ctx.stroke();
+
+          map.addImage('culvert-icon', ctx.getImageData(0, 0, 32, 32));
+        }
+
+        map.addLayer({
+          id: 'obras-transversales-layer',
+          type: 'symbol',
+          source: 'obras-transversales',
+          layout: {
+            'visibility': layerObrasTransversalesVisible.value ? 'visible' : 'none',
+            'icon-image': 'culvert-icon',
+            'icon-size': ['interpolate', ['linear'], ['zoom'], 7, 0.7, 12, 1.2],
+            'icon-allow-overlap': true,
+          },
+        })
+        
+        const popup = new maplibregl.Popup({ closeButton: true, maxWidth: '300px', className: 'simeva-popup' })
+        
+        map.on('click', 'obras-transversales-layer', (e) => {
+          _justClickedPoint = true
+          setTimeout(() => { _justClickedPoint = false }, 50)
+
+          const p = e.features[0].properties
+          const tipo = p.tipo || 'Obra Transversal'
+          const nombre = p.nombre || 'Sin nombre'
+          const estado = p.estado || 'No especificado'
+          const circuito = p.circuito || '—'
+          
+          let statusBadgeClass = 'bp-status--default'
+          if (estado.toLowerCase().includes('permiso')) statusBadgeClass = 'bp-status--approved'
+          else if (estado.toLowerCase().includes('ejecuc')) statusBadgeClass = 'bp-status--exec'
+          else if (estado.toLowerCase().includes('viabil')) statusBadgeClass = 'bp-status--pending'
+
+          const html = `
+            <div class="sp-wrap">
+              <div class="sp-header" style="border-bottom: 1.5px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 8px;">
+                <span class="sp-type" style="color: #64748b; font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px;">${tipo}</span>
+                <span class="sp-title" style="display: block; font-size: 15px; font-weight: 700; color: #0f172a; margin-top: 4px;">${nombre}</span>
+              </div>
+              <div class="sp-body">
+                <table class="sp-table" style="width: 100%; border-collapse: separate; border-spacing: 0 8px;">
+                  <tbody>
+                    <tr>
+                      <td class="sp-key" style="color: #64748b; font-size: 11px; width: 35%;">Estado</td>
+                      <td class="sp-val" style="font-size: 12px; font-weight: 600;">
+                        <span class="bp-status ${statusBadgeClass}">${estado}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="sp-key" style="color: #64748b; font-size: 11px;">Circuito</td>
+                      <td class="sp-val" style="font-size: 12px; font-weight: 600; color: #334155;">${circuito}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>`
+          popup.setLngLat(e.lngLat).setHTML(html).addTo(map)
+        })
+
+        map.on('mousemove', 'obras-transversales-layer', () => map.getCanvas().style.cursor = 'pointer')
+        map.on('mouseleave', 'obras-transversales-layer', () => map.getCanvas().style.cursor = '')
+
+      } catch (err) {
+        console.error('[SIMEVA] Error cargando Obras Transversales:', err)
       }
     })()
   }
@@ -1014,5 +1119,13 @@ export function useMapLayers(getMap, { onOptionsLoaded, onStatsLoaded } = {}, { 
     updateClusters()
   }
 
-  return { loading, loadError, fromCache, hoverLabel, viaHoverLabel, selectedVia, selectedMpio, selectedPuente, cachedMunicipios, cachedVias, loadSimeva, layerPuentesVisible, layerPAPVisible, layerViasVisible, togglePuentesLayer, togglePAPLayer }
+  function toggleObrasTransversalesLayer() {
+    layerObrasTransversalesVisible.value = !layerObrasTransversalesVisible.value
+    const map = getMap()
+    if (map?.getLayer('obras-transversales-layer')) {
+      map.setLayoutProperty('obras-transversales-layer', 'visibility', layerObrasTransversalesVisible.value ? 'visible' : 'none')
+    }
+  }
+
+  return { loading, loadError, fromCache, hoverLabel, viaHoverLabel, selectedVia, selectedMpio, selectedPuente, cachedMunicipios, cachedVias, loadSimeva, layerPuentesVisible, layerPAPVisible, layerObrasTransversalesVisible, layerViasVisible, togglePuentesLayer, togglePAPLayer, toggleObrasTransversalesLayer }
 }

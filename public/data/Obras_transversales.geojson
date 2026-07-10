@@ -1,0 +1,2335 @@
+{
+  "type": "FeatureCollection",
+  "name": "Alcantarillas_Detalladas",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -75.00733020528527,
+          6.486099564745884
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 1",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 1 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -75.0072952631973,
+          6.485490711360371
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 2",
+        "tipo": "ALCANTARILLA",
+        "estado": "",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 2",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -75.00653252961453,
+          6.484807328822862
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 3",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 3 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -75.00615505828966,
+          6.484852665163477
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 4",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 4 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -75.00500826307398,
+          6.484314789906907
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 5",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 5 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -75.00421478705249,
+          6.483453873041287
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 6",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 6 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -75.00388670028332,
+          6.482968747087528
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 7",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 7 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -75.00349025378671,
+          6.482420923416706
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 8",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO",
+        "textos_crudos": "ALCANTARILLA | ODT 8 | SIN PERMISO",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -75.00300274715453,
+          6.482310995432224
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 9",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 9 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -75.00150637750781,
+          6.482387834686054
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 10",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 10 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.99994047678092,
+          6.482165499650537
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 11",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 11 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.99816498962936,
+          6.481334339862338
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 12",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 12 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.99770626095085,
+          6.481066953860819
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 13",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 13 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.99698109909079,
+          6.4808393061611556
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 14",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 14 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.99653410833528,
+          6.481009399231227
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 15",
+        "tipo": "ALCANTARILLA DE REEMPLAZO",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA DE REEMPLAZO | ODT 15 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.99595465983408,
+          6.48050186592394
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 16",
+        "tipo": "ALCANTARILLA DE REEMPLAZO",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA DE REEMPLAZO | ODT 16 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.9955820941496,
+          6.480607035363785
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 17",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 17 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.99483923803363,
+          6.480793777964697
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 17.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 17.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.99432783059348,
+          6.480560783586394
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 18",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 18 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.9935036047522,
+          6.480698050031399
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 19",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 19 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.99273918749412,
+          6.480332562039306
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 20",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 20 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.99221390540228,
+          6.480202707523275
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 21",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 21 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.99204480517606,
+          6.4798406849886385
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 22",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 22 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.99167557589705,
+          6.479616616886421
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 22.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 22.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.99118567439959,
+          6.479948943183418
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 22.2",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 22.2 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.99069450529196,
+          6.479456492382719
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 22.3",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 22.3 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.99019118840887,
+          6.479218364865245
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 23",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 23 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.98974508959058,
+          6.478679838160469
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 24",
+        "tipo": "ALCANTARILLA DE REEMPLAZO",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA DE REEMPLAZO | ODT 24 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.98955680269974,
+          6.478272979652653
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 25",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 25 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.98879819890406,
+          6.478090264210612
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 26",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 26 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.98795167445894,
+          6.478106418798599
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 27",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 27 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.98678048599841,
+          6.477928965317075
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 28",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 28 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.98552262680023,
+          6.478852796386249
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 28.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 28.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.98497542963472,
+          6.479094245819997
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 29",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 29 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.98411665530126,
+          6.478823805175462
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 30",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 30 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.98391670550699,
+          6.478222420203047
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 31",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 31 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.98396177976139,
+          6.477622936351149
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 32",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 32 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.98403176932563,
+          6.476831917593083
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 32.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 32.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.98353978836381,
+          6.4762759286392155
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 33",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 33 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.98295841636661,
+          6.47584840652805
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 34",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 34 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.98203496046625,
+          6.4744454138915675
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 35",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 35 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.98135490795696,
+          6.4736165980933
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 36",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 36 | SIN PERMISO",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.98091040088207,
+          6.473267340160608
+        ]
+      },
+      "properties": {
+        "nombre": "Sin Nombre",
+        "tipo": "ALCANTARILLA",
+        "estado": "",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.97902239241581,
+          6.47383152559836
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 37.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 37.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.97842142261428,
+          6.473851444264158
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 38",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 38 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.97789048002655,
+          6.473936061009957
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 39",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 39 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.97761556666448,
+          6.474637552597648
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 40",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 40 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.97710405195599,
+          6.4747579628217204
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 40.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 40.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.97641668440558,
+          6.4743325961499325
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 41",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 41 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.9756121266496,
+          6.473896687464739
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 42",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 42 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.97478195427297,
+          6.473109101634363
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 43",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 43 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.97435433599074,
+          6.472784996593613
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 44",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 44 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.97371066116028,
+          6.4724761075692205
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 45",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 45 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.97312391682361,
+          6.472227354291884
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 46",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 46 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.97276612142625,
+          6.470846184991038
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 46.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 46.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.97278223921126,
+          6.469806819234174
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 47",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 47 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.97233644656025,
+          6.469509515517552
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 48",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 48 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.97211667632864,
+          6.469202716898092
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 49",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 49 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.97211803132406,
+          6.4685049526927925
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 50",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 50 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.97167981489982,
+          6.468090340280273
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 51",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 51 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.97111040004997,
+          6.468158921911224
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 52",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 52 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.9706317459552,
+          6.468688689024478
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 53",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 53 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.96967483438094,
+          6.46832749689032
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 54",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 54 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.96794547577959,
+          6.468270176519929
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 55",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 55 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.96789230401723,
+          6.467889538474306
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 55.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 55.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.96799859490282,
+          6.467240929835454
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 56",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 56 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.96741731378268,
+          6.467181024569828
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 57",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 57 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.96683737798304,
+          6.467296786252998
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 58",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 58 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.96629466464758,
+          6.467572846861143
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 59",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 59 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.96599913717587,
+          6.467501443715538
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 60",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 60 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.96607039445483,
+          6.467256104299571
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 61",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "SIN PERMISO | DE INTERVENCIÓN | ALCANTARILLA | ALCANTARILLA | ODT 61 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.96630950345416,
+          6.466779837149613
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 62",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 62 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.96568831076966,
+          6.466028977831189
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 63",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 63 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.96582388332124,
+          6.465469185676953
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 64",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 64 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.9653577312377,
+          6.465130873556645
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 65",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 65 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.96495665463522,
+          6.464642455881463
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 65.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 65.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.96380209858586,
+          6.464828003036285
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 66",
+        "tipo": "ALCANTARILLA DE REEMPLAZO",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA DE REEMPLAZO | ODT 66 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.96209794416019,
+          6.464720587044168
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 66.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 66.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.96134122343682,
+          6.46470222609384
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 67",
+        "tipo": "ALCANTARILLA DE REEMPLAZO",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA DE REEMPLAZO | ODT 67 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.96102685182684,
+          6.463719956831379
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 68",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 68 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.95996107474679,
+          6.464082249094506
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 68.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 68.1 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.95935788629448,
+          6.463864443421222
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 69",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 69 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.95886741352328,
+          6.463619219822576
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 70",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA | ODT 70 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.95826542746583,
+          6.463960383813239
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 71",
+        "tipo": "ALCANTARILLA DE REEMPLAZO",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ALCANTARILLA DE REEMPLAZO | ODT 71 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.95780223945583,
+          6.46417822065967
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 72",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 72 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.95649627076067,
+          6.4642187778067
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 72.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 72.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.95571506185522,
+          6.464013925948325
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 73",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 73 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.954723482602,
+          6.463576882157097
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 73.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 73.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.95401339978274,
+          6.464067674558137
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 74",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 74 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.95330382848512,
+          6.464500295032855
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 75",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 75 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.95274640891047,
+          6.4642373347258015
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 76",
+        "tipo": "ALCANTARILLA DE REEMPLAZO",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA DE REEMPLAZO | ODT 76 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.95222821869304,
+          6.464279238780139
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 77",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 77 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.95167119781654,
+          6.465075220977134
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 77.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 77.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.95100546142152,
+          6.46576681557107
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 78",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 78 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.95067894243569,
+          6.46619314028544
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 78.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 78.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.95047827246249,
+          6.46699121192336
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 80",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 80 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.9496154223308,
+          6.4688042885211905
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 80.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 80.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.94919936527407,
+          6.4697090957679375
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 81",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 81 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.94811136990788,
+          6.470161724350903
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 82",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 82 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.94760008986839,
+          6.470521883066399
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 83",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 83 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.94703537909679,
+          6.470514910012391
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 84",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 84 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.94646666176945,
+          6.470456987419209
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 85",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 85 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.94581222971587,
+          6.470797611626846
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 86",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 86 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.94343590053478,
+          6.472923658557451
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 86.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 86.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.94236057163961,
+          6.473303150228208
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 87",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 87 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.94164266635795,
+          6.47284234547722
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 88",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 88 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.94104476004459,
+          6.472755348884384
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 89",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 89 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.94013126762796,
+          6.47242592658518
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 90",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 90 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93968957549978,
+          6.472156237942895
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 91",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 91 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93914165407539,
+          6.472054803340879
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 92",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 92 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93860194424784,
+          6.472120663464002
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 93",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 93 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93797047218197,
+          6.472772146285195
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 94",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 94 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93746012436817,
+          6.473294864734895
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 95",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 95 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93710629760129,
+          6.474222101399129
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 96",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 96 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93680150804047,
+          6.475005857600106
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 96.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 96.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93686422576167,
+          6.475411884455003
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 96.2",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 96.2 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93646585657292,
+          6.476301719055994
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 97",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 97 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93625242252526,
+          6.477786145574618
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 98",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 98 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93623876106771,
+          6.478411912223345
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 99",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 99 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.9344997029839,
+          6.4790895864184925
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 100",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 100 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93392909556475,
+          6.479013703265023
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 101",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 101 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93371453436397,
+          6.479512296891143
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 102",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN VERIFICAR ENCOLE",
+        "textos_crudos": "ALCANTARILLA | ODT 102 | CON PERMISO | DE INTERVENCIÓN VERIFICAR ENCOLE",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93303850568309,
+          6.480200612869431
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 103",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 103 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93211515755834,
+          6.4800529273517045
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 104",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 104 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93157925676105,
+          6.480050731884325
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 104.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 104.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93102766643376,
+          6.479977953416647
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 105",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 105 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93057664157097,
+          6.480274020346203
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 106",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 106 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.93012043959702,
+          6.48055000196459
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 107",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 107 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.9297606082756,
+          6.480597195137097
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 108",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 108 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.92878673739837,
+          6.481388335155934
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 109",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 109 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.9285969106163,
+          6.4818093548800775
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 110",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 110 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.92813824721925,
+          6.481840183588907
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 110.1",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 110.1 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.92749540228452,
+          6.481853734182452
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 111",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 111 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.92709923358093,
+          6.482066424893886
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 112",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 112 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.92674263193297,
+          6.4824532767554945
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 113",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 113 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.92617329853496,
+          6.482904936238429
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 114",
+        "tipo": "ALCANTARILLA",
+        "estado": "SIN PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 114 | SIN PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.92295610885327,
+          6.48400169017866
+        ]
+      },
+      "properties": {
+        "nombre": "ODT 115",
+        "tipo": "ALCANTARILLA",
+        "estado": "CON PERMISO DE INTERVENCIÓN",
+        "textos_crudos": "ALCANTARILLA | ODT 115 | CON PERMISO | DE INTERVENCIÓN",
+        "circuito": "Caramanta - Cristales - San Roque"
+      }
+    }
+  ]
+}

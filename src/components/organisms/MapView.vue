@@ -18,7 +18,7 @@ const {
   openVia,
   flyToVia,
   flyToCoords,
-  layerPuentesVisible, layerPAPVisible, togglePuentesLayer, togglePAPLayer,
+  layerPuentesVisible, layerPAPVisible, layerObrasTransversalesVisible, togglePuentesLayer, togglePAPLayer, toggleObrasTransversalesLayer,
 } = useMapOrchestrator(mapContainer, () => store.activeFilters)
 
 const layerCtrlOpen = ref(false)
@@ -157,6 +157,15 @@ onUnmounted(() => window.removeEventListener('keydown', _onGlobalKey))
               <span class="lp-label">PAPs</span>
               <svg class="lp-check" viewBox="0 0 16 16" fill="currentColor">
                 <path v-if="layerPAPVisible" d="M13.5 3.5L6 11 2.5 7.5 1.5 8.5l4.5 4.5 8.5-8.5z"/>
+                <rect v-else x="2" y="7.5" width="12" height="1.5" rx="0.75"/>
+              </svg>
+            </button>
+
+            <button class="lp-item" :class="{ 'lp-item--off': !layerObrasTransversalesVisible }" @click="toggleObrasTransversalesLayer">
+              <span class="lp-dot" style="background-color: #64748b;"></span>
+              <span class="lp-label">Alcantarillas</span>
+              <svg class="lp-check" viewBox="0 0 16 16" fill="currentColor">
+                <path v-if="layerObrasTransversalesVisible" d="M13.5 3.5L6 11 2.5 7.5 1.5 8.5l4.5 4.5 8.5-8.5z"/>
                 <rect v-else x="2" y="7.5" width="12" height="1.5" rx="0.75"/>
               </svg>
             </button>
