@@ -1851,7 +1851,7 @@ function buildPptCoverSlide(logoUrl, fecha, filters, stats) {
       </div>
     </div>
     <div style="position:absolute;bottom:40px;left:40px;font-size:14px;color:#ffffff;line-height:1.4;text-shadow:0 2px 10px rgba(0,0,0,0.8),0 0 20px rgba(0,0,0,0.6)">
-      <div style="font-weight:800;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:2px">Luis Horacio Gallón Arango</div>
+      <div style="font-weight:800;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:2px">Sebastián Castaño Gómez</div>
       <div style="font-weight:600;font-size:12px;opacity:0.95;margin-bottom:12px">Secretario de Infraestructura Física</div>
       <div style="font-weight:800;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:2px">Juan Diego Aguirre Londoño</div>
       <div style="font-weight:600;font-size:12px;opacity:0.95">Director de Desarrollo Físico</div>
